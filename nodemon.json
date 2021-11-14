@@ -1,0 +1,4 @@
+{
+  "exec": "babel-node src/backend/init.js",
+  "ignore": "src/frontend"
+}
