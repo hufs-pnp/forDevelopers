@@ -1,0 +1,12 @@
+extends ../../base.pug
+
+block content 
+    .recruitment-enrollment-container 
+        h1.title 멤버 구하기 등록
+        form(method="POST").form
+            .first-row
+                input(type="text" name="title" placeholder="제목" maxlength=30 required)
+                input(type="text" name="personnel" placeholder="필요 인원" maxlength=3 value=1)
+            .second-row
+                textarea(name="content" spellcheck="false" placeholder="내용을 입력하세요." required)
+            input(type="submit" value="등록")

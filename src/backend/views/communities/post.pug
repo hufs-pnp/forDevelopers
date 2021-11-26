@@ -1,0 +1,16 @@
+extends ../base.pug
+
+block content 
+    .communityPost-container(data-id = post.id)
+        .header
+            h1 멤버 모집 상세히
+        .main
+            span.category 카테고리: #{post.category}
+            span.title 제목: #{post.title}
+            span.contents 내용: #{post.content}
+            span.views 조회수: #{post.views}           
+            span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+        .options
+            a(href=`/communities/${post.id}/update`) 수정하기
+            a(href=`/communities/${post.id}/delete`) 삭제하기
+    script(src="/assets/js/communityPost.js")

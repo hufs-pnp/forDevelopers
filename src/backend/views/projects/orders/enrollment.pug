@@ -1,0 +1,15 @@
+extends ../../base.pug
+
+block content 
+    .order-enrollment-container 
+        h1.title 개발 수주 등록
+        form(method="POST").form
+            .first-row
+                input(type="text" name="title" placeholder="제목" maxlength=30 required)
+            .second-row
+                textarea(name="content" spellcheck="false" placeholder="내용을 입력하세요." required)
+            input(type="submit" value="등록")
+      
+        
+       
+            

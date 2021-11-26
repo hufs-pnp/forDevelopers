@@ -1,0 +1,22 @@
+.projects-category {
+  display: flex;
+  flex-direction: column;
+
+  .ordersButton,
+  .recruitmentsButton {
+    button {
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: #3498db;
+      color: white;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  }
+
+  .ordersButton {
+    margin-bottom: 30px;
+  }
+}

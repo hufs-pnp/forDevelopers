@@ -1,0 +1,12 @@
+extends ../base.pug
+
+block content 
+    .community-enrollment-container 
+        h1.title 커뮤니티 등록
+        form(method="POST").form
+            .first-row
+                input(type="text" name="title" placeholder="제목" maxlength=30 required)
+                input(type="text" name="category" placeholder="카테고리" maxlength=10 required)
+            .second-row
+                textarea(name="content" spellcheck="false" placeholder="내용을 입력하세요." required)
+            input(type="submit" value="등록")

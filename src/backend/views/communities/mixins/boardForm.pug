@@ -1,0 +1,4 @@
+mixin post({id, title, personnel, content})
+    a(href=`/communities/${id}`).form
+        span.title 제목: #{title}
+        span.contents 내용: #{content}

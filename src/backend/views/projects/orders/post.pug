@@ -1,0 +1,16 @@
+extends ../../base.pug
+
+block content 
+    .orderPost-container(data-id = post.id)
+        .header
+            h1 개발 수주 상세히
+        .main
+            span.title 제목: #{post.title}
+            span.contents 내용: #{post.content}
+            span.views 조회수: #{post.views}
+            span.choice 찜: #{post.choice}
+            span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+        .options
+            a(href=`/projects/orders/${post.id}/update`) 수정하기
+            a(href=`/projects/orders/${post.id}/delete`) 삭제하기
+    script(src="/assets/js/orderPost.js")

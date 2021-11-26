@@ -1,3 +1,26 @@
+// Projects
+@import "projects/projects.scss";
+
+// Recruitments
+@import "projects/recruitments/board.scss";
+@import "projects/recruitments/enrollment.scss";
+@import "projects/recruitments/post.scss";
+@import "projects/recruitments/postUpdate.scss";
+
+// Orders
+@import "projects/orders/board.scss";
+@import "projects/orders/enrollment.scss";
+@import "projects/orders/post.scss";
+@import "projects/orders/postUpdate.scss";
+
+// Communities
+@import "communities/board.scss";
+@import "communities/enrollment.scss";
+@import "communities/post.scss";
+@import "communities/postUpdate.scss";
+
+@import "home.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -5,5 +28,7 @@
 }
 
 body {
-  background-color: red;
+  padding: 50px 0px;
+  display: flex;
+  justify-content: center;
 }

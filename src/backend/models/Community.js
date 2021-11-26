@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const answerSchema = new mongoose.Schema({
-  title: {
+const communitySchema = new mongoose.Schema({
+  category: {
     type: String,
     required: true,
   },
-  video_url: {
+  title: {
     type: String,
     required: true,
   },
@@ -14,10 +14,6 @@ const answerSchema = new mongoose.Schema({
     required: true,
   },
   views: {
-    type: Number,
-    default: 0,
-  },
-  choice: {
     type: Number,
     default: 0,
   },
@@ -37,6 +33,6 @@ const answerSchema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model("Answer", answerSchema);
+const model = mongoose.model("Community", communitySchema);
 
 export default model;

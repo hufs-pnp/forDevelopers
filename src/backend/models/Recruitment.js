@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const challengeSchema = new mongoose.Schema({
+const recruitmentSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -8,6 +8,10 @@ const challengeSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
+  },
+  personnel: {
+    type: Number,
+    default: 1,
   },
   views: {
     type: Number,
@@ -23,13 +27,6 @@ const challengeSchema = new mongoose.Schema({
       default: "none",
     },
   ],
-  level: {
-    type: String,
-    default: "low",
-  },
-  tag: {
-    type: String,
-  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -40,6 +37,6 @@ const challengeSchema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model("Challenge", challengeSchema);
+const model = mongoose.model("Recruitment", recruitmentSchema);
 
 export default model;

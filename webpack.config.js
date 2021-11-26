@@ -1,16 +1,24 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const BASE_URL = "./src/frontend/js/";
+
 module.exports = {
-  entry: "./src/frontend/js/main.js",
+  entry: {
+    main: BASE_URL + "main.js",
+    pagination: BASE_URL + "pagination.js",
+    recruitmentPost: BASE_URL + "projects/recruitmentPost.js",
+    orderPost: BASE_URL + "projects/orderPost.js",
+    communityPost: BASE_URL + "/communities/communityPost.js",
+  },
   output: {
-    filename: "[name].js",
+    filename: "js/[name].js",
     path: path.resolve(__dirname, "assets"),
     clean: true,
   },
   mode: "development",
   watch: true,
-  plugins: [new MiniCssExtractPlugin({ filename: "[name].css" })],
+  plugins: [new MiniCssExtractPlugin({ filename: "css/[name].css" })],
   module: {
     rules: [
       {

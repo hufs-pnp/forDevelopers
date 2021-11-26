@@ -1,0 +1,16 @@
+extends ../base.pug
+
+block content 
+    .communityPost-update-container 
+        h1 커뮤니티 수정하기
+        form(method="POST")
+            .first-row
+                input(type="text" name="title" placeholder="제목" maxlength=30 required value=post.title)
+                input(type="text" name="category" placeholder="카테고리" maxlength=10 required value=post.category)
+            .second-row
+                textarea(name="content" spellcheck="false" placeholder="내용을 입력하세요." required)=post.content
+            input(type="submit" value="수정")
+      
+        
+       
+            

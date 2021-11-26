@@ -1,0 +1,17 @@
+extends ../../base.pug
+include ../mixins/recruitmentBoardForm.pug
+
+block content 
+    .recruitmentBoard-container 
+        .header
+            h1.title 멤버 구하기 게시판
+            a(href="/projects/recruitments/enrollment").write 글쓰기
+        .main
+            each element in articleLists 
+                +post(element)          
+        .pagination(data-numberofarticles = numberOfArticles, data-articlesperpage = articlesPerPage,
+         data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = category)
+            button.prev Prev
+            .numbers 
+            button.next Next
+    script(src="/assets/js/pagination.js")

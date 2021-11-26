@@ -1,0 +1,22 @@
+.homeButtons {
+  display: flex;
+  flex-direction: column;
+
+  .projectsButton,
+  .communitiesButton {
+    button {
+      font-size: 2em;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: #3498db;
+      color: white;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  }
+
+  .projectsButton {
+    margin-bottom: 30px;
+  }
+}

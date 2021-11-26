@@ -1,9 +1,8 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        link(rel="stylesheet", href="/assets/main.css")
-        title Home
-    body 
-        h1 Hi 
-    script(src="/assets/main.js")
+extends ./base.pug
+
+block content 
+    .homeButtons
+        a(href="/projects").projectsButton
+            button projects
+        a(href="/communities/1").communitiesButton
+            button communities
