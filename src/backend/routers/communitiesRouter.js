@@ -11,6 +11,8 @@ import {
 
 const communitiesRouter = express.Router();
 
+// 에러 처리 필요
+
 communitiesRouter.get("/:currentPage([0-9]{1,10})", communityBoard);
 
 communitiesRouter

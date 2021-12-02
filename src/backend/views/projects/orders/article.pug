@@ -1,17 +1,16 @@
 extends ../../base.pug
 
 block content 
-    .recruitmentPost-container(data-id = post.id)
+    .orderArticle-container(data-id = post.id)
         .header
-            h1 멤버 모집 상세히
+            h1 개발 수주 상세히
         .main
             span.title 제목: #{post.title}
             span.contents 내용: #{post.content}
-            span.personnel 필요 인원: #{post.personnel}
             span.views 조회수: #{post.views}
             span.choice 찜: #{post.choice}
             span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
         .options
-            a(href=`/projects/recruitments/${post.id}/update`) 수정하기
-            a(href=`/projects/recruitments/${post.id}/delete`) 삭제하기
-    script(src="/assets/js/recruitmentPost.js")
+            a(href=`/projects/orders/${post.id}/update`) 수정하기
+            a(href=`/projects/orders/${post.id}/delete`) 삭제하기
+    script(src="/assets/js/views.js")

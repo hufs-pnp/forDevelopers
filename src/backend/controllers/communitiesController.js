@@ -61,7 +61,7 @@ export const communityPost = async (req, res) => {
 
     const post = await Community.findById(id);
 
-    return res.status(200).render("communities/post.pug", {
+    return res.status(200).render("communities/article.pug", {
       pageTitle: "커뮤니티 게시글",
       post,
     });
@@ -79,7 +79,7 @@ export const get_communityPost_Update = async (req, res) => {
 
     const post = await Community.findById(id);
 
-    return res.status(200).render("communities/postUpdate.pug", {
+    return res.status(200).render("communities/articleUpdate.pug", {
       pageTitle: "수정하기",
       post,
     });
@@ -115,23 +115,6 @@ export const communityPost_Delete = async (req, res) => {
 
     await Community.findByIdAndRemove({ _id: id });
     return res.redirect("/communities/1");
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-// API
-export const communityViews = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    const post = await Community.findById(id);
-    post.views += 1;
-    await post.save();
-    return res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);

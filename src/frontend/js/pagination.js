@@ -1,6 +1,6 @@
 const data = document.querySelector(".pagination");
 
-const {
+let {
   dataset: {
     numberofarticles: numberOfArticles,
     articlesperpage: articlesPerPage,
@@ -10,23 +10,11 @@ const {
   },
 } = data;
 
-const params = {
-  numberOfArticles,
-  articlesPerPage,
-  currentPage,
-  shownButtons,
-  category,
-};
-
-async function showChangedArticles(params) {
-  const { currentPage, category } = params;
-
+async function showChangedArticles() {
   document.location.href = `/${category}/${currentPage}`;
 }
 
-function pagination(params) {
-  const { numberOfArticles, articlesPerPage, currentPage, shownButtons } =
-    params;
+function pagination() {
   const numberOfButtons = Math.ceil(numberOfArticles / articlesPerPage);
 
   const buttons = Array(numberOfButtons)
@@ -78,9 +66,9 @@ function pagination(params) {
     }
 
     button.addEventListener("click", () => {
-      params.currentPage = paginatedButtons[i];
-      showChangedArticles(params);
-      pagination(params);
+      currentPage = paginatedButtons[i];
+      showChangedArticles();
+      pagination();
     });
 
     numbers.appendChild(button);
@@ -88,30 +76,26 @@ function pagination(params) {
 }
 
 function clickPrev() {
-  const { currentPage } = params;
-
   if (currentPage == 1) {
     return;
   }
 
-  params.currentPage -= 1;
-  showChangedArticles(params);
-  pagination(params);
+  currentPage -= 1;
+  showChangedArticles();
+  pagination();
 }
 
 function clickNext() {
-  const { numberOfArticles, articlesPerPage, currentPage } = params;
-
   const numberOfButtons = Math.ceil(numberOfArticles / articlesPerPage);
 
   if (currentPage == numberOfButtons) {
     return;
   }
 
-  const number = parseInt(params.currentPage) + 1;
-  params.currentPage = number;
-  showChangedArticles(params);
-  pagination(params);
+  const number = parseInt(currentPage) + 1;
+  currentPage = number;
+  showChangedArticles();
+  pagination();
 }
 
 const prev = document.querySelector(".pagination .prev");
@@ -120,4 +104,4 @@ const next = document.querySelector(".pagination .next");
 prev.addEventListener("click", clickPrev);
 next.addEventListener("click", clickNext);
 
-pagination(params);
+pagination();

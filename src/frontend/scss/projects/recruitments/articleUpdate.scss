@@ -1,4 +1,4 @@
-.orderPost-update-container {
+.recruitmentArticle-update-container {
   h1 {
     text-align: center;
     margin-bottom: 30px;
@@ -10,9 +10,15 @@
 
     .first-row {
       input {
-        width: 100%;
         padding: 10px;
         font-size: 20px;
+      }
+
+      input:first-child {
+        width: 80%;
+      }
+      input:last-child {
+        width: 20%;
       }
     }
 

@@ -7,9 +7,7 @@ module.exports = {
   entry: {
     main: BASE_URL + "main.js",
     pagination: BASE_URL + "pagination.js",
-    recruitmentPost: BASE_URL + "projects/recruitmentPost.js",
-    orderPost: BASE_URL + "projects/orderPost.js",
-    communityPost: BASE_URL + "/communities/communityPost.js",
+    views: BASE_URL + "views.js",
   },
   output: {
     filename: "js/[name].js",

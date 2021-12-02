@@ -1,7 +1,7 @@
 extends ../base.pug
 
 block content 
-    .communityPost-container(data-id = post.id)
+    .communityArticle-container(data-id = post.id)
         .header
             h1 멤버 모집 상세히
         .main
@@ -13,4 +13,4 @@ block content
         .options
             a(href=`/communities/${post.id}/update`) 수정하기
             a(href=`/communities/${post.id}/delete`) 삭제하기
-    script(src="/assets/js/communityPost.js")
+    script(src="/assets/js/views.js")

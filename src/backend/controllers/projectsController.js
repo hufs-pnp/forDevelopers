@@ -2,28 +2,40 @@ import Recruitment from "../models/Recruitment.js";
 import Order from "../models/Order.js";
 
 // Projects
-export const showProjects = (_, res) => {
+export const projects = (_, res) => {
   return res
     .status(200)
     .render("projects/projects.pug", { pageTitle: "프로젝트들" });
 };
 
-// Recruitments
-export const recruitmentBoard = async (req, res) => {
+// Recruitments, Orders
+export const board = async (req, res) => {
   try {
     const {
       params: { currentPage },
+      body: { category, model },
     } = req;
-    const category = "projects/recruitments";
-    const numberOfArticles = await Recruitment.count();
+
+    let numberOfArticles = null;
     const articlesPerPage = 4;
     const shownButtons = 3; // 홀수만
-    const articleLists = await Recruitment.find()
-      .sort({ _id: -1 })
-      .skip((currentPage - 1) * articlesPerPage)
-      .limit(articlesPerPage);
+    let articleLists = null;
 
-    return res.status(200).render("projects/recruitments/board.pug", {
+    if (model == "Recruitment") {
+      numberOfArticles = await Recruitment.count();
+      articleLists = await Recruitment.find()
+        .sort({ _id: -1 })
+        .skip((currentPage - 1) * articlesPerPage)
+        .limit(articlesPerPage);
+    } else if (model == "Order") {
+      numberOfArticles = await Order.count();
+      articleLists = await Order.find()
+        .sort({ _id: -1 })
+        .skip((currentPage - 1) * articlesPerPage)
+        .limit(articlesPerPage);
+    }
+
+    return res.status(200).render(`${category}/board.pug`, {
       pageTitle: "멤버 구하기 목록",
       articleLists,
       numberOfArticles,
@@ -38,39 +50,58 @@ export const recruitmentBoard = async (req, res) => {
   }
 };
 
-export const get_recruitment_Enrollment = (_, res) => {
-  return res.status(200).render("projects/recruitments/enrollment.pug", {
+export const getEnrollment = (req, res) => {
+  const {
+    body: { category },
+  } = req;
+
+  return res.status(200).render(`${category}/enrollment.pug`, {
     pageTitle: "등록하기",
   });
 };
-export const post_recruitment_Enrollment = async (req, res) => {
+export const postEnrollment = async (req, res) => {
   try {
     const {
-      body: { title, personnel, content },
+      body: { title, personnel, content, category, model },
     } = req;
 
-    await Recruitment.create({
-      title,
-      personnel,
-      content,
-    });
+    if (model == "Recruitment") {
+      await Recruitment.create({
+        title,
+        personnel,
+        content,
+      });
+    } else if (model == "Order") {
+      await Order.create({
+        title,
+        personnel,
+        content,
+      });
+    }
 
-    return res.redirect("/projects/recruitments/1");
+    return res.redirect(`/${category}/1`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
   }
 };
 
-export const recruitmentPost = async (req, res) => {
+export const article = async (req, res) => {
   try {
     const {
       params: { id },
+      body: { category, model },
     } = req;
 
-    const post = await Recruitment.findById(id);
+    let post = null;
 
-    return res.status(200).render("projects/recruitments/post.pug", {
+    if (model == "Recruitment") {
+      post = await Recruitment.findById(id);
+    } else if (model == "Order") {
+      post = await Order.findById(id);
+    }
+
+    return res.status(200).render(`${category}/article.pug`, {
       pageTitle: "멤버 구하기 게시글",
       post,
     });
@@ -80,15 +111,22 @@ export const recruitmentPost = async (req, res) => {
   }
 };
 
-export const get_recruitmentPost_Update = async (req, res) => {
+export const getArticleUpdate = async (req, res) => {
   try {
     const {
       params: { id },
+      body: { category, model },
     } = req;
 
-    const post = await Recruitment.findById(id);
+    let post = null;
 
-    return res.status(200).render("projects/recruitments/postUpdate.pug", {
+    if (model == "Recruitment") {
+      post = await Recruitment.findById(id);
+    } else if (model == "Order") {
+      post = await Order.findById(id);
+    }
+
+    return res.status(200).render(`${category}/articleUpdate.pug`, {
       pageTitle: "수정하기",
       post,
     });
@@ -97,185 +135,43 @@ export const get_recruitmentPost_Update = async (req, res) => {
     return res.sendStatus(404);
   }
 };
-export const post_recruitmentPost_Update = async (req, res) => {
+export const postArticleUpdate = async (req, res) => {
   try {
     const {
       params: { id },
-      body: { title, personnel, content },
+      body: { title, personnel, content, category, model },
     } = req;
 
-    await Recruitment.findByIdAndUpdate(
-      { _id: id },
-      { title, personnel, content }
-    );
+    if (model == "Recruitment") {
+      await Recruitment.findByIdAndUpdate(
+        { _id: id },
+        { title, personnel, content }
+      );
+    } else if (model == "Order") {
+      await Order.findByIdAndUpdate({ _id: id }, { title, personnel, content });
+    }
 
-    return res.redirect(`/projects/recruitments/${id}`);
+    return res.redirect(`/${category}/${id}`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
   }
 };
 
-export const recruitmentPost_Delete = async (req, res) => {
+export const articleDelete = async (req, res) => {
   try {
     const {
       params: { id },
+      body: { category, model },
     } = req;
 
-    await Recruitment.findByIdAndRemove({ _id: id });
-    return res.redirect("/projects/recruitments/1");
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
+    if (model == "Recruitment") {
+      await Recruitment.findByIdAndRemove({ _id: id });
+    } else if (model == "Order") {
+      await Order.findByIdAndRemove({ _id: id });
+    }
 
-// Orders
-export const orderBoard = async (req, res) => {
-  try {
-    const {
-      params: { currentPage },
-    } = req;
-    const category = "projects/orders";
-    const numberOfArticles = await Order.count();
-    const articlesPerPage = 4;
-    const shownButtons = 3; // 홀수만
-    const articleLists = await Order.find()
-      .sort({ _id: -1 })
-      .skip((currentPage - 1) * articlesPerPage)
-      .limit(articlesPerPage);
-
-    return res.status(200).render("projects/orders/board.pug", {
-      pageTitle: "멤버 구하기 목록",
-      articleLists,
-      numberOfArticles,
-      articlesPerPage,
-      currentPage,
-      shownButtons,
-      category,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-export const get_order_Enrollment = (_, res) => {
-  return res.status(200).render("projects/orders/enrollment.pug", {
-    pageTitle: "등록하기",
-  });
-};
-export const post_order_Enrollment = async (req, res) => {
-  try {
-    const {
-      body: { title, personnel, content },
-    } = req;
-
-    await Order.create({
-      title,
-      personnel,
-      content,
-    });
-
-    return res.redirect("/projects/orders/1");
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-export const orderPost = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    const post = await Order.findById(id);
-
-    return res.status(200).render("projects/orders/post.pug", {
-      pageTitle: "멤버 구하기 게시글",
-      post,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-export const get_orderPost_Update = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    const post = await Order.findById(id);
-
-    return res.status(200).render("projects/orders/postUpdate.pug", {
-      pageTitle: "수정하기",
-      post,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-export const post_orderPost_Update = async (req, res) => {
-  try {
-    const {
-      params: { id },
-      body: { title, personnel, content },
-    } = req;
-
-    await Order.findByIdAndUpdate({ _id: id }, { title, personnel, content });
-
-    return res.redirect(`/projects/orders/${id}`);
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-export const orderPost_Delete = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    await Order.findByIdAndRemove({ _id: id });
-    return res.redirect("/projects/orders/1");
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-// API
-export const recruitmentViews = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    const post = await Recruitment.findById(id);
-    post.views += 1;
-    await post.save();
-    return res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(404);
-  }
-};
-
-export const orderViews = async (req, res) => {
-  try {
-    const {
-      params: { id },
-    } = req;
-
-    const post = await Order.findById(id);
-    post.views += 1;
-    await post.save();
-    return res.sendStatus(200);
+    return res.redirect(`/${category}/1`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
