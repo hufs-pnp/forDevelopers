@@ -1,3 +1,10 @@
+// local variables only to the view(s) rendered
+export const localMiddlewares = (req, res, next) => {
+  res.locals.loggedInUser = req.session.user;
+  res.locals.authenticated = req.session.loggedIn;
+  next();
+};
+
 // projects
 export const projectsCategory = (req, res, next) => {
   const {

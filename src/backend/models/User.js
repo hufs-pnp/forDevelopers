@@ -5,21 +5,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  nickname: {
+    type: String,
+    required: true,
+  },
   image_url: {
     type: String,
-    // default
+    default:
+      "https://graph.facebook.com/2703909133188815/picture?width=40&height=40",
   },
   pnp: {
-    type: Boolean,
-    default: "none",
+    type: String,
+    default: "",
   },
   team: {
     type: String,
-    default: "none",
+    default: "",
   },
   student_id: {
     type: String,
-    required: true,
+    default: "",
   },
   department: {
     type: String,
@@ -27,7 +32,7 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    required: true,
+    default: "",
   },
   email: {
     type: String,
@@ -39,15 +44,15 @@ const userSchema = new mongoose.Schema({
   },
   tech: {
     type: String,
-    default: "none",
+    default: "",
   },
   github_url: {
     type: String,
-    required: true,
+    default: "",
   },
   interest: {
     type: String,
-    default: "none",
+    default: "",
   },
   like: {
     type: Number,
@@ -57,18 +62,20 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  choice: {
-    type: Number,
-    default: 0,
-  },
-  hw_num: {
-    type: Number,
-    default: 0,
-  },
-  project_num: {
-    type: Number,
-    default: 0,
-  },
+  choice: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Recruitment",
+    },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Community",
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,
@@ -79,26 +86,20 @@ const userSchema = new mongoose.Schema({
       ref: "Order",
     },
   ],
-  member: [
+  recruitment: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Member",
+      ref: "Recruitment",
     },
   ],
-  challenge: [
+  community: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Challenge",
-    },
-  ],
-  answer: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Answer",
+      ref: "Community",
     },
   ],
 });
 
-const User = mongoose.model("User", userSchema);
+const model = mongoose.model("User", userSchema);
 
 export default model;

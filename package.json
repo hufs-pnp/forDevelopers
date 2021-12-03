@@ -19,6 +19,7 @@
   "homepage": "https://github.com/hufs-pnp/forDevelopers#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongoose": "^6.0.12",
     "pug": "^3.0.2"
   },
@@ -29,7 +30,6 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "mini-css-extract-plugin": "^2.4.4",
-    "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.43.4",

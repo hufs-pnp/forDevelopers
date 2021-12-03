@@ -1,20 +1,31 @@
 import express from "express";
 import {
-    edit, 
-    remove, 
-    logout,
-    see, 
-    startGoogleLogin, 
-    finishGoogleLogin
+  getJoin,
+  postJoin,
+  getLogin,
+  postLogin,
+  logout,
+  profile,
+  getProfileUpdate,
+  postProfileUpdate,
+  userDelete,
 } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/logout", logout);
-userRouter.get("/edit", edit);
-userRouter.get("/remove", remove);
-userRouter.get("/github/start", startGoogleLogin);
-userRouter.get("/github/finish", finishGoogleLogin);
-userRouter.get(":id", see);
+userRouter.route("/join").get(getJoin).post(postJoin);
 
-export default userRouter;                       
+userRouter.route("/login").get(getLogin).post(postLogin);
+
+userRouter.get("/logout", logout);
+
+userRouter.get("/:id([0-9a-f]{24})", profile);
+
+userRouter
+  .route("/:id([0-9a-f]{24})/update")
+  .get(getProfileUpdate)
+  .post(postProfileUpdate);
+
+userRouter.get("/:id([0-9a-f]{24})/delete", userDelete);
+
+export default userRouter;

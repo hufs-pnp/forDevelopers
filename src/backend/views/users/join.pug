@@ -1,0 +1,13 @@
+extends ../base.pug
+
+block content
+    .join-container
+        h1.title 회원 가입
+        form(method="POST").form
+            input(placeholder="이름", name="name", type="text", required)
+            input(placeholder="닉네임", name="nickname", type="text", required)            
+            input(placeholder="이메일", name="email", type="text", required)
+            input(placeholder="비밀번호", name="password", type="password", required)
+            input(placeholder="학과", name="department", type="text", required)
+            input(type="submit", value="가입")
+        

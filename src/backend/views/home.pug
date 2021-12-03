@@ -6,3 +6,16 @@ block content
             button projects
         a(href="/communities/1").communitiesButton
             button communities
+        a(href="/users/join").joinButton
+            button join
+            
+        if !authenticated
+            a(href="/users/login").loginButton
+                button login
+        else
+            a(href="/users/logout").logoutButton
+                button logout
+            a(href=`/users/${loggedInUser._id}`).profileButton
+                button profile
+            a(href=`/users/${loggedInUser._id}/delete`).userDeleteButton
+                button user-delete

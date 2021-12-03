@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
 
-  .projectsButton,
-  .communitiesButton {
+  a {
+    margin-bottom: 30px;
+
     button {
       font-size: 2em;
       cursor: pointer;
@@ -16,7 +17,9 @@
     }
   }
 
-  .projectsButton {
-    margin-bottom: 30px;
+  .logoutButton {
+    button {
+      background: #e74c3c;
+    }
   }
 }

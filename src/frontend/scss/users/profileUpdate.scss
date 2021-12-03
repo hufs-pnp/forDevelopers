@@ -1,0 +1,30 @@
+.profileUpdate-container {
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      padding: 10px;
+      font-size: 20px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    input[type="submit"] {
+      padding: 5px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  }
+}
