@@ -9,7 +9,10 @@ import {
   getProfileUpdate,
   postProfileUpdate,
   userDelete,
+  getChangePassword,
+  postChangePassword,
 } from "../controllers/userController.js";
+import { upload } from "../middlewares.js";
 
 const userRouter = express.Router();
 
@@ -24,8 +27,13 @@ userRouter.get("/:id([0-9a-f]{24})", profile);
 userRouter
   .route("/:id([0-9a-f]{24})/update")
   .get(getProfileUpdate)
-  .post(postProfileUpdate);
+  .post(upload.single("image_url"), postProfileUpdate);
 
 userRouter.get("/:id([0-9a-f]{24})/delete", userDelete);
+
+userRouter
+  .route("/:id([0-9a-f]{24})/password")
+  .get(getChangePassword)
+  .post(postChangePassword);
 
 export default userRouter;

@@ -3,7 +3,7 @@ extends ../base.pug
 block content
     .profileUpdate-container
         h1.title 프로필 수정
-        form(method="POST") 
+        form(method="POST" enctype="multipart/form-data") 
             input(type="text" name="name" placeholder="이름" value=user.name required)
             input(type="text" name="nickname" placeholder="닉네임" value=user.nickname required)
             label(for="avatar")
@@ -15,7 +15,8 @@ block content
             input(type="text" name="department" placeholder="학과" value=user.department required)
             input(type="text" name="gender" placeholder="성별" value=user.gender)
             input(type="text" name="email" placeholder="이메일" value=user.email required)
-            input(type="password" name="password" placeholder="비밀번호" value=user.password required)
+            if localLogin
+                input(type="password" name="password" placeholder="비밀번호" value=user.password required)
             input(type="text" name="tech" placeholder="보유 기술" value=user.tech)
             input(type="text" name="github_url" placeholder="깃허브 주소" value=user.github_url)
             input(type="text" name="interest" placeholder="관심 분야" value=user.interest)
@@ -23,3 +24,4 @@ block content
             input(type="text" name="visit" placeholder="방문 횟수" value=user.visit)
             input(type="text" name="choice" placeholder="찜" value=(user.choice.length == 0 ? "" : user.choice))
             input(type="submit" value="수정")
+    script(src="/assets/js/previewImage.js")

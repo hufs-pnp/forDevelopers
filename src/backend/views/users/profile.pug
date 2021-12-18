@@ -14,7 +14,6 @@ block content
             span 학과: #{user.department}
             span 성별: #{user.gender}
             span 이메일: #{user.email}
-            span 비밀번호: #{user.password}
             span 보유 기술: #{user.tech}
             span 깃허브 주소: #{user.github_url}
             span 관심 분야: #{user.interest}
@@ -23,3 +22,5 @@ block content
             span 찜: #{user.choice.length == 0 ? "" : user.choice}
         .options
             a(href=`/users/${user.id}/update`) 프로필 수정하기
+            if localLogin 
+                a(href=`/users/${user.id}/password`) 비밀번호 변경하기

@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 export const getJoin = (_, res) => {
   return res.status(200).render("users/join.pug", { pageTitle: "회원 가입" });
@@ -32,6 +32,7 @@ export const postJoin = async (req, res) => {
 
     req.session.user = user;
     req.session.loggedIn = true;
+    req.session.localLogin = true;
 
     return res.redirect("/");
   } catch (error) {
@@ -50,17 +51,21 @@ export const postLogin = async (req, res) => {
     } = req;
 
     const user = await User.findOne({ email });
+    const existence = await bcrypt.compare(password, user.password);
 
     if (!user) {
       console.log("회원 정보가 없습니다.");
       return res.redirect("/users/login");
-    } else if (user.password !== password) {
+    }
+
+    if (!existence) {
       console.log("입력 정보가 잘못됐습니다.");
       return res.redirect("/users/login");
     }
 
     req.session.user = user;
     req.session.loggedIn = true;
+    req.session.localLogin = true;
 
     return res.redirect("/");
   } catch (error) {
@@ -116,25 +121,32 @@ export const postProfileUpdate = async (req, res) => {
     const {
       body,
       session: { user },
+      file,
     } = req;
 
-    await User.findByIdAndUpdate(user._id, {
-      name: body.name,
-      nickname: body.nickname,
-      image_url: body.image_url == "" ? user.image_url : body.image_url,
-      pnp: body.pnp,
-      team: body.team,
-      student_id: body.student_id,
-      department: body.department,
-      gender: body.gender,
-      email: body.email,
-      password: body.password,
-      tech: body.tech,
-      github_url: body.github_url,
-      interest: body.interest,
-      like: body.like,
-      visit: body.visit,
-    });
+    const modifiedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        name: body.name,
+        nickname: body.nickname,
+        image_url: file ? `/${file.path}` : user.image_url,
+        pnp: body.pnp,
+        team: body.team,
+        student_id: body.student_id,
+        department: body.department,
+        gender: body.gender,
+        email: body.email,
+        password: body.password,
+        tech: body.tech,
+        github_url: body.github_url,
+        interest: body.interest,
+        like: body.like,
+        visit: body.visit,
+      },
+      { new: true }
+    );
+
+    req.session.user = modifiedUser;
 
     return res.redirect(`/users/${user._id}`);
   } catch (error) {
@@ -152,8 +164,39 @@ export const userDelete = async (req, res) => {
 
   req.session.user = undefined;
   req.session.loggedIn = undefined;
+  req.session.localLogin = undefined;
 
   await User.findByIdAndRemove(_id);
 
   return res.redirect("/");
+};
+
+export const getChangePassword = (_, res) => {
+  return res
+    .status(200)
+    .render("users/changePassword.pug", { pageTitle: "비밀번호 변경하기" });
+};
+export const postChangePassword = async (req, res) => {
+  try {
+    const {
+      params: { id },
+      body: { current_password, new_password },
+    } = req;
+
+    const user = await User.findById(id);
+    const valid = await bcrypt.compare(current_password, user.password);
+
+    if (!valid) {
+      console.log("현재 비밀번호가 다릅니다.");
+      return res.redirect(`/users/${id}`);
+    }
+
+    user.password = new_password;
+    await user.save();
+
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/users/${id}`);
+  }
 };

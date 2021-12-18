@@ -1,6 +1,7 @@
 .profile-container {
   display: flex;
   flex-direction: column;
+  width: 30%;
 
   .header {
     text-align: center;
@@ -15,7 +16,8 @@
   }
 
   .options {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
 
     a {
       text-decoration: none;

@@ -8,6 +8,7 @@ module.exports = {
     main: BASE_URL + "main.js",
     pagination: BASE_URL + "pagination.js",
     views: BASE_URL + "views.js",
+    previewImage: BASE_URL + "previewImage.js",
   },
   output: {
     filename: "js/[name].js",
