@@ -50,20 +50,24 @@ export const board = async (req, res) => {
   }
 };
 
+let findTerm = undefined;
 export const searchBoard = async (req, res) => {
   try {
     const {
       params: { category, currentPage },
-      body: { model },
-      query: { searchTerm },
+      body: { model, searchTerm },
     } = req;
+
+    if (searchTerm) {
+      findTerm = searchTerm;
+    }
 
     let numberOfArticles = null;
     const articlesPerPage = 4;
     const shownButtons = 3; // 홀수만
     let articleLists = null;
 
-    const regexTitle = new RegExp(searchTerm, "i");
+    const regexTitle = new RegExp(findTerm, "i");
 
     if (model == "Recruitment") {
       numberOfArticles = await Recruitment.count({
@@ -95,7 +99,7 @@ export const searchBoard = async (req, res) => {
       currentPage,
       shownButtons,
       category,
-      searchTerm,
+      findTerm,
     });
   } catch (error) {
     console.log(error);

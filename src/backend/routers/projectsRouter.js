@@ -24,11 +24,11 @@ projectsRouter.get(
   board
 );
 
-projectsRouter.get(
-  "/:category/search/:currentPage([0-9]{1,10})",
-  chooseCategory,
-  searchBoard
-);
+projectsRouter
+  .route("/:category/search/:currentPage([0-9]{1,10})")
+  .all(chooseCategory)
+  .get(searchBoard)
+  .post(searchBoard);
 
 projectsRouter
   .route("/:category/enrollment")

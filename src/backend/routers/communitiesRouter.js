@@ -16,10 +16,10 @@ const communitiesRouter = express.Router();
 
 communitiesRouter.get("/:currentPage([0-9]{1,10})", communityBoard);
 
-communitiesRouter.get(
-  "/search/:currentPage([0-9]{1,10})",
-  communitySearchBoard
-);
+communitiesRouter
+  .route("/search/:currentPage([0-9]{1,10})")
+  .get(communitySearchBoard)
+  .post(communitySearchBoard);
 
 communitiesRouter
   .route("/enrollment")

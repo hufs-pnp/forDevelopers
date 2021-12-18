@@ -7,13 +7,13 @@ let {
     currentpage: currentPage,
     shownbuttons: shownButtons,
     category,
-    searchterm: searchTerm,
+    findterm: findTerm,
   },
 } = data;
 
 async function showChangedArticles() {
-  if (searchTerm) {
-    document.location.href = `/${category}/search/${currentPage}?searchTerm=${searchTerm}`;
+  if (findTerm) {
+    document.location.href = `/${category}/search/${currentPage}`;
   } else {
     document.location.href = `/${category}/${currentPage}`;
   }

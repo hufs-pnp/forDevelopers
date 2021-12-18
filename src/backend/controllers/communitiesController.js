@@ -32,19 +32,25 @@ export const communityBoard = async (req, res) => {
   }
 };
 
+let findTerm = undefined;
 export const communitySearchBoard = async (req, res) => {
   try {
     const {
       params: { currentPage },
-      query: { searchTerm },
+      body: { searchTerm },
     } = req;
+
+    if (searchTerm) {
+      findTerm = searchTerm;
+    }
+
     const category = "communities";
     const articlesPerPage = 4;
     const shownButtons = 3; // 홀수만
     let numberOfArticles = null;
     let articleLists = null;
 
-    const regexTitle = new RegExp(searchTerm, "i");
+    const regexTitle = new RegExp(findTerm, "i");
 
     numberOfArticles = await Community.count({ title: regexTitle });
     articleLists = await Community.find({ title: regexTitle })
@@ -60,7 +66,7 @@ export const communitySearchBoard = async (req, res) => {
       currentPage,
       shownButtons,
       category,
-      searchTerm,
+      findTerm,
     });
   } catch (error) {
     console.log(error);
