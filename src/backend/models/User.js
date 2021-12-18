@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -7,7 +8,7 @@ const userSchema = new mongoose.Schema({
   },
   nickname: {
     type: String,
-    required: true,
+    default: "",
   },
   image_url: {
     type: String,
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: true,
+    default: "",
   },
   gender: {
     type: String,
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    default: "",
   },
   tech: {
     type: String,
@@ -98,6 +99,12 @@ const userSchema = new mongoose.Schema({
       ref: "Community",
     },
   ],
+});
+
+userSchema.pre("save", async function () {
+  if (this.password) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 });
 
 const model = mongoose.model("User", userSchema);
