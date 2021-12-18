@@ -1,5 +1,8 @@
 import express from "express";
 import session from "express-session";
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+import passport from "passport";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import projectsRouter from "./routers/projectsRouter";
@@ -12,17 +15,25 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/backend/views");
 
+dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   session({
-    secret: "oN3iF3P4NZkGxhhGS4c2mb7BEYuDdxYg",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: "mongodb://localhost:27017/forDevelopers",
+    }),
   })
 );
 app.use("/assets", express.static("assets"));
+app.use("/uploads", express.static("uploads"));
 app.use(localMiddlewares);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", rootRouter);
 app.use("/users", userRouter);
