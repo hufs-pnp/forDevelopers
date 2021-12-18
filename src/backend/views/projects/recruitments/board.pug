@@ -16,7 +16,7 @@ block content
             .numbers 
             button.next Next
         form(action="/projects/recruitments/search/1" method="POST").search
-            input(type="text" name="searchTerm" placeholder="Search...").searchBox
+            input(type="text" name="searchTerm" placeholder="Search..." required).searchBox
             button(type="submit").searchButton
                 i.fas.fa-search
     script(src="/assets/js/pagination.js")
