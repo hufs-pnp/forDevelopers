@@ -1,6 +1,7 @@
 import express from "express";
 import {
   communityBoard,
+  communitySearchBoard,
   get_community_Enrollment,
   post_community_Enrollment,
   communityPost,
@@ -14,6 +15,11 @@ const communitiesRouter = express.Router();
 // 에러 처리 필요
 
 communitiesRouter.get("/:currentPage([0-9]{1,10})", communityBoard);
+
+communitiesRouter.get(
+  "/search/:currentPage([0-9]{1,10})",
+  communitySearchBoard
+);
 
 communitiesRouter
   .route("/enrollment")

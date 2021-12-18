@@ -80,4 +80,26 @@
       }
     }
   }
+
+  .search {
+    text-align: center;
+    transform: translateY(20px);
+
+    input {
+      font-size: 20px;
+      padding: 5px;
+      border: 1px solid black;
+      outline-color: #3498db;
+    }
+
+    i {
+      position: relative;
+      top: 0.5px;
+      background: #3e7fe7;
+      color: white;
+      font-size: 20px;
+      padding: 7.7px;
+      cursor: pointer;
+    }
+  }
 }

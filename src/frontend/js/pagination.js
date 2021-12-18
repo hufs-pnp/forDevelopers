@@ -7,11 +7,16 @@ let {
     currentpage: currentPage,
     shownbuttons: shownButtons,
     category,
+    searchterm: searchTerm,
   },
 } = data;
 
 async function showChangedArticles() {
-  document.location.href = `/${category}/${currentPage}`;
+  if (searchTerm) {
+    document.location.href = `/${category}/search/${currentPage}?searchTerm=${searchTerm}`;
+  } else {
+    document.location.href = `/${category}/${currentPage}`;
+  }
 }
 
 function pagination() {

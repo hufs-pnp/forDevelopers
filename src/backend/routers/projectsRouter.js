@@ -2,6 +2,7 @@ import express from "express";
 import {
   projects,
   board,
+  searchBoard,
   getEnrollment,
   postEnrollment,
   article,
@@ -9,7 +10,7 @@ import {
   postArticleUpdate,
   articleDelete,
 } from "../controllers/projectsController";
-import { projectsCategory } from "../middlewares";
+import { chooseCategory } from "../middlewares";
 
 const projectsRouter = express.Router();
 
@@ -19,27 +20,33 @@ projectsRouter.get("/", projects);
 
 projectsRouter.get(
   "/:category/:currentPage([0-9]{1,10})",
-  projectsCategory,
+  chooseCategory,
   board
+);
+
+projectsRouter.get(
+  "/:category/search/:currentPage([0-9]{1,10})",
+  chooseCategory,
+  searchBoard
 );
 
 projectsRouter
   .route("/:category/enrollment")
-  .all(projectsCategory)
+  .all(chooseCategory)
   .get(getEnrollment)
   .post(postEnrollment);
 
-projectsRouter.get("/:category/:id([0-9a-f]{24})", projectsCategory, article);
+projectsRouter.get("/:category/:id([0-9a-f]{24})", chooseCategory, article);
 
 projectsRouter
   .route("/:category/:id([0-9a-f]{24})/update")
-  .all(projectsCategory)
+  .all(chooseCategory)
   .get(getArticleUpdate)
   .post(postArticleUpdate);
 
 projectsRouter.get(
   "/:category/:id([0-9a-f]{24})/delete",
-  projectsCategory,
+  chooseCategory,
   articleDelete
 );
 

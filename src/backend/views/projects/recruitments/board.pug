@@ -10,8 +10,13 @@ block content
             each element in articleLists 
                 +post(element)          
         .pagination(data-numberofarticles = numberOfArticles, data-articlesperpage = articlesPerPage,
-         data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = category)
+         data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = `projects/${category}`, 
+         data-searchterm = searchTerm)
             button.prev Prev
             .numbers 
             button.next Next
+        form(action="/projects/recruitments/search/1" method="GET").search
+            input(type="text" name="searchTerm" placeholder="Search...").searchBox
+            button(type="submit").searchButton
+                i.fas.fa-search
     script(src="/assets/js/pagination.js")

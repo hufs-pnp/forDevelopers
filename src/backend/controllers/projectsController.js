@@ -12,8 +12,8 @@ export const projects = (_, res) => {
 export const board = async (req, res) => {
   try {
     const {
-      params: { currentPage },
-      body: { category, model },
+      params: { category, currentPage },
+      body: { model },
     } = req;
 
     let numberOfArticles = null;
@@ -35,7 +35,7 @@ export const board = async (req, res) => {
         .limit(articlesPerPage);
     }
 
-    return res.status(200).render(`${category}/board.pug`, {
+    return res.status(200).render(`projects/${category}/board.pug`, {
       pageTitle: "멤버 구하기 목록",
       articleLists,
       numberOfArticles,
@@ -50,19 +50,73 @@ export const board = async (req, res) => {
   }
 };
 
+export const searchBoard = async (req, res) => {
+  try {
+    const {
+      params: { category, currentPage },
+      body: { model },
+      query: { searchTerm },
+    } = req;
+
+    let numberOfArticles = null;
+    const articlesPerPage = 4;
+    const shownButtons = 3; // 홀수만
+    let articleLists = null;
+
+    const regexTitle = new RegExp(searchTerm, "i");
+
+    if (model == "Recruitment") {
+      numberOfArticles = await Recruitment.count({
+        title: regexTitle,
+      });
+      articleLists = await Recruitment.find({
+        title: regexTitle,
+      })
+        .sort({ _id: -1 })
+        .skip((currentPage - 1) * articlesPerPage)
+        .limit(articlesPerPage);
+    } else if (model == "Order") {
+      numberOfArticles = await Order.count({
+        title: regexTitle,
+      });
+      articleLists = await Order.find({
+        title: regexTitle,
+      })
+        .sort({ _id: -1 })
+        .skip((currentPage - 1) * articlesPerPage)
+        .limit(articlesPerPage);
+    }
+
+    return res.status(200).render(`projects/${category}/board.pug`, {
+      pageTitle: "멤버 구하기 검색 목록",
+      articleLists,
+      numberOfArticles,
+      articlesPerPage,
+      currentPage,
+      shownButtons,
+      category,
+      searchTerm,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
+  }
+};
+
 export const getEnrollment = (req, res) => {
   const {
-    body: { category },
+    params: { category },
   } = req;
 
-  return res.status(200).render(`${category}/enrollment.pug`, {
+  return res.status(200).render(`projects/${category}/enrollment.pug`, {
     pageTitle: "등록하기",
   });
 };
 export const postEnrollment = async (req, res) => {
   try {
     const {
-      body: { title, personnel, content, category, model },
+      params: { category },
+      body: { title, personnel, content, model },
     } = req;
 
     if (model == "Recruitment") {
@@ -79,7 +133,7 @@ export const postEnrollment = async (req, res) => {
       });
     }
 
-    return res.redirect(`/${category}/1`);
+    return res.redirect(`/projects/${category}/1`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
@@ -89,8 +143,8 @@ export const postEnrollment = async (req, res) => {
 export const article = async (req, res) => {
   try {
     const {
-      params: { id },
-      body: { category, model },
+      params: { category, id },
+      body: { model },
     } = req;
 
     let post = null;
@@ -101,7 +155,7 @@ export const article = async (req, res) => {
       post = await Order.findById(id);
     }
 
-    return res.status(200).render(`${category}/article.pug`, {
+    return res.status(200).render(`projects/${category}/article.pug`, {
       pageTitle: "멤버 구하기 게시글",
       post,
     });
@@ -114,8 +168,8 @@ export const article = async (req, res) => {
 export const getArticleUpdate = async (req, res) => {
   try {
     const {
-      params: { id },
-      body: { category, model },
+      params: { category, id },
+      body: { model },
     } = req;
 
     let post = null;
@@ -126,7 +180,7 @@ export const getArticleUpdate = async (req, res) => {
       post = await Order.findById(id);
     }
 
-    return res.status(200).render(`${category}/articleUpdate.pug`, {
+    return res.status(200).render(`projects/${category}/articleUpdate.pug`, {
       pageTitle: "수정하기",
       post,
     });
@@ -138,8 +192,8 @@ export const getArticleUpdate = async (req, res) => {
 export const postArticleUpdate = async (req, res) => {
   try {
     const {
-      params: { id },
-      body: { title, personnel, content, category, model },
+      params: { category, id },
+      body: { title, personnel, content, model },
     } = req;
 
     if (model == "Recruitment") {
@@ -151,7 +205,7 @@ export const postArticleUpdate = async (req, res) => {
       await Order.findByIdAndUpdate({ _id: id }, { title, personnel, content });
     }
 
-    return res.redirect(`/${category}/${id}`);
+    return res.redirect(`/projects/${category}/${id}`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
@@ -161,8 +215,8 @@ export const postArticleUpdate = async (req, res) => {
 export const articleDelete = async (req, res) => {
   try {
     const {
-      params: { id },
-      body: { category, model },
+      params: { category, id },
+      body: { model },
     } = req;
 
     if (model == "Recruitment") {
@@ -171,7 +225,7 @@ export const articleDelete = async (req, res) => {
       await Order.findByIdAndRemove({ _id: id });
     }
 
-    return res.redirect(`/${category}/1`);
+    return res.redirect(`/projects/${category}/1`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);

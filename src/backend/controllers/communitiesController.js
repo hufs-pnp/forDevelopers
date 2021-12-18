@@ -6,10 +6,13 @@ export const communityBoard = async (req, res) => {
       params: { currentPage },
     } = req;
     const category = "communities";
-    const numberOfArticles = await Community.count();
     const articlesPerPage = 4;
     const shownButtons = 3; // 홀수만
-    const articleLists = await Community.find()
+    let numberOfArticles = null;
+    let articleLists = null;
+
+    numberOfArticles = await Community.count();
+    articleLists = await Community.find()
       .sort({ _id: -1 })
       .skip((currentPage - 1) * articlesPerPage)
       .limit(articlesPerPage);
@@ -22,6 +25,42 @@ export const communityBoard = async (req, res) => {
       currentPage,
       shownButtons,
       category,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+
+export const communitySearchBoard = async (req, res) => {
+  try {
+    const {
+      params: { currentPage },
+      query: { searchTerm },
+    } = req;
+    const category = "communities";
+    const articlesPerPage = 4;
+    const shownButtons = 3; // 홀수만
+    let numberOfArticles = null;
+    let articleLists = null;
+
+    const regexTitle = new RegExp(searchTerm, "i");
+
+    numberOfArticles = await Community.count({ title: regexTitle });
+    articleLists = await Community.find({ title: regexTitle })
+      .sort({ _id: -1 })
+      .skip((currentPage - 1) * articlesPerPage)
+      .limit(articlesPerPage);
+
+    return res.status(200).render("communities/board.pug", {
+      pageTitle: "커뮤니티",
+      articleLists,
+      numberOfArticles,
+      articlesPerPage,
+      currentPage,
+      shownButtons,
+      category,
+      searchTerm,
     });
   } catch (error) {
     console.log(error);
