@@ -1,0 +1,5 @@
+mixin comment(element)
+    li
+        span name: #{element.user.name},
+        span content: #{element.content}
+        a(href=`/projects/${category}/${post.id}/comment/${element.id}/delete`) delete❌

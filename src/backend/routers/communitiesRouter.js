@@ -1,38 +1,42 @@
 import express from "express";
 import {
-  communityBoard,
-  communitySearchBoard,
-  get_community_Enrollment,
-  post_community_Enrollment,
-  communityPost,
-  get_communityPost_Update,
-  post_communityPost_Update,
-  communityPost_Delete,
+  board,
+  searchBoard,
+  getEnrollment,
+  postEnrollment,
+  article,
+  comment,
+  getArticleUpdate,
+  postArticleUpdate,
+  articleDelete,
+  commentDelete,
 } from "../controllers/communitiesController";
 
 const communitiesRouter = express.Router();
 
 // 에러 처리 필요
 
-communitiesRouter.get("/:currentPage([0-9]{1,10})", communityBoard);
+communitiesRouter.get("/:currentPage([0-9]{1,10})", board);
 
 communitiesRouter
   .route("/search/:currentPage([0-9]{1,10})")
-  .get(communitySearchBoard)
-  .post(communitySearchBoard);
+  .get(searchBoard)
+  .post(searchBoard);
 
-communitiesRouter
-  .route("/enrollment")
-  .get(get_community_Enrollment)
-  .post(post_community_Enrollment);
+communitiesRouter.route("/enrollment").get(getEnrollment).post(postEnrollment);
 
-communitiesRouter.get("/:id([0-9a-f]{24})", communityPost);
+communitiesRouter.route("/:id([0-9a-f]{24})").get(article).post(comment);
 
 communitiesRouter
   .route("/:id([0-9a-f]{24})/update")
-  .get(get_communityPost_Update)
-  .post(post_communityPost_Update);
+  .get(getArticleUpdate)
+  .post(postArticleUpdate);
 
-communitiesRouter.get("/:id([0-9a-f]{24})/delete", communityPost_Delete);
+communitiesRouter.get("/:id([0-9a-f]{24})/delete", articleDelete);
+
+communitiesRouter.get(
+  "/:communityId([0-9a-f]{24})/comment/:commentId([0-9a-f]{24})/delete",
+  commentDelete
+);
 
 export default communitiesRouter;

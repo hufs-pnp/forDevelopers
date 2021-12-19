@@ -1,4 +1,5 @@
 extends ../base.pug
+include ./mixins/commentForm.pug
 
 block content 
     .communityArticle-container(data-id = post.id)
@@ -11,6 +12,15 @@ block content
             span.views 조회수: #{post.views}           
             span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
         .options
-            a(href=`/communities/${post.id}/update`) 수정하기
-            a(href=`/communities/${post.id}/delete`) 삭제하기
+            if authenticated && (loggedInUser._id == post.user.id)
+                a(href=`/communities/${post.id}/update`) 수정하기
+                a(href=`/communities/${post.id}/delete`) 삭제하기
+        form(method="POST").comment
+            input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
+            button(type="submit").commentButton
+                i.fas.fa-pen
+        ul.commentLists
+            each element in commentLists
+                +comment(element)
     script(src="/assets/js/views.js")
+    script(src="/assets/js/comment.js")

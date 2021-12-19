@@ -6,9 +6,11 @@ import {
   getEnrollment,
   postEnrollment,
   article,
+  comment,
   getArticleUpdate,
   postArticleUpdate,
   articleDelete,
+  commentDelete,
 } from "../controllers/projectsController";
 import { chooseCategory } from "../middlewares";
 
@@ -36,7 +38,11 @@ projectsRouter
   .get(getEnrollment)
   .post(postEnrollment);
 
-projectsRouter.get("/:category/:id([0-9a-f]{24})", chooseCategory, article);
+projectsRouter
+  .route("/:category/:id([0-9a-f]{24})")
+  .all(chooseCategory)
+  .get(article)
+  .post(comment);
 
 projectsRouter
   .route("/:category/:id([0-9a-f]{24})/update")
@@ -48,6 +54,12 @@ projectsRouter.get(
   "/:category/:id([0-9a-f]{24})/delete",
   chooseCategory,
   articleDelete
+);
+
+projectsRouter.get(
+  "/:category/:categoryId([0-9a-f]{24})/comment/:commentId([0-9a-f]{24})/delete",
+  chooseCategory,
+  commentDelete
 );
 
 export default projectsRouter;

@@ -1,5 +1,7 @@
 import Recruitment from "../models/Recruitment.js";
 import Order from "../models/Order.js";
+import Comment from "../models/Comment.js";
+import User from "../models/User.js";
 
 // Projects
 export const projects = (_, res) => {
@@ -121,20 +123,33 @@ export const postEnrollment = async (req, res) => {
     const {
       params: { category },
       body: { title, personnel, content, model },
+      session: {
+        user: { _id },
+      },
     } = req;
 
+    const user = await User.findById(_id);
+
     if (model == "Recruitment") {
-      await Recruitment.create({
+      const recruitment = await Recruitment.create({
         title,
         personnel,
         content,
+        user: _id,
       });
+
+      user.recruitment.push(recruitment.id);
+      await user.save();
     } else if (model == "Order") {
-      await Order.create({
+      const order = await Order.create({
         title,
         personnel,
         content,
+        user: _id,
       });
+
+      user.order.push(order.id);
+      await user.save();
     }
 
     return res.redirect(`/projects/${category}/1`);
@@ -154,18 +169,64 @@ export const article = async (req, res) => {
     let post = null;
 
     if (model == "Recruitment") {
+      post = await Recruitment.findById(id)
+        .populate("user", "_id")
+        .populate({
+          path: "comment",
+          populate: { path: "user" },
+        });
+    } else if (model == "Order") {
+      post = await Order.findById(id)
+        .populate("user", "_id")
+        .populate({
+          path: "comment",
+          populate: { path: "user" },
+        });
+    }
+
+    const commentLists = post.comment;
+
+    return res.status(200).render(`projects/${category}/article.pug`, {
+      pageTitle: "멤버 구하기 게시글",
+      category,
+      post,
+      commentLists,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+export const comment = async (req, res) => {
+  try {
+    const {
+      params: { category, id },
+      body: { model, content },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    const commentData = await Comment.create({ content, user: _id });
+
+    let post = null;
+    if (model == "Recruitment") {
       post = await Recruitment.findById(id);
     } else if (model == "Order") {
       post = await Order.findById(id);
     }
 
-    return res.status(200).render(`projects/${category}/article.pug`, {
-      pageTitle: "멤버 구하기 게시글",
-      post,
-    });
+    post.comment.push(commentData.id);
+    await post.save();
+
+    const user = await User.findById(_id);
+    user.comment.push(commentData.id);
+    await user.save();
+
+    return res.redirect(`/projects/${category}/${id}`);
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.redirect("/");
   }
 };
 
@@ -221,17 +282,78 @@ export const articleDelete = async (req, res) => {
     const {
       params: { category, id },
       body: { model },
+      session: {
+        user: { _id },
+      },
     } = req;
 
+    let post = null;
     if (model == "Recruitment") {
-      await Recruitment.findByIdAndRemove({ _id: id });
+      post = await Recruitment.findByIdAndRemove({ _id: id }).populate({
+        path: "comment",
+        populate: { path: "user" },
+      });
+
+      await User.findByIdAndUpdate({ _id }, { $pull: { recruitment: id } });
     } else if (model == "Order") {
-      await Order.findByIdAndRemove({ _id: id });
+      post = await Order.findByIdAndRemove({ _id: id }).populate({
+        path: "comment",
+        populate: { path: "user" },
+      });
+
+      await User.findByIdAndUpdate({ _id }, { $pull: { recruitment: id } });
     }
+
+    post.comment.forEach(async (elem) => {
+      await Comment.findByIdAndDelete({ _id: elem.id });
+      await User.findOneAndUpdate(
+        { _id: elem.user.id },
+        {
+          $pull: { comment: elem.id },
+        }
+      );
+    });
 
     return res.redirect(`/projects/${category}/1`);
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
+  }
+};
+
+export const commentDelete = async (req, res) => {
+  try {
+    const {
+      params: { category, categoryId, commentId },
+      body: { model },
+    } = req;
+
+    await Comment.findByIdAndDelete(commentId);
+
+    if (model == "Recruitment") {
+      await Recruitment.findOneAndUpdate(
+        { id: categoryId },
+        {
+          $pull: { comment: commentId },
+        }
+      );
+    } else if (model == "Order") {
+      await Order.findOneAndUpdate(
+        { id: categoryId },
+        {
+          $pull: { comment: commentId },
+        }
+      );
+    }
+
+    await User.findOneAndUpdate(
+      { $in: { comment: commentId } },
+      { $pull: { comment: commentId } }
+    );
+
+    return res.redirect(`/projects/${category}/${categoryId}`);
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
   }
 };

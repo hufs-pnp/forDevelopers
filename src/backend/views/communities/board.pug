@@ -5,7 +5,8 @@ block content
     .communityBoard-container 
         .header
             h1.title 커뮤니티 게시판
-            a(href="/communities/enrollment").write 글쓰기
+            if authenticated
+                a(href="/communities/enrollment").write 글쓰기
         .main
             each element in articleLists 
                 +post(element)          

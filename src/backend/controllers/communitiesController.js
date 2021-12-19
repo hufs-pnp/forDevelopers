@@ -1,6 +1,8 @@
 import Community from "../models/Community.js";
+import Comment from "../models/Comment.js";
+import User from "../models/User.js";
 
-export const communityBoard = async (req, res) => {
+export const board = async (req, res) => {
   try {
     const {
       params: { currentPage },
@@ -33,7 +35,7 @@ export const communityBoard = async (req, res) => {
 };
 
 let findTerm = undefined;
-export const communitySearchBoard = async (req, res) => {
+export const searchBoard = async (req, res) => {
   try {
     const {
       params: { currentPage },
@@ -74,22 +76,31 @@ export const communitySearchBoard = async (req, res) => {
   }
 };
 
-export const get_community_Enrollment = (_, res) => {
+export const getEnrollment = (_, res) => {
   return res.status(200).render("communities/enrollment.pug", {
     pageTitle: "등록하기",
   });
 };
-export const post_community_Enrollment = async (req, res) => {
+export const postEnrollment = async (req, res) => {
   try {
     const {
       body: { title, category, content },
+      session: {
+        user: { _id },
+      },
     } = req;
 
-    await Community.create({
+    const user = await User.findById(_id);
+
+    const community = await Community.create({
       title,
       category,
       content,
+      user: _id,
     });
+
+    user.community.push(community.id);
+    await user.save();
 
     return res.redirect("/communities/1");
   } catch (error) {
@@ -98,25 +109,59 @@ export const post_community_Enrollment = async (req, res) => {
   }
 };
 
-export const communityPost = async (req, res) => {
+export const article = async (req, res) => {
   try {
     const {
       params: { id },
     } = req;
 
-    const post = await Community.findById(id);
+    const post = await Community.findById(id)
+      .populate("user", "_id")
+      .populate({
+        path: "comment",
+        populate: { path: "user" },
+      });
+
+    const commentLists = post.comment;
 
     return res.status(200).render("communities/article.pug", {
       pageTitle: "커뮤니티 게시글",
       post,
+      commentLists,
     });
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
   }
 };
+export const comment = async (req, res) => {
+  try {
+    const {
+      params: { id },
+      body: { content },
+      session: {
+        user: { _id },
+      },
+    } = req;
 
-export const get_communityPost_Update = async (req, res) => {
+    const commentData = await Comment.create({ content, user: _id });
+
+    const post = await Community.findById(id);
+    post.comment.push(commentData.id);
+    await post.save();
+
+    const user = await User.findById(_id);
+    user.comment.push(commentData.id);
+    await user.save();
+
+    return res.redirect(`/communities/${id}`);
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
+  }
+};
+
+export const getArticleUpdate = async (req, res) => {
   try {
     const {
       params: { id },
@@ -133,7 +178,7 @@ export const get_communityPost_Update = async (req, res) => {
     return res.sendStatus(404);
   }
 };
-export const post_communityPost_Update = async (req, res) => {
+export const postArticleUpdate = async (req, res) => {
   try {
     const {
       params: { id },
@@ -152,16 +197,62 @@ export const post_communityPost_Update = async (req, res) => {
   }
 };
 
-export const communityPost_Delete = async (req, res) => {
+export const articleDelete = async (req, res) => {
   try {
     const {
       params: { id },
+      session: {
+        user: { _id },
+      },
     } = req;
 
-    await Community.findByIdAndRemove({ _id: id });
+    const post = await Community.findByIdAndRemove({ _id: id }).populate({
+      path: "comment",
+      populate: { path: "user" },
+    });
+
+    await User.findByIdAndUpdate({ _id }, { $pull: { community: id } });
+
+    post.comment.forEach(async (elem) => {
+      await Comment.findByIdAndDelete({ _id: elem.id });
+      await User.findOneAndUpdate(
+        { _id: elem.user.id },
+        {
+          $pull: { comment: elem.id },
+        }
+      );
+    });
+
     return res.redirect("/communities/1");
   } catch (error) {
     console.log(error);
     return res.sendStatus(404);
+  }
+};
+
+export const commentDelete = async (req, res) => {
+  try {
+    const {
+      params: { communityId, commentId },
+    } = req;
+
+    await Comment.findByIdAndDelete(commentId);
+
+    await Community.findOneAndUpdate(
+      { id: communityId },
+      {
+        $pull: { comment: commentId },
+      }
+    );
+
+    await User.findOneAndUpdate(
+      { $in: { comment: commentId } },
+      { $pull: { comment: commentId } }
+    );
+
+    return res.redirect(`/communities/${communityId}`);
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
   }
 };

@@ -25,4 +25,42 @@
       font-weight: 700;
     }
   }
+
+  .comment {
+    text-align: center;
+    margin-top: 20px;
+
+    input {
+      font-size: 20px;
+      padding: 5px;
+      border: 1px solid black;
+      outline-color: #3498db;
+    }
+
+    i {
+      position: relative;
+      top: 0.5px;
+      background: #3e7fe7;
+      color: white;
+      font-size: 20px;
+      padding: 7.7px;
+      cursor: pointer;
+    }
+  }
+
+  .commentLists {
+    margin-top: 20px;
+    list-style: none;
+
+    li {
+      span {
+        margin-right: 15px;
+      }
+      a {
+        float: right;
+        text-decoration: none;
+        color: #777;
+      }
+    }
+  }
 }

@@ -21,12 +21,6 @@ const recruitmentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: [
-    {
-      type: String,
-      default: "none",
-    },
-  ],
   created_at: {
     type: Date,
     default: Date.now,
@@ -35,6 +29,12 @@ const recruitmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  comment: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
 });
 
 const model = mongoose.model("Recruitment", recruitmentSchema);

@@ -99,10 +99,16 @@ const userSchema = new mongoose.Schema({
       ref: "Community",
     },
   ],
+  comment: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
 });
 
 userSchema.pre("save", async function () {
-  if (this.password) {
+  if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
 });
