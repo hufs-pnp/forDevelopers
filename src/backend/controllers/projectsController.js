@@ -345,9 +345,8 @@ export const commentDelete = async (req, res) => {
         }
       );
     }
-
-    await User.findOneAndUpdate(
-      { $in: { comment: commentId } },
+    const user = await User.findOneAndUpdate(
+      { comment: { $in: [commentId] } },
       { $pull: { comment: commentId } }
     );
 
