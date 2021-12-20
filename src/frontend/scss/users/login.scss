@@ -4,20 +4,58 @@
     margin-bottom: 30px;
   }
 
-  .form {
-    display: flex;
-    flex-direction: column;
+  .local {
+    .form {
+      display: flex;
+      flex-direction: column;
 
-    input {
-      padding: 10px;
-      font-size: 20px;
-      margin: 5px;
+      input {
+        padding: 10px;
+        font-size: 20px;
+        margin: 5px;
+      }
+
+      input[type="submit"] {
+        padding: 5px;
+        font-size: 15px;
+        cursor: pointer;
+      }
     }
 
-    input[type="submit"] {
-      padding: 5px;
-      font-size: 15px;
-      cursor: pointer;
+    .join {
+      text-align: center;
+      margin-top: 10px;
+
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+
+      .slash {
+        margin: 0 5px;
+      }
+    }
+  }
+
+  .sns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    a {
+      margin-bottom: 10px;
+
+      button {
+        font-size: 1.1em;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: #3498db;
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+      }
     }
   }
 }

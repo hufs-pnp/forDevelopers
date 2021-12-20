@@ -15,10 +15,16 @@ block content
             if authenticated && (loggedInUser._id == post.user.id)
                 a(href=`/communities/${post.id}/update`) 수정하기
                 a(href=`/communities/${post.id}/delete`) 삭제하기
-        form(method="POST").comment
-            input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
-            button(type="submit").commentButton
-                i.fas.fa-pen
+        if authenticated
+            form(method="POST").comment
+                input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
+                button(type="submit").commentButton
+                    i.fas.fa-pen
+        else 
+            .afterLogin
+                |댓글은
+                a(href="/users/login") 로그인
+                |후 이용 가능합니다.
         ul.commentLists
             each element in commentLists
                 +comment(element)

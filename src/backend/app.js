@@ -26,6 +26,9 @@ app.use(
     store: MongoStore.create({
       mongoUrl: "mongodb://localhost:27017/forDevelopers",
     }),
+    cookie: {
+      maxAge: 24 * 60 * 60000, // one day
+    },
   })
 );
 app.use("/assets", express.static("assets"));

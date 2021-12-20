@@ -188,15 +188,15 @@ export const postChangePassword = async (req, res) => {
 
     if (!valid) {
       console.log("현재 비밀번호가 다릅니다.");
-      return res.redirect(`/users/${id}`);
+      return res.redirect(`/users/${id}/password`);
     }
 
     user.password = new_password;
     await user.save();
 
-    return res.redirect("/");
+    return res.redirect(`/users/${id}`);
   } catch (error) {
     console.log(error);
-    return res.redirect(`/users/${id}`);
+    return res.redirect(`/`);
   }
 };

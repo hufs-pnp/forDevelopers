@@ -48,6 +48,16 @@
     }
   }
 
+  .afterLogin {
+    text-align: center;
+
+    a {
+      text-decoration: none;
+      color: blue;
+      margin: 0 5px;
+    }
+  }
+
   .commentLists {
     margin-top: 20px;
     list-style: none;

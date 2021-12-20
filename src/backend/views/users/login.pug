@@ -3,7 +3,17 @@ extends ../base.pug
 block content
     .login-container
         h1.title 로그인
-        form(method="POST").form
-            input(placeholder="이메일", name="email", type="text", required)
-            input(placeholder="비밀번호", name="password", type="password", required)
-            input(type="submit", value="로그인")
+        .local
+            form(method="POST").form
+                input(placeholder="이메일", name="email", type="text", required)
+                input(placeholder="비밀번호", name="password", type="password", required)
+                input(type="submit", value="로그인")
+            .join 
+                a(href="#") 계정 찾기
+                span.slash /
+                a(href="/users/join") 회원가입
+        .sns
+            a(href="/api/naver/login").naverLoginButton
+                button naver login
+            a(href="/api/google/login").googleLoginButton
+                button google login

@@ -12,10 +12,6 @@ block content
         if !authenticated
             a(href="/users/login").loginButton
                 button login
-            a(href="/api/naver/login").naverLoginButton
-                button naver login
-            a(href="/api/google/login").googleLoginButton
-                button google login
         else
             a(href="/users/logout").logoutButton
                 button logout
