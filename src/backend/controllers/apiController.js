@@ -1,8 +1,12 @@
 import fetch from "node-fetch";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 import Recruitment from "../models/Recruitment.js";
 import User from "../models/User.js";
 import Order from "../models/Order.js";
 import Community from "../models/Community.js";
+
+dotenv.config();
 
 export const views = async (req, res) => {
   try {
@@ -137,4 +141,55 @@ export const passportGoogleFinish = (req, res) => {
   req.session.localLogin = false;
 
   return res.redirect("/");
+};
+
+export const email = (req, res) => {
+  try {
+    const {
+      body: { email },
+    } = req;
+
+    if (!email.includes("@naver.com") && !email.includes("@gmail.com")) {
+      return res.sendStatus(400);
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "Naver",
+      auth: {
+        user: process.env.DEVS_ID,
+        pass: process.env.DEVS_PASSWORD,
+      },
+    });
+
+    const options = {
+      from: process.env.DEVS_ID,
+      to: email,
+      subject: "forDevelopers 이메일 인증",
+      html: `<div>
+              <h2>이메일 인증</h2>
+              <p>
+                <h3>
+                  안녕하세요. ${email.split("@")[0]}님.<br/>
+                  아래의 코드를 입력하면 이메일 인증이 완료됩니다.<br/>
+                </h3>
+                <h2>
+                  ${parseInt(Math.random() * Math.pow(10, 6))}
+                </h2>
+              </p>
+             <div>`,
+    };
+
+    transporter.sendMail(options, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(info.response);
+      }
+    });
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
+  }
 };

@@ -5,6 +5,7 @@ import {
   requestNaverAccessToken,
   requestNaverToken,
   views,
+  email,
 } from "../controllers/apiController";
 import "../passport.js";
 import { chooseCategory } from "../middlewares";
@@ -25,5 +26,7 @@ apiRouter.get(
   passport.authenticate("google", { failureRedirect: "/users/login" }),
   passportGoogleFinish
 );
+
+apiRouter.post("/email/auth", email);
 
 export default apiRouter;

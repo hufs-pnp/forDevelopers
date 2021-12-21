@@ -17,7 +17,7 @@
     .email {
       position: relative;
 
-      a {
+      button {
         position: absolute;
         right: -70px;
         top: 30%;
@@ -25,6 +25,7 @@
         border: 1px solid black;
         background: #ccc;
         color: black;
+        cursor: pointer;
       }
     }
 
@@ -37,6 +38,7 @@
         border: 1px solid black;
         background: #ccc;
         color: black;
+        cursor: pointer;
       }
     }
 
