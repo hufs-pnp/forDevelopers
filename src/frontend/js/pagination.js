@@ -13,9 +13,9 @@ let {
 
 async function showChangedArticles() {
   if (findTerm) {
-    document.location.href = `/${category}/search/${currentPage}`;
+    window.location.href = `/${category}/search/${currentPage}`;
   } else {
-    document.location.href = `/${category}/${currentPage}`;
+    window.location.href = `/${category}/${currentPage}`;
   }
 }
 

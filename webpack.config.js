@@ -10,6 +10,7 @@ module.exports = {
     views: BASE_URL + "views.js",
     previewImage: BASE_URL + "previewImage.js",
     join: BASE_URL + "join.js",
+    login: BASE_URL + "login.js",
   },
   output: {
     filename: "js/[name].js",

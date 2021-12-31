@@ -8,6 +8,9 @@ import Community from "../models/Community.js";
 
 dotenv.config();
 
+/*************************
+        조회 수 
+*************************/
 export const views = async (req, res) => {
   try {
     const {
@@ -34,90 +37,18 @@ export const views = async (req, res) => {
   }
 };
 
-export const requestNaverToken = (_, res) => {
-  try {
-    const base_url = "https://nid.naver.com/oauth2.0/authorize";
-    const params = {
-      client_id: process.env.NAVER_CLIENT_ID,
-      redirect_url: "http://localhost:4000/api/naver/callback",
-      response_type: "code",
-    };
-
-    const params_url = new URLSearchParams(params).toString();
-    const final_url = `${base_url}?${params_url}`;
-
-    return res.redirect(final_url);
-  } catch (error) {
-    console.log(error);
-    return res.redirect("/");
-  }
-};
-export const requestNaverAccessToken = async (req, res) => {
-  try {
-    const base_url = "https://nid.naver.com/oauth2.0/token";
-    const params = {
-      grant_type: "authorization_code",
-      client_id: process.env.NAVER_CLIENT_ID,
-      client_secret: process.env.NAVER_CLIENT_SECRET,
-      redirect_url: "http://localhost:4000/api/naver/callback",
-      code: req.query.code,
-    };
-
-    const params_url = new URLSearchParams(params).toString();
-    const final_url = `${base_url}?${params_url}`;
-
-    const tokenRequest = await (
-      await fetch(final_url, {
-        headers: {
-          Accept: "application/json",
-        },
-      })
-    ).json();
-
-    if ("access_token" in tokenRequest) {
-      const { access_token } = tokenRequest;
-      const userData = await (
-        await fetch("https://openapi.naver.com/v1/nid/me", {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${access_token}`,
-          },
-        })
-      ).json();
-
-      const {
-        response: { name, email, profile_image },
-      } = userData;
-
-      let user = await User.findOne({ email });
-      if (!user) {
-        user = await User.create({
-          name,
-          email,
-          image_url: profile_image,
-        });
-      }
-
-      req.session.user = user;
-      req.session.loggedIn = true;
-      req.session.localLogin = false;
-
-      return res.redirect("/");
-    } else {
-      console.log("access_token이 없습니다.");
-      return res.redirect("/");
-    }
-  } catch (error) {
-    console.log(error);
-    return res.redirect("/");
-  }
-};
-
+/*************************
+      구글 로그인
+*************************/
 export const userDataInGoogle = async (_, __, profile, done) => {
   try {
     const {
       _json: { name, picture, email },
     } = profile;
+
+    if (!email.includes("@hufs.ac.kr")) {
+      return done(null, false, { message: "학교 웹메일로 로그인 해주세요." });
+    }
 
     let user = await User.findOne({ email });
     if (!user) {
@@ -131,7 +62,7 @@ export const userDataInGoogle = async (_, __, profile, done) => {
     return done(null, user);
   } catch (error) {
     console.log(error);
-    return done(null, false, { message: "Error occurs" });
+    return done(null, false);
   }
 };
 
@@ -143,14 +74,25 @@ export const passportGoogleFinish = (req, res) => {
   return res.redirect("/");
 };
 
-export const email = (req, res) => {
+/**********************************
+    이메일, 닉네임, 인증코드 확인
+**********************************/
+let randomCode = null;
+export const email = async (req, res) => {
   try {
     const {
       body: { email },
     } = req;
 
-    if (!email.includes("@naver.com") && !email.includes("@gmail.com")) {
+    // 학교 웹메일로 작성됐는지 확인
+    if (!email.includes("@hufs.ac.kr")) {
       return res.sendStatus(400);
+    }
+
+    // 이미 가입되어 있는지 확인
+    const user = await User.exists({ email });
+    if (user) {
+      return res.sendStatus(401);
     }
 
     const transporter = nodemailer.createTransport({
@@ -160,6 +102,8 @@ export const email = (req, res) => {
         pass: process.env.DEVS_PASSWORD,
       },
     });
+
+    randomCode = parseInt(Math.random() * Math.pow(10, 6));
 
     const options = {
       from: process.env.DEVS_ID,
@@ -173,7 +117,7 @@ export const email = (req, res) => {
                   아래의 코드를 입력하면 이메일 인증이 완료됩니다.<br/>
                 </h3>
                 <h2>
-                  ${parseInt(Math.random() * Math.pow(10, 6))}
+                  ${randomCode}
                 </h2>
               </p>
              <div>`,
@@ -190,6 +134,42 @@ export const email = (req, res) => {
     return res.json();
   } catch (error) {
     console.log(error);
-    return res.redirect("/");
+    return res.sendStatus("404");
+  }
+};
+
+export const nickname = async (req, res) => {
+  try {
+    const {
+      body: { nickname },
+    } = req;
+
+    const exist = await User.findOne({ nickname });
+
+    if (exist) {
+      return res.sendStatus(400);
+    } else {
+      return res.json();
+    }
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+
+export const code = async (req, res) => {
+  try {
+    const {
+      body: { code: userCode },
+    } = req;
+
+    if (userCode == randomCode) {
+      return res.sendStatus(200);
+    } else {
+      return res.sendStatus(400);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
   }
 };

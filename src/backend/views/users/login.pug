@@ -2,6 +2,8 @@ extends ../base.pug
 
 block content
     .login-container
+        if error
+            script(src="/assets/js/login.js")
         h1.title 로그인
         .local
             form(method="POST").form
@@ -13,7 +15,5 @@ block content
                 span.slash /
                 a(href="/users/join") 회원가입
         .sns
-            a(href="/api/naver/login").naverLoginButton
-                button naver login
             a(href="/api/google/login").googleLoginButton
                 button google login

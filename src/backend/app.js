@@ -3,6 +3,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
 import passport from "passport";
+import flash from "connect-flash";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import projectsRouter from "./routers/projectsRouter";
@@ -34,6 +35,7 @@ app.use(
 app.use("/assets", express.static("assets"));
 app.use("/uploads", express.static("uploads"));
 app.use(localMiddlewares);
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
