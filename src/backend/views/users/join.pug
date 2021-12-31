@@ -1,17 +1,93 @@
 extends ../base.pug
 
 block content
-    .join-container
-        h1.title 회원 가입
-        form(method="POST").form
-            input(placeholder="이름", name="name", type="text", required)
-            input(placeholder="닉네임", name="nickname", type="text", required)  
-            .email          
-                input(placeholder="이메일", name="email", type="text", required)
-                button(type="button") 인증하기
-            input(placeholder="비밀번호", name="password", type="password", required)
-            input(placeholder="학과", name="department", type="text", required)
-            .phone 
-                a(href="#") 휴대폰 본인인증 하기
-            input(type="submit", value="가입")
+    .join-body
+        .outer-form-container
+            .outer-form
+                header SignUp Form
+                form(action="/users/join" method="POST")
+                    .page
+                        .title User Info
+                        .field.name
+                            label 
+                                i.error.fas.fa-exclamation-circle 
+                                |이름(필수)
+                            .inputBox
+                                input(name="name", type="text", required)
+                            span.text
+                        .field.nickname
+                            label 
+                                i.error.fas.fa-exclamation-circle 
+                                |닉네임(필수)
+                            .inputBox
+                                input(name="nickname", type="text", maxlength=11 required)
+                                button(type="button").check 중복 확인
+                            span.text
+                        .field
+                            label 성별(선택)
+                            select(name="gender")
+                                option(value="") 선택
+                                option(value="남") 남
+                                option(value="여") 여
+                        .btn
+                            button(type="button").next-1 next
+                    .page
+                        .title Login Details 
+                        .field.email                            
+                            label 
+                                i.error.fas.fa-exclamation-circle 
+                                |학교 웹메일(필수)
+                            .inputBox 
+                                input(name="email", placeholder="example@hufs.ac.kr" type="text", required)
+                                button(type="button").check 코드 발송
+                            span.text
+                        .field.code                            
+                            label 
+                                i.error.fas.fa-exclamation-circle 
+                                |인증코드(필수)
+                            .inputBox
+                                input(type="text", required)
+                                button(type="button").check 확인
+                            span.text
+                        .field.password                            
+                            label 
+                                i.error.fas.fa-exclamation-circle 
+                                |비밀번호(필수)
+                            .inputBox
+                                input(name="password", type="password", required)
+                                .passwordSecure
+                            .indicator 
+                                span.weak
+                                span.medium 
+                                span.strong
+                            span.text                            
+                        .btn
+                            button(type="button").prev previous
+                            button(type="button").next-2 next
+                    .page
+                        .title Options
+                        .field
+                            label pnp 가입여부(선택)
+                            select(name="pnp")
+                                option(value="") 선택
+                                option(value="예") 예
+                                option(value="아니요") 아니요
+                        .field
+                            label github 주소(선택)
+                            .inputBox
+                                input(name="github_url", type="text")
+                        .field
+                            label 관심있는 기술(선택)
+                            .selection
+                                input(type="checkbox", id="web", name="web")
+                                label(for="web") 웹
+                            .selection
+                                input(type="checkbox", id="app", name="app")
+                                label(for="app") 앱
+                            .selection
+                                input(type="checkbox", id="algorithm", name="algorithm")
+                                label(for="algorithm") 알고리즘
+                        .btn
+                            button(type="button").prev previous
+                            button(type="submit").submit submit
     script(src="/assets/js/join.js")

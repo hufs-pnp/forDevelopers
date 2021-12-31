@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   },
   nickname: {
     type: String,
-    default: "",
+    default: `익명${parseInt(Math.random() * Math.pow(10, 4))}`,
   },
   image_url: {
     type: String,
@@ -51,10 +51,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  interest: {
-    type: String,
-    default: "",
-  },
+  interest: [
+    {
+      type: String,
+      default: "",
+    },
+  ],
   like: {
     type: Number,
     default: 0,

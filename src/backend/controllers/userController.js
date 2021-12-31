@@ -7,28 +7,29 @@ export const getJoin = (_, res) => {
 export const postJoin = async (req, res) => {
   try {
     const {
-      body: { name, nickname, email, password, department },
+      body: { name, nickname, gender, email, password, pnp, github_url },
     } = req;
-
-    const checkAccount = await User.exists({ email });
-    const checkNickname = await User.exists({ nickname });
-
-    if (checkAccount) {
-      // alert("이미 가입하셨습니다.");
-      console.log("이미 가입하셨습니다.");
-      return res.redirect("/");
-    } else if (checkNickname) {
-      console.log("이미 존재하는 닉네임입니다.");
-      return res.redirect("/users/join");
-    }
 
     const user = await User.create({
       name,
       nickname,
+      gender,
       email,
       password,
-      department,
+      pnp,
+      github_url,
     });
+
+    if (req.body.web == "on") {
+      user.interest.push("웹");
+    }
+    if (req.body.app == "on") {
+      user.interest.push("앱");
+    }
+    if (req.body.algorithm == "on") {
+      user.interest.push("알고리즘");
+    }
+    await user.save();
 
     req.session.user = user;
     req.session.loggedIn = true;
@@ -41,8 +42,17 @@ export const postJoin = async (req, res) => {
   }
 };
 
-export const getLogin = (_, res) => {
-  return res.status(200).render("users/login.pug", { pageTitle: "로그인" });
+export const getLogin = (req, res) => {
+  // 학교 웹메일로 로그인 안해서 생기는 error
+  let error = undefined;
+  if (req.session.flash) {
+    error = req.session.flash.error;
+    req.flash(); // error 비우기
+  }
+
+  return res
+    .status(200)
+    .render("users/login.pug", { pageTitle: "로그인", error });
 };
 export const postLogin = async (req, res) => {
   try {
