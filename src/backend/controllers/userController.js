@@ -1,6 +1,9 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
+/****************************************
+                회원가입
+****************************************/
 export const getJoin = (_, res) => {
   return res.status(200).render("users/join.pug", { pageTitle: "회원 가입" });
 };
@@ -42,8 +45,11 @@ export const postJoin = async (req, res) => {
   }
 };
 
+/****************************************
+        로컬 로그인 & sns 로그인
+****************************************/
 export const getLogin = (req, res) => {
-  // 학교 웹메일로 로그인 안해서 생기는 error
+  // 학교 웹메일로 로그인 안해서 생기는 error(구글)
   let error = undefined;
   if (req.session.flash) {
     error = req.session.flash.error;
@@ -61,16 +67,13 @@ export const postLogin = async (req, res) => {
     } = req;
 
     const user = await User.findOne({ email });
-    const existence = await bcrypt.compare(password, user.password);
-
     if (!user) {
-      console.log("회원 정보가 없습니다.");
-      return res.redirect("/users/login");
+      return res.sendStatus(400);
     }
 
-    if (!existence) {
-      console.log("입력 정보가 잘못됐습니다.");
-      return res.redirect("/users/login");
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
+      return res.sendStatus(401);
     }
 
     req.session.user = user;
@@ -89,6 +92,9 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
+/****************************************
+              유저 프로필
+****************************************/
 export const profile = async (req, res) => {
   try {
     const {
@@ -165,6 +171,9 @@ export const postProfileUpdate = async (req, res) => {
   }
 };
 
+/****************************************
+                회원 탈퇴
+****************************************/
 export const userDelete = async (req, res) => {
   const {
     session: {
@@ -181,6 +190,9 @@ export const userDelete = async (req, res) => {
   return res.redirect("/");
 };
 
+/****************************************
+              비밀번호 변경
+****************************************/
 export const getChangePassword = (_, res) => {
   return res
     .status(200)

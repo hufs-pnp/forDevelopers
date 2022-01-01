@@ -1,19 +1,38 @@
 extends ../base.pug
 
 block content
-    .login-container
-        if error
-            script(src="/assets/js/login.js")
-        h1.title 로그인
-        .local
-            form(method="POST").form
-                input(placeholder="이메일", name="email", type="text", required)
-                input(placeholder="비밀번호", name="password", type="password", required)
-                input(type="submit", value="로그인")
-            .join 
-                a(href="#") 계정 찾기
+    .login-body
+        .errorMessage(data-error=error)
+        .login-form
+            header Login Form
+            .local
+                form
+                    .field.email
+                        .inputBox
+                            input(placeholder="example@hufs.ac.kr", name="email", type="text", required)
+                            i.fas.fa-envelope.envelop-icon
+                            i.error.fas.fa-exclamation-circle.err-icon
+                        span.text
+                    .field.password
+                        .inputBox
+                            input(placeholder="비밀번호", name="password", type="password", required)
+                            i.fas.fa-lock.lock-icon
+                            i.error.fas.fa-exclamation-circle.err-icon
+                        span.text
+                    .field
+                        .inputBox
+                            input(type="button", value="Login").submit
+            .options 
+                div
+                    a(href="/users/join") 회원가입
                 span.slash /
-                a(href="/users/join") 회원가입
-        .sns
-            a(href="/api/google/login").googleLoginButton
-                button google login
+                div
+                    a(href="#") 비밀번호 찾기
+            .dividing-line
+                span or
+            .sns
+                a(href="/api/google/login")
+                    i.fab.fa-google
+                    span Sign in with Google
+    script(src="/assets/js/login.js")
+        
