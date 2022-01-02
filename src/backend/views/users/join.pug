@@ -5,6 +5,16 @@ block content
         .outer-form-container
             .outer-form
                 header SignUp Form
+                .progress-bar 
+                    .step
+                        span 1
+                        i.fas.fa-check
+                    .step 
+                        span 2
+                        i.fas.fa-check
+                    .step 
+                        span 3
+                        i.fas.fa-check
                 form(action="/users/join" method="POST")
                     .page
                         .title User Info
@@ -89,5 +99,5 @@ block content
                                 label(for="algorithm") 알고리즘
                         .btn
                             button(type="button").prev previous
-                            button(type="submit").submit submit
+                            button(type="button").submit submit
     script(src="/assets/js/join.js")

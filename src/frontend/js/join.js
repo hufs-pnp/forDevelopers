@@ -164,9 +164,13 @@ const password = document.querySelector(".password");
 const passwordInput = password.querySelector("input");
 const passwordLabel = password.querySelector("label");
 
+const steps = document.querySelectorAll(".progress-bar .step");
+
 let currentPage = 1;
 
 function handleNext() {
+  steps[currentPage - 1].classList.add("active");
+
   currentPage += 1;
 
   let multiple = null;
@@ -182,6 +186,8 @@ function handleNext() {
 }
 
 function handlePrev() {
+  steps[currentPage - 2].classList.remove("active");
+
   currentPage -= 1;
 
   let multiple = null;
@@ -197,7 +203,12 @@ function handlePrev() {
 }
 
 function handleSubmit() {
-  return alert("회원가입이 완료되었습니다!");
+  steps[steps.length - 1].classList.add("active");
+
+  setTimeout(() => {
+    alert("회원가입이 완료되었습니다!");
+    document.querySelector("form").submit();
+  }, 250);
 }
 
 next_1Btn.addEventListener("click", () => {

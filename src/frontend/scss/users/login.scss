@@ -42,6 +42,40 @@
               }
             }
 
+            &.error {
+              &:focus-within {
+                .envelop-icon,
+                .lock-icon {
+                  color: black;
+                  opacity: 0.3;
+                }
+              }
+
+              input {
+                border: 1px solid #dc3545;
+                border-bottom-width: 2px;
+              }
+            }
+
+            &.animate {
+              animation: shake 0.3s ease-in-out infinite;
+
+              @keyframes shake {
+                0%,
+                100% {
+                  margin-left: 0;
+                }
+                20%,
+                80% {
+                  margin-left: -12px;
+                }
+                40%,
+                60% {
+                  margin-left: 12px;
+                }
+              }
+            }
+
             input {
               width: 100%;
               font-size: 20px;
@@ -86,40 +120,9 @@
               transform: translateY(-50%);
               font-size: 20px;
               color: #dc3545;
-            }
-            .err-icon.error {
-              display: none;
-            }
-          }
-          .inputBox.error {
-            &:focus-within {
-              .envelop-icon,
-              .lock-icon {
-                color: black;
-                opacity: 0.3;
-              }
-            }
 
-            input {
-              border: 1px solid #dc3545;
-              border-bottom-width: 2px;
-            }
-          }
-          .inputBox.animate {
-            animation: shake 0.3s ease-in-out infinite;
-
-            @keyframes shake {
-              0%,
-              100% {
-                margin-left: 0;
-              }
-              20%,
-              80% {
-                margin-left: -12px;
-              }
-              40%,
-              60% {
-                margin-left: 12px;
+              &.error {
+                display: none;
               }
             }
           }
@@ -127,11 +130,12 @@
           .text {
             display: none;
             text-align: left;
-          }
-          .text.active {
-            display: block;
-            color: #dc3545;
-            transform: translateX(5px);
+
+            &.active {
+              display: block;
+              color: #dc3545;
+              transform: translateX(5px);
+            }
           }
         }
       }
