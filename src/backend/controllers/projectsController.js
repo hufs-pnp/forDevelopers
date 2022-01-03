@@ -128,6 +128,8 @@ export const postEnrollment = async (req, res) => {
       },
     } = req;
 
+    console.log(title, personnel, content);
+
     const user = await User.findById(_id);
 
     if (model == "Recruitment") {

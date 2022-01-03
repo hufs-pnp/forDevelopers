@@ -52,7 +52,7 @@ loginBtn.addEventListener("click", async () => {
     passwordFlag = false;
   }
 
-  if (!emailFlag && !passwordFlag) {
+  if (!emailFlag || !passwordFlag) {
     return;
   }
 
@@ -75,6 +75,8 @@ loginBtn.addEventListener("click", async () => {
       alert("비밀번호가 다릅니다.");
       return;
   }
+
+  window.location.href = "/";
 });
 
 emailInput.addEventListener("keyup", () => {
