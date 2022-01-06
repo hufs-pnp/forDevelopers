@@ -1,26 +1,44 @@
 extends ../base.pug
 
 block content
-    .profile-container
-        .header
-            h1.title 프로필
-        .main
-            span 이름: #{user.name}
-            span 닉네임: #{user.nickname}
-            img(src=user.image_url)
-            span pnp 가입유무: #{user.pnp}
-            span 팀: #{user.team}
-            span 학번: #{user.student_id}
-            span 학과: #{user.department}
-            span 성별: #{user.gender}
-            span 이메일: #{user.email}
-            span 보유 기술: #{user.tech}
-            span 깃허브 주소: #{user.github_url}
-            span 관심 분야: #{user.interest}
-            span 좋아요 수: #{user.like}
-            span 방문 횟수: #{user.visit}
-            span 찜: #{user.choice.length == 0 ? "" : user.choice}
+    .profile-body
+        .profile-container
+            .outer-first-column
+                .first-column
+                    .wrapper
+                        span #{user.pnp != "no" ? "pnp member!" : "normal member!"}
+                    img(src=user.image_url)
+                    .wrapper(data-githuburl=user.github_url)
+            .outer-second-column
+                .second-column
+                    header
+                        span #{user.nickname}
+                    main 
+                        p Introduce yourself!
+                    footer 
+                        span &rarr;
+            .hidden-column
+                .more-information
+                    header 
+                        span My Info
+                    .first-row
+                        span 상태: 
+                            strong #{user.absence}
+                        span(data-department=user.department) 학과: 
+                        span(data-interest=user.interest) 관심 분야: 
+                    .second-row
+                        .like
+                            span like
+                            i.fas.fa-thumbs-up
+                            span #{user.like}
+                        .visit
+                            span visit
+                            i.fas.fa-home
+                            span #{user.visit}
+                        //- span 찜: #{user.choice.length == 0 ? "" : user.choice}
+                
         .options
             a(href=`/users/${user.id}/update`) 프로필 수정하기
             if localLogin 
                 a(href=`/users/${user.id}/password`) 비밀번호 변경하기
+    script(src="/assets/js/profile.js") 

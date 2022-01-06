@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   },
   nickname: {
     type: String,
-    default: `익명${parseInt(Math.random() * Math.pow(10, 4))}`,
+    required: true,
   },
   image_url: {
     type: String,
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   pnp: {
     type: String,
-    default: "",
+    default: "no",
   },
   team: {
     type: String,
@@ -31,9 +31,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  gender: {
+  absence: {
     type: String,
-    default: "",
+    default: "재학",
   },
   email: {
     type: String,
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
   },
   github_url: {
     type: String,
-    default: "",
+    default: "Write your github",
   },
   interest: [
     {

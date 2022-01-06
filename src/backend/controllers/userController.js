@@ -10,13 +10,13 @@ export const getJoin = (_, res) => {
 export const postJoin = async (req, res) => {
   try {
     const {
-      body: { name, nickname, gender, email, password, pnp, github_url },
+      body: { name, nickname, absence, email, password, pnp, github_url },
     } = req;
 
     const user = await User.create({
       name,
       nickname,
-      gender,
+      absence,
       email,
       password,
       pnp,

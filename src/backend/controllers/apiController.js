@@ -52,9 +52,22 @@ export const userDataInGoogle = async (_, __, profile, done) => {
 
     let user = await User.findOne({ email });
     if (!user) {
+      const realName = name.split("[")[0];
+      const department = name.split("/ ")[1].split("]")[0];
+      let nickname = null;
+
+      while (true) {
+        nickname = `익명 ${parseInt(Math.random() * Math.pow(10, 5))}`;
+        let existence = await User.findOne({ nickname });
+
+        if (!existence) break;
+      }
+
       user = await User.create({
-        name,
+        name: realName,
+        nickname,
         image_url: picture,
+        department,
         email,
       });
     }
