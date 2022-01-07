@@ -10,30 +10,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  introduction: {
+    type: String,
+    default: "Introduce yourself!",
+  },
   image_url: {
     type: String,
     default:
       "https://graph.facebook.com/2703909133188815/picture?width=40&height=40",
-  },
-  pnp: {
-    type: String,
-    default: "no",
-  },
-  team: {
-    type: String,
-    default: "",
-  },
-  student_id: {
-    type: String,
-    default: "",
-  },
-  department: {
-    type: String,
-    default: "",
-  },
-  absence: {
-    type: String,
-    default: "재학",
   },
   email: {
     type: String,
@@ -43,13 +27,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  tech: {
+  department: {
     type: String,
-    default: "",
+    default: "empty",
+  },
+  absence: {
+    type: Boolean,
+    default: false,
   },
   github_url: {
     type: String,
-    default: "Write your github",
+    default: "empty",
+  },
+  pnp: {
+    type: Boolean,
+    default: false,
   },
   interest: [
     {
@@ -61,9 +53,17 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  like_clicked_user: [
+    {
+      type: String,
+    },
+  ],
   visit: {
     type: Number,
     default: 0,
+  },
+  visit_time: {
+    type: Number,
   },
   choice: [
     {

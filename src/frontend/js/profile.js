@@ -1,3 +1,5 @@
+import "regenerator-runtime";
+
 /************************
     github url 처리
 ************************/
@@ -7,20 +9,21 @@ const {
   dataset: { githuburl: github_url },
 } = wrapper;
 
-if (github_url.startsWith("Write")) {
+if (github_url == "empty") {
   const span = document.createElement("span");
-  span.innerText = github_url;
+  span.innerText = "write github";
   wrapper.appendChild(span);
 } else {
   const a = document.createElement("a");
   a.href = github_url;
+  a.target = "_blank";
   a.innerText = "visit github";
   wrapper.appendChild(a);
 }
 
-/************************
-      학과 처리
-************************/
+/***************************
+      department 처리
+***************************/
 const firstRowDepartment = document.querySelector(
   ".hidden-column .first-row span:nth-child(2)"
 );
@@ -40,7 +43,7 @@ if (department == "") {
 }
 
 /************************
-      관심 분야 처리
+      interest 처리
 ************************/
 const firstRowInterest = document.querySelector(
   ".hidden-column .first-row span:last-child"
@@ -50,15 +53,57 @@ const {
   dataset: { interest },
 } = firstRowInterest;
 
+let interestString = "";
+for (let i = 0; i < interest.length; i++) {
+  if (interest[i] != '"' && interest[i] != "[" && interest[i] != "]") {
+    interestString += interest[i];
+  }
+  if (interest[i] == ",") {
+    interestString += " ";
+  }
+}
+
 if (interest.length == 2) {
   const strong = document.createElement("strong");
   strong.innerText = "Write your interests";
   firstRowInterest.appendChild(strong);
 } else {
   const strong = document.createElement("strong");
-  strong.innerText = interest.substr(2, interest.length - 4);
+  strong.innerText = interestString;
   firstRowInterest.appendChild(strong);
 }
+
+/************************
+       like 처리
+************************/
+const like = document.querySelector(".hidden-column .second-row .like");
+
+const {
+  dataset: { id },
+} = like;
+
+like.addEventListener("click", async () => {
+  const response = await (
+    await fetch(`/api/users/${id}/like`, {
+      method: "POST",
+    })
+  ).json();
+
+  switch (response.status) {
+    case 200:
+      const span = document.createElement("span");
+      span.innerText = response.like;
+      like.children[like.children.length - 1].innerText = "";
+      like.appendChild(span);
+      break;
+    case 400:
+      alert("이미 좋아요를 누르셨습니다.");
+      break;
+    case 404:
+      alert("에러가 발생했습니다.");
+      window.location.href = "/";
+  }
+});
 
 /*******************************************
         hover시에 profile 정보 보여주기

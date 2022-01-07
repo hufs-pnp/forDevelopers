@@ -38,6 +38,42 @@ export const views = async (req, res) => {
 };
 
 /*************************
+        좋아요 수
+*************************/
+export const like = async (req, res) => {
+  try {
+    const {
+      params: { id },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    const user = await User.findById(id);
+
+    let flag = true;
+    for (let i = 0; i < user.like_clicked_user.length; i++) {
+      if (user.like_clicked_user[i] == _id) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      user.like += 1;
+      user.like_clicked_user.push(_id);
+      await user.save();
+      return res.json({ like: user.like, status: 200 });
+    } else {
+      return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+
+/*************************
       구글 로그인
 *************************/
 export const userDataInGoogle = async (_, __, profile, done) => {
@@ -69,6 +105,8 @@ export const userDataInGoogle = async (_, __, profile, done) => {
         image_url: picture,
         department,
         email,
+        visit: 1, // 처음 가입이므로
+        visit_time: Date.now(),
       });
     }
 
@@ -79,7 +117,16 @@ export const userDataInGoogle = async (_, __, profile, done) => {
   }
 };
 
-export const passportGoogleFinish = (req, res) => {
+export const passportGoogleFinish = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.id });
+
+  // 로그인 한지 하루 이상 지났으면
+  if (Date.now() - user.visit_time >= 1000 * 60 * 60 * 24) {
+    user.visit += 1;
+    user.visit_time = Date.now();
+    await user.save();
+  }
+
   req.session.user = req.user;
   req.session.loggedIn = true;
   req.session.localLogin = false;

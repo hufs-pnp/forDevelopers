@@ -6,21 +6,57 @@
   justify-content: center;
   background-color: #faeeb2;
 
+  .user-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 10px 50px 10px 40px;
+    border-radius: 50px;
+    background-color: white;
+    line-height: 32px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    a {
+      &:hover {
+        color: #e6c833;
+      }
+
+      & > i {
+        font-size: 15px;
+        margin-right: 5px;
+        transform: translateY(-2px);
+      }
+
+      & > span {
+        font-size: 20px;
+      }
+    }
+
+    .division {
+      font-size: 25px;
+      margin: 0 10px;
+      opacity: 0.5;
+    }
+  }
+
   .profile-container {
     width: 530px;
     min-height: 300px;
     background-color: white;
     margin: 0 20px;
+    margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
     display: flex;
-    overflow: hidden;
     position: relative;
 
     .outer-first-column {
       min-width: 190px;
       padding: 30px 20px;
       background-color: #e06c5f;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
 
       .first-column {
         height: 100%;
@@ -31,12 +67,14 @@
         color: white;
 
         .wrapper {
+          z-index: 1;
           background-color: #bb5b4e;
           padding: 5px 15px;
           border-radius: 30px;
 
           span {
             white-space: nowrap;
+            user-select: none;
           }
           a:hover {
             color: lightgray;
@@ -48,7 +86,8 @@
           height: 100px;
           border-radius: 50%;
           border: 2px solid #cc8b91;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          position: relative;
         }
       }
     }
@@ -92,7 +131,9 @@
       color: whitesmoke;
       transform: scale(0, 1);
       transform-origin: left;
-      transition: 0.3s ease-in;
+      transition: transform 0.3s ease-in;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
 
       &.show {
         transform: scale(1, 1);
@@ -148,7 +189,31 @@
               font-size: 25px;
             }
           }
+
+          .like {
+            i {
+              cursor: pointer;
+            }
+          }
         }
+      }
+    }
+  }
+
+  .options {
+    width: 530px;
+    display: flex;
+    justify-content: center;
+
+    a {
+      padding: 10px 50px;
+      border-radius: 50px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      font-weight: 700;
+
+      &:hover {
+        color: #e6c833;
       }
     }
   }

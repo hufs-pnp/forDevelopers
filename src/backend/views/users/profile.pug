@@ -2,11 +2,23 @@ extends ../base.pug
 
 block content
     .profile-body
+        .user-text
+            a(href="#").write
+                i.fas.fa-clipboard
+                span 게시글
+            .division |
+            a(href="#").comments
+                i.fas.fa-pen
+                span 댓글
+            .division |
+            a(href="#").scrap
+                i.fas.fa-star
+                span 찜
         .profile-container
             .outer-first-column
                 .first-column
                     .wrapper
-                        span #{user.pnp != "no" ? "pnp member!" : "normal member!"}
+                        span #{user.pnp == true ? "pnp member!" : "normal member!"}
                     img(src=user.image_url)
                     .wrapper(data-githuburl=user.github_url)
             .outer-second-column
@@ -14,7 +26,7 @@ block content
                     header
                         span #{user.nickname}
                     main 
-                        p Introduce yourself!
+                        p #{user.introduction}
                     footer 
                         span &rarr;
             .hidden-column
@@ -23,11 +35,11 @@ block content
                         span My Info
                     .first-row
                         span 상태: 
-                            strong #{user.absence}
+                            strong #{user.absence == true ? "휴학" : "재학"}
                         span(data-department=user.department) 학과: 
                         span(data-interest=user.interest) 관심 분야: 
                     .second-row
-                        .like
+                        .like(data-id=user.id)
                             span like
                             i.fas.fa-thumbs-up
                             span #{user.like}
@@ -36,7 +48,6 @@ block content
                             i.fas.fa-home
                             span #{user.visit}
                         //- span 찜: #{user.choice.length == 0 ? "" : user.choice}
-                
         .options
             a(href=`/users/${user.id}/update`) 프로필 수정하기
             if localLogin 

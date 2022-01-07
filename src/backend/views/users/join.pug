@@ -80,23 +80,35 @@ block content
                             label pnp 가입여부(선택)
                             select(name="pnp")
                                 option(value="") 선택
-                                option(value="예") 예
-                                option(value="아니요") 아니요
+                                option(value="yes") 예
+                                option(value="no") 아니요
                         .field
                             label github 주소(선택)
                             .inputBox
                                 input(name="github_url", type="text")
                         .field
                             label 관심있는 기술(선택)
-                            .selection
-                                input(type="checkbox", id="web", name="web")
-                                label(for="web") 웹
-                            .selection
-                                input(type="checkbox", id="app", name="app")
-                                label(for="app") 앱
-                            .selection
-                                input(type="checkbox", id="algorithm", name="algorithm")
-                                label(for="algorithm") 알고리즘
+                            .column-container
+                                .first-column
+                                    .selection
+                                        input(type="checkbox", id="web", name="web")
+                                        label(for="web") 웹
+                                    .selection
+                                        input(type="checkbox", id="app", name="app")
+                                        label(for="app") 앱
+                                    .selection
+                                        input(type="checkbox", id="algorithm", name="algorithm")
+                                        label(for="algorithm") 알고리즘
+                                .second-column
+                                    .selection
+                                        input(type="checkbox" id="AI" name="AI")
+                                        label(for="AI") AI
+                                    .selection
+                                        input(type="checkbox" id="security" name="security")
+                                        label(for="security") 보안
+                                    .selection
+                                        input(type="checkbox" id="data" name="data")
+                                        label(for="data") 데이터
                         .btn
                             button(type="button").prev previous
                             button(type="button").submit submit

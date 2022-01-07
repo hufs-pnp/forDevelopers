@@ -1,27 +1,113 @@
 extends ../base.pug
 
 block content
-    .profileUpdate-container
-        h1.title 프로필 수정
-        form(method="POST" enctype="multipart/form-data") 
-            input(type="text" name="name" placeholder="이름" value=user.name required)
-            input(type="text" name="nickname" placeholder="닉네임" value=user.nickname required)
-            label(for="avatar")
-                img(src=user.image_url)
-            input(type="file" name="image_url" id="avatar" accept="image/*")
-            input(type="text" name="pnp" placeholder="pnp 가입유무" value=user.pnp)
-            input(type="text" name="team" placeholder="팀" value=user.team)
-            input(type="text" name="student_id" placeholder="학번" value=user.student_id)
-            input(type="text" name="department" placeholder="학과" value=user.department required)
-            input(type="text" name="gender" placeholder="성별" value=user.gender)
-            input(type="text" name="email" placeholder="이메일" value=user.email required)
-            if localLogin
-                input(type="password" name="password" placeholder="비밀번호" value=user.password required)
-            input(type="text" name="tech" placeholder="보유 기술" value=user.tech)
-            input(type="text" name="github_url" placeholder="깃허브 주소" value=user.github_url)
-            input(type="text" name="interest" placeholder="관심 분야" value=user.interest)
-            input(type="text" name="like" placeholder="좋아요 수" value=user.like)
-            input(type="text" name="visit" placeholder="방문 횟수" value=user.visit)
-            input(type="text" name="choice" placeholder="찜" value=(user.choice.length == 0 ? "" : user.choice))
-            input(type="submit" value="수정")
+    .profileUpdate-body
+        .outer-profileUpdate-container
+            .profileUpdate-container(data-interest = user.interest)
+                .nav-bar
+                    i.fas.fa-user
+                    i.fas.fa-chalkboard-teacher
+                    i.fas.fa-tasks
+                form(method="POST" enctype="multipart/form-data") 
+                    .page
+                        .title 
+                            span Personal 
+                            span Info
+                        .field.name
+                            span 이름  
+                            input(type="text" name="name" value=user.name required).verified
+                        .field.nickname
+                            span 닉네임
+                            input(type="text" name="nickname" value=user.nickname maxlength=11 required)
+                            button(type="button").verified 중복 확인
+                        .field
+                            span 프로필 이미지
+                            label(for="avatar")
+                                img(src=user.image_url)
+                            input(type="file" name="image_url" id="avatar" accept="image/*")
+                        .field
+                            span 학과
+                            if user.department != "empty"
+                                input(type="text" name="department" value=user.department)
+                            else 
+                                input(type="text" name="department" placeholder="write your department")
+                    .page.hide 
+                        .title
+                            span Introduction
+                        .field.absence
+                            span 재/휴학
+                            .column-container
+                                .first-column
+                                    if user.absence == true
+                                        .selection.true
+                                            input(type="checkbox" id="absenceYes" name="absenceYes" checked)
+                                            label(for="absenceYes") 휴학
+                                        .selection.false
+                                            input(type="checkbox" id="absenceNo" name="absenceNo")
+                                            label(for="absenceNo") 재학
+                                    else 
+                                        .selection.true
+                                            input(type="checkbox" id="absenceYes" name="absenceYes")
+                                            label(for="absenceYes") 휴학
+                                        .selection.false
+                                            input(type="checkbox" id="absenceNo" name="absenceNo" checked)
+                                            label(for="absenceNo") 재학
+                        .field
+                            span 자기 소개
+                            textarea(name="introduction" maxlength=150 spellcheck="false")=user.introduction
+                    .page.hide
+                        .title
+                            span Options
+                        .field.email
+                            span 학교 웹메일
+                            input(type="text" name="email" value=user.email disabled)
+                        .field.pnp
+                            span pnp 가입유무
+                            .column-container
+                                .first-column
+                                    if user.pnp == true
+                                        .selection.true
+                                            input(type="checkbox" id="pnpYes" name="pnpYes" checked)
+                                            label(for="pnpYes") 예
+                                        .selection.false
+                                            input(type="checkbox" id="pnpNo" name="pnpNo")
+                                            label(for="pnpNo") 아니요
+                                    else 
+                                        .selection.true
+                                            input(type="checkbox" id="pnpYes" name="pnpYes")
+                                            label(for="pnpYes") 예
+                                        .selection.false
+                                            input(type="checkbox" id="pnpNo" name="pnpNo" checked)
+                                            label(for="pnpNo") 아니요
+                        .field
+                            span github 주소
+                            if user.github_url != "empty"
+                                input(type="text" name="github_url" value=user.github_url)
+                            else 
+                                input(type="text" name="github_url" placeholder="write your github address")
+                        .field.interest
+                            span 관심 분야(중복 선택 가능)
+                            .column-container
+                                .first-column
+                                    .selection
+                                        input(type="checkbox" id="web" name="web")
+                                        label(for="web") 웹
+                                    .selection
+                                        input(type="checkbox" id="app" name="app")
+                                        label(for="app") 앱
+                                    .selection
+                                        input(type="checkbox" id="algorithm" name="algorithm")
+                                        label(for="algorithm") 알고리즘
+                                .second-column
+                                    .selection
+                                        input(type="checkbox" id="AI" name="AI")
+                                        label(for="AI") AI
+                                    .selection
+                                        input(type="checkbox" id="security" name="security")
+                                        label(for="security") 보안
+                                    .selection
+                                        input(type="checkbox" id="data" name="data")
+                                        label(for="data") 데이터
+                    input(type="submit" value="수정")
     script(src="/assets/js/previewImage.js")
+    script(src="/assets/js/profileUpdate.js")

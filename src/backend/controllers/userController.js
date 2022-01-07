@@ -16,11 +16,11 @@ export const postJoin = async (req, res) => {
     const user = await User.create({
       name,
       nickname,
-      absence,
+      absence: absence == "" ? false : absence == "재학" ? false : true,
       email,
       password,
-      pnp,
-      github_url,
+      pnp: pnp == "" ? false : pnp == "yes" ? true : false,
+      github_url: github_url == "" ? "empty" : github_url,
     });
 
     if (req.body.web == "on") {
@@ -32,6 +32,17 @@ export const postJoin = async (req, res) => {
     if (req.body.algorithm == "on") {
       user.interest.push("알고리즘");
     }
+    if (req.body.AI == "on") {
+      user.interest.push("AI");
+    }
+    if (req.body.security == "on") {
+      user.interest.push("보안");
+    }
+    if (req.body.data == "on") {
+      user.interest.push("데이터");
+    }
+    user.visit += 1;
+    user.visit_time = Date.now();
     await user.save();
 
     req.session.user = user;
@@ -74,6 +85,13 @@ export const postLogin = async (req, res) => {
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
       return res.sendStatus(401);
+    }
+
+    // 로그인 한지 하루 이상 지났으면
+    if (Date.now() - user.visit_time >= 1000 * 60 * 60 * 24) {
+      user.visit += 1;
+      user.visit_time = Date.now();
+      await user.save();
     }
 
     req.session.user = user;
@@ -145,22 +163,51 @@ export const postProfileUpdate = async (req, res) => {
       {
         name: body.name,
         nickname: body.nickname,
+        introduction:
+          body.introduction == "" ? "Introduce yourself!" : body.introduction,
         image_url: file ? `/${file.path}` : user.image_url,
-        pnp: body.pnp,
-        team: body.team,
-        student_id: body.student_id,
-        department: body.department,
-        gender: body.gender,
-        email: body.email,
-        password: body.password,
-        tech: body.tech,
-        github_url: body.github_url,
-        interest: body.interest,
-        like: body.like,
-        visit: body.visit,
+        department: body.department == "" ? "empty" : body.department,
+        github_url: body.github_url == "" ? "empty" : body.github_url,
       },
       { new: true }
     );
+
+    // 재/휴학
+    if (req.body.absenceYes == "on") {
+      modifiedUser.absence = true;
+    } else {
+      modifiedUser.absence = false;
+    }
+
+    // pnp 가입 여부
+    if (req.body.pnpYes == "on") {
+      modifiedUser.pnp = true;
+    } else {
+      modifiedUser.pnp = false;
+    }
+
+    // 관심 분야
+    modifiedUser.interest = [];
+
+    if (req.body.web == "on") {
+      modifiedUser.interest.push("웹");
+    }
+    if (req.body.app == "on") {
+      modifiedUser.interest.push("앱");
+    }
+    if (req.body.algorithm == "on") {
+      modifiedUser.interest.push("알고리즘");
+    }
+    if (req.body.AI == "on") {
+      modifiedUser.interest.push("AI");
+    }
+    if (req.body.security == "on") {
+      modifiedUser.interest.push("보안");
+    }
+    if (req.body.data == "on") {
+      modifiedUser.interest.push("데이터");
+    }
+    await modifiedUser.save();
 
     req.session.user = modifiedUser;
 

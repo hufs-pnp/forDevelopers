@@ -1,30 +1,187 @@
-.profileUpdate-container {
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.profileUpdate-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #26c071, #ffd953);
 
-  form {
-    display: flex;
-    flex-direction: column;
+  .outer-profileUpdate-container {
+    width: 500px;
+    height: 500px;
+    background: white;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 20px;
 
-    input {
-      padding: 10px;
-      font-size: 20px;
-    }
+    .profileUpdate-container {
+      display: flex;
+      position: relative;
+      height: 100%;
 
-    input[type="file"] {
-      display: none;
-    }
+      .nav-bar {
+        z-index: 1;
+        position: absolute;
+        top: -47px;
+        left: 11px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 120%;
+        padding: 50px 15px;
+        border: 3px solid white;
+        background: #26c071;
+        box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.3),
+          -2px 0px 10px rgba(0, 0, 0, 0.3);
 
-    label {
-      cursor: pointer;
-    }
+        i {
+          color: white;
+          font-size: 25px;
+          cursor: pointer;
+        }
+      }
 
-    input[type="submit"] {
-      padding: 5px;
-      font-size: 15px;
-      cursor: pointer;
+      form {
+        padding-left: 120px;
+        width: 100%;
+        position: relative;
+
+        .page {
+          display: flex;
+          flex-direction: column;
+
+          &.hide {
+            display: none;
+          }
+
+          .title {
+            margin-bottom: 20px;
+
+            & > span {
+              color: #26c071;
+              display: inline-block;
+              font-size: 25px;
+              margin-right: 10px;
+
+              &::first-letter {
+                font-size: 30px;
+              }
+            }
+          }
+
+          .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+
+            & > span {
+              font-weight: 700;
+              opacity: 0.5;
+            }
+
+            & > label {
+              margin-left: 10px;
+              pointer-events: none;
+              transform: translateY(5px);
+
+              img {
+                width: 70px;
+                height: 70px;
+                cursor: pointer;
+                pointer-events: initial;
+                border-radius: 5px;
+              }
+            }
+
+            input {
+              width: 80%;
+              display: none;
+              border: none;
+              background: white;
+
+              &::placeholder {
+                opacity: 0.5;
+              }
+
+              &:not([type="file"]) {
+                display: block;
+                border-bottom: 2px solid #26c071;
+                padding: 5px;
+                font-size: 16px;
+              }
+            }
+
+            button {
+              position: absolute;
+              right: 5px;
+              top: 50%;
+              transform: translateY(-7%);
+              cursor: pointer;
+            }
+
+            textarea {
+              resize: none;
+              transform: translateY(5px);
+              width: 300px;
+              height: 200px;
+              padding: 10px;
+              font-size: 17px;
+            }
+          }
+
+          .absence,
+          .pnp,
+          .interest {
+            span {
+              margin-bottom: 5px;
+            }
+
+            .column-container {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+
+              .first-column,
+              .second-column {
+                .selection {
+                  display: flex;
+                  justify-content: left;
+                  align-items: center;
+
+                  & > input {
+                    width: 15px;
+                    height: 15px;
+                    margin-right: 10px;
+                  }
+
+                  & > label {
+                    user-select: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        input[type="submit"] {
+          position: absolute;
+          bottom: 0;
+          border: none;
+          cursor: pointer;
+          padding: 5px 10px;
+          border-radius: 5px;
+          background: #26c071;
+          color: white;
+          font-weight: 700;
+          letter-spacing: 1px;
+          transform: translateY(5px);
+
+          &:hover {
+            background: #4fb85d;
+          }
+        }
+      }
     }
   }
 }
