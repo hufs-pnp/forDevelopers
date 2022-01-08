@@ -12,14 +12,23 @@ if ((temp = document.querySelector(".recruitmentArticle-container"))) {
   category = "communities";
 }
 
-const addViews = () => {
+const addViews = async () => {
   const {
     dataset: { id },
   } = postContainer;
 
-  fetch(`/api/${category}/${id}/views`, {
-    method: "POST",
-  });
+  const response = await (
+    await fetch(`/api/${category}/${id}/views`, {
+      method: "POST",
+    })
+  ).json();
+
+  switch (response.status) {
+    case 404:
+      alert("에러가 발생했습니다.");
+      window.location.href = "/";
+      return;
+  }
 };
 
 addViews();

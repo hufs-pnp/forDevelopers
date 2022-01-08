@@ -202,8 +202,11 @@
 
   .options {
     width: 530px;
-    display: flex;
+    display: grid;
     justify-content: center;
+    grid-template-columns: 0.5fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 0.5fr;
 
     a {
       padding: 10px 50px;
@@ -211,6 +214,7 @@
       background-color: white;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       font-weight: 700;
+      text-align: center;
 
       &:hover {
         color: #e6c833;
@@ -220,7 +224,8 @@
 }
 
 @media (max-width: 800px) {
-  .profile-container {
+  .profile-container,
+  .options {
     max-width: 480px;
   }
 }

@@ -30,10 +30,10 @@ export const views = async (req, res) => {
 
     post.views += 1;
     await post.save();
-    return res.sendStatus(200);
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.json({ status: 404 });
   }
 };
 
@@ -69,7 +69,7 @@ export const like = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.json({ status: 404 });
   }
 };
 
@@ -137,7 +137,6 @@ export const passportGoogleFinish = async (req, res) => {
 /**********************************
     이메일, 닉네임, 인증코드 확인
 **********************************/
-let randomCode = null;
 export const email = async (req, res) => {
   try {
     const {
@@ -146,13 +145,13 @@ export const email = async (req, res) => {
 
     // 학교 웹메일로 작성됐는지 확인
     if (!email.includes("@hufs.ac.kr")) {
-      return res.sendStatus(400);
+      return res.json({ status: 400 });
     }
 
     // 이미 가입되어 있는지 확인
     const user = await User.exists({ email });
     if (user) {
-      return res.sendStatus(401);
+      return res.json({ status: 401 });
     }
 
     const transporter = nodemailer.createTransport({
@@ -191,10 +190,10 @@ export const email = async (req, res) => {
       }
     });
 
-    return res.json();
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
-    return res.sendStatus("404");
+    return res.json({ status: 404 });
   }
 };
 
@@ -207,16 +206,17 @@ export const nickname = async (req, res) => {
     const exist = await User.findOne({ nickname });
 
     if (exist) {
-      return res.sendStatus(400);
+      return res.json({ status: 400 });
     } else {
-      return res.json();
+      return res.json({ status: 200 });
     }
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.json({ status: 404 });
   }
 };
 
+let randomCode = null;
 export const code = async (req, res) => {
   try {
     const {
@@ -224,12 +224,12 @@ export const code = async (req, res) => {
     } = req;
 
     if (userCode == randomCode) {
-      return res.sendStatus(200);
+      return res.json({ status: 200 });
     } else {
-      return res.sendStatus(400);
+      return res.json({ status: 400 });
     }
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.json({ status: 404 });
   }
 };

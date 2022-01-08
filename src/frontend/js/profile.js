@@ -118,3 +118,18 @@ profileContainer.addEventListener("mouseenter", () => {
 profileContainer.addEventListener("mouseleave", () => {
   hiddenColumn.classList.remove("show");
 });
+
+/*****************************
+          에러 처리
+*****************************/
+const errorMessage = document.querySelector(".errorMessage");
+
+const {
+  dataset: { profileerrormsg: profileErrorMsg, userid: user_id },
+} = errorMessage;
+
+if (profileErrorMsg.length > 2) {
+  const msg = profileErrorMsg.substr(1, profileErrorMsg.length - 2);
+  alert(msg);
+  window.location.href = `/users/${user_id}`;
+}

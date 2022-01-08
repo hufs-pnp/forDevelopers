@@ -4,8 +4,12 @@ import bcrypt from "bcrypt";
 /****************************************
                 회원가입
 ****************************************/
-export const getJoin = (_, res) => {
-  return res.status(200).render("users/join.pug", { pageTitle: "회원 가입" });
+export const getJoin = (req, res) => {
+  const joinErrorMsg = req.flash("join_error");
+
+  return res
+    .status(200)
+    .render("users/join.pug", { pageTitle: "회원 가입", joinErrorMsg });
 };
 export const postJoin = async (req, res) => {
   try {
@@ -52,7 +56,8 @@ export const postJoin = async (req, res) => {
     return res.redirect("/");
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    req.flash("join_error", "에러가 발생했습니다. 다시 한 번 진행해주세요.");
+    return res.redirect("/users/join");
   }
 };
 
@@ -61,15 +66,11 @@ export const postJoin = async (req, res) => {
 ****************************************/
 export const getLogin = (req, res) => {
   // 학교 웹메일로 로그인 안해서 생기는 error(구글)
-  let error = undefined;
-  if (req.session.flash) {
-    error = req.session.flash.error;
-    req.flash(); // error 비우기
-  }
+  const snsLoginError = req.flash("error");
 
   return res
     .status(200)
-    .render("users/login.pug", { pageTitle: "로그인", error });
+    .render("users/login.pug", { pageTitle: "로그인", snsLoginError });
 };
 export const postLogin = async (req, res) => {
   try {
@@ -79,12 +80,12 @@ export const postLogin = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.sendStatus(400);
+      return res.json({ status: 400 });
     }
 
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
-      return res.sendStatus(401);
+      return res.json({ status: 401 });
     }
 
     // 로그인 한지 하루 이상 지났으면
@@ -98,10 +99,10 @@ export const postLogin = async (req, res) => {
     req.session.loggedIn = true;
     req.session.localLogin = true;
 
-    return res.redirect("/");
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.json({ status: 400 });
   }
 };
 
@@ -114,21 +115,25 @@ export const logout = (req, res) => {
               유저 프로필
 ****************************************/
 export const profile = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+  } = req;
+
   try {
-    const {
-      session: {
-        user: { _id },
-      },
-    } = req;
-
     const user = await User.findOne({ _id });
+    const profileErrorMsg = req.flash("profile_error");
 
-    return res
-      .status(200)
-      .render("users/profile.pug", { pageTitle: "유저 프로필", user });
+    return res.status(200).render("users/profile.pug", {
+      pageTitle: "유저 프로필",
+      user,
+      profileErrorMsg,
+    });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    req.flash("profile_error", "에러가 발생했습니다.");
+    return res.redirect(`/users/${_id}`);
   }
 };
 
@@ -141,23 +146,26 @@ export const getProfileUpdate = async (req, res) => {
     } = req;
 
     const user = await User.findOne({ _id });
+    const profileUpdateErrorMsg = req.flash("profileUpdate_error");
 
-    return res
-      .status(200)
-      .render("users/profileUpdate.pug", { pageTitle: "유저 프로필", user });
+    return res.status(200).render("users/profileUpdate.pug", {
+      pageTitle: "유저 프로필",
+      user,
+      profileUpdateErrorMsg,
+    });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return;
   }
 };
 export const postProfileUpdate = async (req, res) => {
-  try {
-    const {
-      body,
-      session: { user },
-      file,
-    } = req;
+  const {
+    body,
+    session: { user },
+    file,
+  } = req;
 
+  try {
     const modifiedUser = await User.findByIdAndUpdate(
       user._id,
       {
@@ -214,7 +222,8 @@ export const postProfileUpdate = async (req, res) => {
     return res.redirect(`/users/${user._id}`);
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    req.flash("profileUpdate_error", "에러가 발생했습니다.");
+    return res.redirect(`/users/${user._id}/update`);
   }
 };
 
@@ -240,10 +249,15 @@ export const userDelete = async (req, res) => {
 /****************************************
               비밀번호 변경
 ****************************************/
-export const getChangePassword = (_, res) => {
-  return res
-    .status(200)
-    .render("users/changePassword.pug", { pageTitle: "비밀번호 변경하기" });
+export const getChangePassword = (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  return res.status(200).render("users/changePassword.pug", {
+    pageTitle: "비밀번호 변경하기",
+    user_id: id,
+  });
 };
 export const postChangePassword = async (req, res) => {
   try {
@@ -256,16 +270,15 @@ export const postChangePassword = async (req, res) => {
     const valid = await bcrypt.compare(current_password, user.password);
 
     if (!valid) {
-      console.log("현재 비밀번호가 다릅니다.");
-      return res.redirect(`/users/${id}/password`);
+      return res.json({ status: 400 });
     }
 
     user.password = new_password;
     await user.save();
 
-    return res.redirect(`/users/${id}`);
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
-    return res.redirect(`/`);
+    return res.json({ status: 404 });
   }
 };

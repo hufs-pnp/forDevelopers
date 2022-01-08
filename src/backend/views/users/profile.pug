@@ -2,6 +2,7 @@ extends ../base.pug
 
 block content
     .profile-body
+        .errorMessage(data-profileerrormsg=profileErrorMsg data-userid=user.id)
         .user-text
             a(href="#").write
                 i.fas.fa-clipboard

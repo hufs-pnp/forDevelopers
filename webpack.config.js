@@ -13,6 +13,7 @@ module.exports = {
     login: BASE_URL + "login.js",
     profile: BASE_URL + "profile.js",
     profileUpdate: BASE_URL + "profileUpdate.js",
+    changePassword: BASE_URL + "changePassword.js",
   },
   output: {
     filename: "js/[name].js",

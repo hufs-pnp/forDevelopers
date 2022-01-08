@@ -2,6 +2,7 @@ extends ../base.pug
 
 block content
     .profileUpdate-body
+        .errorMessage(data-profileupdateerrormsg=profileUpdateErrorMsg data-userid=user.id)
         .outer-profileUpdate-container
             .profileUpdate-container(data-interest = user.interest)
                 .nav-bar

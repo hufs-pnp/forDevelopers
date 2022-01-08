@@ -156,3 +156,18 @@ interestArray.forEach((element) => {
       break;
   }
 });
+
+/*******************************
+           에러 처리
+*******************************/
+const errorMessage = document.querySelector(".errorMessage");
+
+const {
+  dataset: { profileupdateerrormsg: profileUpdateErrorMsg, userid: user_id },
+} = errorMessage;
+
+if (profileUpdateErrorMsg.length > 2) {
+  const msg = profileUpdateErrorMsg.substr(1, profileUpdateErrorMsg.length - 2);
+  alert(msg);
+  window.location.href = `/users/${user_id}/update`;
+}

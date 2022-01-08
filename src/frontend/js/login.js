@@ -6,11 +6,13 @@ import "regenerator-runtime";
 const errorMessage = document.querySelector(".errorMessage");
 
 const {
-  dataset: { error },
+  dataset: { snsloginerror: snsLoginError },
 } = errorMessage;
 
-if (error) {
-  alert("학교 웹메일로 로그인 해주세요.");
+if (snsLoginError.length > 2) {
+  const msg = snsLoginError.substr(1, snsLoginError.length - 2);
+  alert(msg);
+  window.location.href = "/users/login";
 }
 
 /*************************************
@@ -56,27 +58,34 @@ loginBtn.addEventListener("click", async () => {
     return;
   }
 
-  const response = await fetch("/users/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: emailInput.value,
-      password: passwordInput.value,
-    }),
-  });
+  const response = await (
+    await fetch("/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailInput.value,
+        password: passwordInput.value,
+      }),
+    })
+  ).json();
 
   switch (response.status) {
+    case 200:
+      window.location.href = "/";
+      return;
     case 400:
       alert("계정이 없습니다.");
       return;
     case 401:
       alert("비밀번호가 다릅니다.");
       return;
+    case 404:
+      alert("에러가 발생했습니다.");
+      window.location.href = "/";
+      return;
   }
-
-  window.location.href = "/";
 });
 
 emailInput.addEventListener("keyup", () => {

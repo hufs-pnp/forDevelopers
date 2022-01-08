@@ -29,15 +29,22 @@ nicknameBtn.addEventListener("click", async () => {
     return;
   }
 
-  const response = await fetch("/api/nickname/auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ nickname: nicknameInput.value }),
-  });
+  const response = await (
+    await fetch("/api/nickname/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nickname: nicknameInput.value }),
+    })
+  ).json();
 
   switch (response.status) {
+    case 200:
+      alert("사용가능한 닉네임입니다.");
+      nicknameBtn.classList.add("verified");
+      removeError(nicknameLabel, nicknameInput, nickname);
+      return;
     case 400:
       alert("중복된 닉네임입니다.\n다른 닉네임을 정해주세요.");
       return;
@@ -46,10 +53,6 @@ nicknameBtn.addEventListener("click", async () => {
       window.location.href = "/";
       return;
   }
-
-  alert("사용가능한 닉네임입니다.");
-  nicknameBtn.classList.add("verified");
-  removeError(nicknameLabel, nicknameInput, nickname);
 });
 
 nicknameInput.addEventListener("keyup", () => {
@@ -71,15 +74,20 @@ emailBtn.addEventListener("click", async () => {
     return;
   }
 
-  const response = await fetch("/api/email/auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email: emailInput.value }),
-  });
+  const response = await (
+    await fetch("/api/email/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: emailInput.value }),
+    })
+  ).json();
 
   switch (response.status) {
+    case 200:
+      alert(`입력하신 메일로 인증코드를 보냈습니다.\n인증코드를 입력해주세요.`);
+      return;
     case 400:
       showError(emailLabel, emailInput, email, "학교 웹메일을 입력해주세요.");
       return;
@@ -92,8 +100,6 @@ emailBtn.addEventListener("click", async () => {
       window.location.href = "/";
       return;
   }
-
-  alert(`입력하신 메일로 인증코드를 보냈습니다.\n인증코드를 입력해주세요.`);
 });
 
 emailInput.addEventListener("keyup", () => {
@@ -114,13 +120,15 @@ codeBtn.addEventListener("click", async () => {
     return;
   }
 
-  const response = await fetch("/api/code/auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ code: codeInput.value }),
-  });
+  const response = await (
+    await fetch("/api/code/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code: codeInput.value }),
+    })
+  ).json();
 
   switch (response.status) {
     case 200:
@@ -328,6 +336,21 @@ prevBtn.forEach((btn) => {
 });
 
 submitBtn.addEventListener("click", handleSubmit);
+
+/**********************************************
+          submit error 처리
+**********************************************/
+const errorMessage = document.querySelector(".errorMessage");
+
+const {
+  dataset: { joinerrormsg: joinErrorMsg },
+} = errorMessage;
+
+if (joinErrorMsg.length > 2) {
+  const msg = joinErrorMsg.substr(1, joinErrorMsg.length - 2);
+  alert(msg);
+  window.location.href = "/users/join";
+}
 
 /******************************
       패스워드 보안 체크
