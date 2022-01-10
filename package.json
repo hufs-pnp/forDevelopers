@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/hufs-pnp/forDevelopers#readme",
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.16.7",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
@@ -40,6 +39,7 @@
     "@babel/core": "^7.16.7",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.7",
     "babel-loader": "^8.2.3",
     "connect-flash": "^0.1.1",
     "css-loader": "^6.5.1",
