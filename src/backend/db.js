@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect("mongodb://localhost:27017/forDevelopers");
+mongoose.connect(process.env.DB_URL);
 
 const db = mongoose.connection;
 
