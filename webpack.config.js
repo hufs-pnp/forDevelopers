@@ -20,8 +20,6 @@ module.exports = {
     path: path.resolve(__dirname, "assets"),
     clean: true,
   },
-  mode: "development",
-  watch: true,
   plugins: [new MiniCssExtractPlugin({ filename: "css/[name].css" })],
   module: {
     rules: [

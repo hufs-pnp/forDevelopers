@@ -1,3 +1,4 @@
+import "regenerator-runtime";
 import app from "./app.js";
 import "./db.js";
 
