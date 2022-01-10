@@ -1,6 +1,6 @@
 import "regenerator-runtime";
-import app from "./app.js";
-import "./db.js";
+import app from "./app";
+import "./db";
 
 const PORT = process.env.PORT || 4000;
 

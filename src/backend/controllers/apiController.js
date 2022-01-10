@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import Recruitment from "../models/Recruitment.js";
-import User from "../models/User.js";
-import Order from "../models/Order.js";
-import Community from "../models/Community.js";
+import Recruitment from "../models/Recruitment";
+import User from "../models/User";
+import Order from "../models/Order";
+import Community from "../models/Community";
 
 dotenv.config();
 

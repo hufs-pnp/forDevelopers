@@ -8,7 +8,7 @@ import {
   nickname,
   code,
 } from "../controllers/apiController";
-import "../passport.js";
+import "../passport";
 import { chooseCategory } from "../middlewares";
 
 const apiRouter = express.Router();

@@ -1,6 +1,6 @@
-import Community from "../models/Community.js";
-import Comment from "../models/Comment.js";
-import User from "../models/User.js";
+import Community from "../models/Community";
+import Comment from "../models/Comment";
+import User from "../models/User";
 
 export const board = async (req, res) => {
   try {

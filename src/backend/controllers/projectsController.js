@@ -1,7 +1,7 @@
-import Recruitment from "../models/Recruitment.js";
-import Order from "../models/Order.js";
-import Comment from "../models/Comment.js";
-import User from "../models/User.js";
+import Recruitment from "../models/Recruitment";
+import Order from "../models/Order";
+import Comment from "../models/Comment";
+import User from "../models/User";
 
 // Projects
 export const projects = (_, res) => {

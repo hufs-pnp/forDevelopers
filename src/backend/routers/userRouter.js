@@ -11,8 +11,8 @@ import {
   userDelete,
   getChangePassword,
   postChangePassword,
-} from "../controllers/userController.js";
-import { upload } from "../middlewares.js";
+} from "../controllers/userController";
+import { upload } from "../middlewares";
 
 const userRouter = express.Router();
 
