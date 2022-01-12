@@ -24,15 +24,21 @@ const nicknameInput = nickname.querySelector("input");
 const nicknameBtn = nickname.querySelector("button");
 
 nicknameBtn.addEventListener("click", async () => {
-  const response = await fetch("/api/nickname/auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ nickname: nicknameInput.value }),
-  });
+  const response = await (
+    await fetch("/api/nickname/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nickname: nicknameInput.value }),
+    })
+  ).json();
 
   switch (response.status) {
+    case 200:
+      alert("사용가능한 닉네임입니다.");
+      nicknameBtn.classList.add("verified");
+      return;
     case 400:
       alert("중복된 닉네임입니다.\n다른 닉네임을 정해주세요.");
       return;
@@ -41,9 +47,6 @@ nicknameBtn.addEventListener("click", async () => {
       window.location.href = "/";
       return;
   }
-
-  alert("사용가능한 닉네임입니다.");
-  nicknameBtn.classList.add("verified");
 });
 
 nicknameInput.addEventListener("keyup", () => {
