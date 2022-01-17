@@ -11,7 +11,7 @@ let {
   },
 } = data;
 
-async function showChangedArticles() {
+function showChangedArticles() {
   if (findTerm) {
     window.location.href = `/${category}/search/${currentPage}`;
   } else {
@@ -53,11 +53,20 @@ function pagination() {
   const leftButtons = calculLeft(calculRight().rest_length()).array;
   const rightButtons = calculRight(calculLeft().rest_length()).array;
 
-  const paginatedButtons = [
+  let paginatedButtons = [
     ...leftButtons,
     parseInt(currentPage),
     ...rightButtons,
   ];
+
+  // 맨 처음으로 가기
+  if (paginatedButtons[0] != 1) {
+    paginatedButtons = [1, "...", ...paginatedButtons];
+  }
+  // 맨 마지막으로 가기
+  if (paginatedButtons[paginatedButtons.length - 1] != buttons.length) {
+    paginatedButtons = [...paginatedButtons, "...", buttons.length];
+  }
 
   const numbers = document.querySelector(".pagination .numbers");
   numbers.innerHTML = "";
@@ -70,11 +79,15 @@ function pagination() {
       button.classList.add("active");
     }
 
-    button.addEventListener("click", () => {
-      currentPage = paginatedButtons[i];
-      showChangedArticles();
-      pagination();
-    });
+    if (paginatedButtons[i] === "...") {
+      button.classList.add("disabled");
+    } else {
+      button.addEventListener("click", () => {
+        currentPage = paginatedButtons[i];
+        showChangedArticles();
+        pagination();
+      });
+    }
 
     numbers.appendChild(button);
   }
@@ -106,7 +119,8 @@ function clickNext() {
 const prev = document.querySelector(".pagination .prev");
 const next = document.querySelector(".pagination .next");
 
-prev.addEventListener("click", clickPrev);
-next.addEventListener("click", clickNext);
-
-pagination();
+if (numberOfArticles > 0) {
+  pagination();
+  prev.addEventListener("click", clickPrev);
+  next.addEventListener("click", clickNext);
+}

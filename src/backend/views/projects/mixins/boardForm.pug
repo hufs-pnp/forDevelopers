@@ -1,4 +1,23 @@
-mixin post({id, title, personnel, content})
-    a(href=`/projects/${category}/${id}`).form
-        span.title 제목: #{title}
-        span.contents 내용: #{content}
+mixin post({id, title, personnel, content, created_at, like, comment, user})
+    a(href=`/projects/${category}/${id}`).board-form
+        span.title #{title.length > 10 ?  title.slice(0, 10) + "..." : title}
+        span.contents #{content.length > 140 ?  content.slice(0, 140) + "..." : content}
+        .info
+            .first-column
+                span.time(data-time=created_at)
+                .user
+                    img(src=user.image_url)
+                    span.nickname= user.nickname
+                    .user-like
+                        i.fas.fa-heart
+                        span= user.like
+            .second-column
+                .like
+                    i.far.fa-thumbs-up
+                    span= like
+                .comment
+                    i.far.fa-comment
+                    span= comment.length
+
+
+

@@ -2,22 +2,33 @@ extends ../../base.pug
 include ../mixins/boardForm.pug
 
 block content 
-    .recruitmentBoard-container 
-        .header
-            h1.title 멤버 구하기 게시판
-            if authenticated
-                a(href="/projects/recruitments/enrollment").write 글쓰기
-        .main
-            each element in articleLists 
-                +post(element)          
-        .pagination(data-numberofarticles = numberOfArticles, data-articlesperpage = articlesPerPage,
-         data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = `projects/${category}`, 
-         data-findterm = findTerm)
-            button.prev Prev
-            .numbers 
-            button.next Next
-        form(action="/projects/recruitments/search/1" method="POST").search
-            input(type="text" name="searchTerm" placeholder="Search..." required).searchBox
-            button(type="submit").searchButton
-                i.fas.fa-search
+    .recruitmentBoard-body
+        .recruitmentBoard-container 
+            .header
+                h1.title 멤버 구하기
+                if authenticated
+                    a(href="/projects/recruitments/enrollment").write
+                        i.fas.fa-pencil-alt
+                        span 글쓰기
+            .main
+                if numberOfArticles == 0
+                    span.error-msg= errorMessage
+                each element in articleLists 
+                    +post(element)          
+            .pagination(data-numberofarticles = numberOfArticles, data-articlesperpage = articlesPerPage,
+            data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = `projects/${category}`, 
+            data-findterm = findTerm)
+                .prev
+                    button
+                        i.fas.fa-chevron-left
+                .numbers
+                .next
+                    button
+                        i.fas.fa-chevron-right
+            form(action="/projects/recruitments/search/1" method="POST").search
+                .searchBox
+                    input(type="text" name="searchTerm" placeholder="Search..." required)
+                    button(type="submit").searchButton
+                        i.fas.fa-search
     script(src="/assets/js/pagination.js")
+    script(src="/assets/js/board.js")

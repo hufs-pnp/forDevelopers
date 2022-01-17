@@ -2,31 +2,42 @@ extends ../../base.pug
 include ../mixins/commentForm.pug
 
 block content 
-    .recruitmentArticle-container(data-id = post.id)
-        .header
-            h1 멤버 모집 상세히
-        .main
-            span.title 제목: #{post.title}
-            span.contents 내용: #{post.content}
-            span.personnel 필요 인원: #{post.personnel}
-            span.views 조회수: #{post.views}
-            span.choice 찜: #{post.choice}
-            span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
-        .options
-            if authenticated && (loggedInUser._id == post.user.id)
-                a(href=`/projects/recruitments/${post.id}/update`) 수정하기
-                a(href=`/projects/recruitments/${post.id}/delete`) 삭제하기
-        if authenticated
-            form(method="POST").comment
-                input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
-                button(type="submit").commentButton
-                    i.fas.fa-pen
-        else 
-            .afterLogin
-                |댓글은
-                a(href="/users/login") 로그인
-                |후 이용 가능합니다.
-        ul.commentLists
-            each element in commentLists
-                +comment(element)
+    .recruitmentArticle-body
+        .recruitmentArticle-container(data-id = post.id)
+            .header
+                h1 멤버 구하기
+            .main
+                span.title #{post.title}
+                span.contents #{post.content}
+                .icons
+                    .like(title="좋아요")
+                        i.far.fa-thumbs-up
+                        span= post.like
+                    .comment(title="댓글")
+                        i.far.fa-comment
+                        span= post.comment.length
+                    .choice(title="찜")
+                        i.far.fa-square
+                        span= post.choice
+                    .views(title="조회수")
+                        i.far.fa-eye
+                        span= post.views
+                //- span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+            .options
+                if authenticated && (loggedInUser._id == post.user.id)
+                    a(href=`/projects/recruitments/${post.id}/update`) 수정하기
+                    a(href=`/projects/recruitments/${post.id}/delete`) 삭제하기
+            if authenticated
+                form(method="POST").comment
+                    input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
+                    button(type="submit").commentButton
+                        i.fas.fa-pen
+            else 
+                .afterLogin
+                    |댓글은
+                    a(href="/users/login") 로그인
+                    |후 이용 가능합니다.
+            ul.commentLists
+                each element in commentLists
+                    +comment(element)
     script(src="/assets/js/views.js")

@@ -10,7 +10,9 @@ export const projects = (_, res) => {
     .render("projects/projects.pug", { pageTitle: "프로젝트들" });
 };
 
-// Recruitments, Orders
+/**************************
+        전체 게시물
+**************************/
 export const board = async (req, res) => {
   try {
     const {
@@ -19,13 +21,14 @@ export const board = async (req, res) => {
     } = req;
 
     let numberOfArticles = null;
-    const articlesPerPage = 4;
-    const shownButtons = 3; // 홀수만
+    const articlesPerPage = 2;
+    const shownButtons = 9; // 홀수만
     let articleLists = null;
 
     if (model == "Recruitment") {
       numberOfArticles = await Recruitment.count();
       articleLists = await Recruitment.find()
+        .populate("user")
         .sort({ _id: -1 })
         .skip((currentPage - 1) * articlesPerPage)
         .limit(articlesPerPage);
@@ -45,6 +48,7 @@ export const board = async (req, res) => {
       currentPage,
       shownButtons,
       category,
+      errorMessage: "게시글이 없습니다.",
     });
   } catch (error) {
     console.log(error);
@@ -52,6 +56,9 @@ export const board = async (req, res) => {
   }
 };
 
+/**************************
+          검색하기
+**************************/
 let findTerm = undefined;
 export const searchBoard = async (req, res) => {
   try {
@@ -65,8 +72,8 @@ export const searchBoard = async (req, res) => {
     }
 
     let numberOfArticles = null;
-    const articlesPerPage = 4;
-    const shownButtons = 3; // 홀수만
+    const articlesPerPage = 2;
+    const shownButtons = 9; // 홀수만
     let articleLists = null;
 
     const regexTitle = new RegExp(findTerm, "i");
@@ -78,6 +85,7 @@ export const searchBoard = async (req, res) => {
       articleLists = await Recruitment.find({
         title: regexTitle,
       })
+        .populate("user")
         .sort({ _id: -1 })
         .skip((currentPage - 1) * articlesPerPage)
         .limit(articlesPerPage);
@@ -102,6 +110,7 @@ export const searchBoard = async (req, res) => {
       shownButtons,
       category,
       findTerm,
+      errorMessage: "검색 결과가 없습니다.",
     });
   } catch (error) {
     console.log(error);
@@ -109,13 +118,18 @@ export const searchBoard = async (req, res) => {
   }
 };
 
+/**************************
+          글 쓰기
+ **************************/
 export const getEnrollment = (req, res) => {
   const {
     params: { category },
+    session: { user },
   } = req;
 
   return res.status(200).render(`projects/${category}/enrollment.pug`, {
     pageTitle: "등록하기",
+    user,
   });
 };
 export const postEnrollment = async (req, res) => {
