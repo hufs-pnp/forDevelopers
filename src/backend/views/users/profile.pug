@@ -48,9 +48,9 @@ block content
                             span visit
                             i.fas.fa-home
                             span #{user.visit}
-                        //- span 찜: #{user.choice.length == 0 ? "" : user.choice}
         .options
-            a(href=`/users/${user.id}/update`) 프로필 수정하기
-            if localLogin 
-                a(href=`/users/${user.id}/password`) 비밀번호 변경하기
+            if loggedInUser._id == user.id
+                a(href=`/users/${user.id}/update`) 프로필 수정하기
+                if localLogin 
+                    a(href=`/users/${user.id}/password`) 비밀번호 변경하기
     script(src="/assets/js/profile.js") 

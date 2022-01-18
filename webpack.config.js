@@ -7,7 +7,6 @@ module.exports = {
   entry: {
     main: BASE_URL + "main.js",
     pagination: BASE_URL + "pagination.js",
-    views: BASE_URL + "views.js",
     previewImage: BASE_URL + "previewImage.js",
     join: BASE_URL + "join.js",
     login: BASE_URL + "login.js",
@@ -15,6 +14,7 @@ module.exports = {
     profileUpdate: BASE_URL + "profileUpdate.js",
     changePassword: BASE_URL + "changePassword.js",
     board: BASE_URL + "board.js",
+    article: BASE_URL + "article.js",
   },
   output: {
     filename: "js/[name].js",

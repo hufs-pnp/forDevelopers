@@ -55,7 +55,8 @@ const userSchema = new mongoose.Schema({
   },
   like_clicked_user: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   visit: {

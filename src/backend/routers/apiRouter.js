@@ -1,31 +1,51 @@
 import express from "express";
 import passport from "passport";
 import {
+  userLike,
+  postLike,
+  commentLike,
+  choice,
   views,
-  like,
   passportGoogleFinish,
   email,
   nickname,
   code,
 } from "../controllers/apiController";
 import "../passport";
-import { chooseCategory } from "../middlewares";
 
 const apiRouter = express.Router();
 
-/***************
-    조회 수
-***************/
-apiRouter.post("/:category/:id([0-9a-f]{24})/views", chooseCategory, views);
+/***********************************
+          유저 좋아요 수
+***********************************/
+apiRouter.post("/users/:id([0-9a-f]{24})/like", userLike);
 
-/***************
-    좋아요 수
-***************/
-apiRouter.post("/users/:id([0-9a-f]{24})/like", like);
+/***********************************
+          게시글 좋아요 수
+***********************************/
+apiRouter.post("/:category/:id([0-9a-f]{24})/like", postLike);
 
-/***************
-  구글 로그인
-***************/
+/***********************************
+          댓글 좋아요 수
+***********************************/
+apiRouter.post(
+  "/:category/:postId([0-9a-f]{24})/comment/:commentId([0-9a-f]{24})/like",
+  commentLike
+);
+
+/***********************************
+              찜 수
+***********************************/
+apiRouter.post("/:category/:id([0-9a-f]{24})/choice", choice);
+
+/***********************************
+              조회 수
+***********************************/
+apiRouter.post("/:category/:id([0-9a-f]{24})/views", views);
+
+/***********************************
+            구글 로그인
+***********************************/
 apiRouter.get(
   "/google/login",
   passport.authenticate("google", { scope: ["profile", "email"] })

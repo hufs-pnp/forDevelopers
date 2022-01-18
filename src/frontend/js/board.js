@@ -8,6 +8,9 @@ timeForm.forEach((element) => {
     dataset: { time },
   } = element;
 
+  const day = element.querySelector(".day");
+  const hours = element.querySelector(".hours");
+
   let totalTime = new Date(time);
   const year = totalTime.getFullYear() + "";
   const month = totalTime
@@ -16,18 +19,19 @@ timeForm.forEach((element) => {
   const date = totalTime
     .toLocaleString("en", { day: "numeric" })
     .padStart(2, "0");
-  const hour = totalTime
+  let hour = totalTime
     .toLocaleString("en", { hour: "numeric", hour12: false })
     .padStart(2, "0");
+  hour = hour == 24 ? "00" : hour;
   const minute = totalTime
     .toLocaleString("en", { minute: "numeric" })
     .padStart(2, "0");
 
   if (year == new Date().getFullYear()) {
-    totalTime = month + "/" + date + " " + hour + ":" + minute;
+    day.innerText = month + "/" + date;
+    hours.innerText = hour + ":" + minute;
   } else {
-    totalTime = year + "/" + month + "/" + date + " " + hour + ":" + minute;
+    day.innerText = year + "/" + month + "/" + date;
+    hours.innerText = hour + ":" + minute;
   }
-
-  element.innerText = totalTime;
 });

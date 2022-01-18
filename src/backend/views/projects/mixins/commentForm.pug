@@ -1,5 +1,27 @@
 mixin comment(element)
-    li
-        span name: #{element.user.name},
-        span content: #{element.content}
-        a(href=`/projects/${category}/${post.id}/comment/${element.id}/delete`) delete❌
+    li.comment-box
+        a(href=`/users/${element.user._id}`).user 
+            .first-column
+                img(src=element.user.image_url)
+            .second-column
+                .info 
+                    span= element.user.nickname
+                    .user-like
+                        i.fas.fa-heart
+                        span= element.user.like
+                .time(data-time=element.created_at)
+                    span.day
+                    span.hours
+        span.content= element.content
+        form(method="POST").hidden
+            input(type="text" name="modifyComment" value=element.content)
+            button(type="submit").modify 수정
+            button(type="button").cancel 취소
+        .comment-options
+            .comment-like 
+                i.far.fa-laugh-beam
+                span= element.like
+            span(data-commentid=element.id).comment-like-btn 좋아요
+            if element.user.id == loggedInUser._id
+                span(data-commentid=element.id).comment-modify-btn 수정
+                a(href=`/projects/${category}/${post.id}/comment/${element.id}/delete`) 삭제

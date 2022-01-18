@@ -45,10 +45,10 @@ loginBtn.addEventListener("click", async () => {
   let emailFlag = true;
   let passwordFlag = true;
 
-  if (!emailInput.value.includes("@hufs.ac.kr")) {
-    showError(email, "학교 웹메일을 입력해주세요.");
-    emailFlag = false;
-  }
+  // if (!emailInput.value.includes("@hufs.ac.kr")) {
+  //   showError(email, "학교 웹메일을 입력해주세요.");
+  //   emailFlag = false;
+  // }
   if (passwordInput.value == "") {
     showError(password, "비밀번호를 입력해주세요.");
     passwordFlag = false;

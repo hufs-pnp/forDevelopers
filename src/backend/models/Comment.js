@@ -5,6 +5,16 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  like: {
+    type: Number,
+    default: 0,
+  },
+  like_clicked_user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,

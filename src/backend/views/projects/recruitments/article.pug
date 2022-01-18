@@ -7,9 +7,21 @@ block content
             .header
                 h1 멤버 구하기
             .main
+                a(href=`/users/${user.id}`).user 
+                    .first-column
+                        img(src=user.image_url)
+                    .second-column
+                        .info 
+                            span= user.nickname
+                            .user-like
+                                i.fas.fa-heart
+                                span= user.like
+                        .time(data-time=post.created_at)
+                            span.day
+                            span.hours
                 span.title #{post.title}
                 span.contents #{post.content}
-                .icons
+                .icons(data-category=category data-id=post.id data-login=authenticated)
                     .like(title="좋아요")
                         i.far.fa-thumbs-up
                         span= post.like
@@ -22,22 +34,21 @@ block content
                     .views(title="조회수")
                         i.far.fa-eye
                         span= post.views
-                //- span.createdAt 생성 시간: #{new Date(post.created_at).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
-            .options
                 if authenticated && (loggedInUser._id == post.user.id)
-                    a(href=`/projects/recruitments/${post.id}/update`) 수정하기
-                    a(href=`/projects/recruitments/${post.id}/delete`) 삭제하기
+                    .post-options
+                        a(href=`/projects/recruitments/${post.id}/update`) 수정
+                        a(href=`/projects/recruitments/${post.id}/delete`) 삭제
             if authenticated
                 form(method="POST").comment
-                    input(type="text" name="content" placeholder="댓글을 입력하세요.").commentBox
-                    button(type="submit").commentButton
+                    input(type="text" name="content" placeholder="댓글을 입력하세요.")
+                    button(type="submit")
                         i.fas.fa-pen
             else 
                 .afterLogin
                     |댓글은
                     a(href="/users/login") 로그인
                     |후 이용 가능합니다.
-            ul.commentLists
+            ul.comment-lists
                 each element in commentLists
                     +comment(element)
-    script(src="/assets/js/views.js")
+    script(src="/assets/js/article.js")

@@ -9,19 +9,27 @@ const recruitmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  personnel: {
-    type: Number,
-    default: 1,
-  },
-  views: {
-    type: Number,
-    default: 0,
-  },
   like: {
     type: Number,
     default: 0,
   },
+  like_clicked_user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   choice: {
+    type: Number,
+    default: 0,
+  },
+  choice_clicked_user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  views: {
     type: Number,
     default: 0,
   },

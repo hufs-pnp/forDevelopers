@@ -142,8 +142,6 @@ export const postEnrollment = async (req, res) => {
       },
     } = req;
 
-    console.log(title, personnel, content);
-
     const user = await User.findById(_id);
 
     if (model == "Recruitment") {
@@ -175,6 +173,9 @@ export const postEnrollment = async (req, res) => {
   }
 };
 
+/**************************
+        게시글 보기
+ **************************/
 export const article = async (req, res) => {
   try {
     const {
@@ -186,7 +187,7 @@ export const article = async (req, res) => {
 
     if (model == "Recruitment") {
       post = await Recruitment.findById(id)
-        .populate("user", "_id")
+        .populate("user")
         .populate({
           path: "comment",
           populate: { path: "user" },
@@ -200,12 +201,14 @@ export const article = async (req, res) => {
         });
     }
 
+    const user = post.user;
     const commentLists = post.comment;
 
     return res.status(200).render(`projects/${category}/article.pug`, {
       pageTitle: "멤버 구하기 게시글",
       category,
       post,
+      user,
       commentLists,
     });
   } catch (error) {
@@ -213,6 +216,10 @@ export const article = async (req, res) => {
     return res.sendStatus(404);
   }
 };
+
+/**************************
+          댓글
+ *************************/
 export const comment = async (req, res) => {
   try {
     const {
@@ -232,11 +239,11 @@ export const comment = async (req, res) => {
       post = await Order.findById(id);
     }
 
-    post.comment.push(commentData.id);
+    post.comment.unshift(commentData.id);
     await post.save();
 
     const user = await User.findById(_id);
-    user.comment.push(commentData.id);
+    user.comment.unshift(commentData.id);
     await user.save();
 
     return res.redirect(`/projects/${category}/${id}`);
@@ -337,6 +344,9 @@ export const articleDelete = async (req, res) => {
   }
 };
 
+/**************************
+         댓글 삭제
+ *************************/
 export const commentDelete = async (req, res) => {
   try {
     const {
@@ -361,7 +371,7 @@ export const commentDelete = async (req, res) => {
         }
       );
     }
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { comment: { $in: [commentId] } },
       { $pull: { comment: commentId } }
     );

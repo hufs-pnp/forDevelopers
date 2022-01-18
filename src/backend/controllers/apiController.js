@@ -5,42 +5,14 @@ import Recruitment from "../models/Recruitment";
 import User from "../models/User";
 import Order from "../models/Order";
 import Community from "../models/Community";
+import Comment from "../models/Comment";
 
 dotenv.config();
 
 /*************************
-        조회 수 
+      유저 좋아요 수
 *************************/
-export const views = async (req, res) => {
-  try {
-    const {
-      params: { id },
-      body: { model },
-    } = req;
-
-    let post = null;
-
-    if (model == "Recruitment") {
-      post = await Recruitment.findById(id);
-    } else if (model == "Order") {
-      post = await Order.findById(id);
-    } else if (model == "Community") {
-      post = await Community.findById(id);
-    }
-
-    post.views += 1;
-    await post.save();
-    return res.json({ status: 200 });
-  } catch (error) {
-    console.log(error);
-    return res.json({ status: 404 });
-  }
-};
-
-/*************************
-        좋아요 수
-*************************/
-export const like = async (req, res) => {
+export const userLike = async (req, res) => {
   try {
     const {
       params: { id },
@@ -67,6 +39,172 @@ export const like = async (req, res) => {
     } else {
       return res.json({ status: 400 });
     }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+     게시글 좋아요 수
+*************************/
+export const postLike = async (req, res) => {
+  try {
+    const {
+      params: { category, id },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    let post = null;
+
+    if (category == "recruitments") {
+      post = await Recruitment.findById(id);
+    } else if (category == "communities") {
+      post = await Community.findById(id);
+    }
+
+    // 작성자와 좋아요 누른 사람이 같은 경우
+    if (post.user._id == _id) {
+      return res.json({ status: 401 });
+    }
+
+    // 이미 누른 유저인지 확인
+    let flag = true;
+    for (let i = 0; i < post.like_clicked_user.length; i++) {
+      if (post.like_clicked_user[i] == _id) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      post.like += 1;
+      post.like_clicked_user.push(_id);
+      await post.save();
+      return res.json({ like: post.like, status: 200 });
+    } else {
+      return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+     댓글 좋아요 수
+*************************/
+export const commentLike = async (req, res) => {
+  try {
+    const {
+      params: { category, postId, commentId },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    let post = null;
+
+    if (category == "recruitments") {
+      post = await Recruitment.findById(postId).populate("comment");
+    } else if (category == "communities") {
+      post = await Community.findById(postId);
+    }
+
+    const comment = await Comment.findById(commentId);
+
+    // 작성자와 좋아요 누른 사람이 같은 경우
+    if (comment.user._id == _id) {
+      return res.json({ status: 401 });
+    }
+
+    // 이미 누른 유저인지 확인
+    let flag = true;
+    for (let i = 0; i < comment.like_clicked_user.length; i++) {
+      if (comment.like_clicked_user[i] == _id) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      comment.like += 1;
+      comment.like_clicked_user.push(_id);
+      await comment.save();
+      return res.json({ like: comment.like, status: 200 });
+    } else {
+      return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+          찜 수
+*************************/
+export const choice = async (req, res) => {
+  try {
+    const {
+      params: { category, id },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    let post = null;
+
+    if (category == "recruitments") {
+      post = await Recruitment.findById(id);
+    } else if (category == "communities") {
+      post = await Community.findById(id);
+    }
+
+    let flag = true;
+    for (let i = 0; i < post.choice_clicked_user.length; i++) {
+      if (post.choice_clicked_user[i] == _id) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      post.choice += 1;
+      post.choice_clicked_user.push(_id);
+      await post.save();
+      return res.json({ choice: post.choice, status: 200 });
+    } else {
+      return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+        조회 수 
+*************************/
+export const views = async (req, res) => {
+  try {
+    const {
+      params: { category, id },
+    } = req;
+
+    let post = null;
+
+    if (category == "recruitments") {
+      post = await Recruitment.findById(id);
+    } else if (category == "communities") {
+      post = await Community.findById(id);
+    }
+
+    post.views += 1;
+    await post.save();
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
     return res.json({ status: 404 });
@@ -135,7 +273,7 @@ export const passportGoogleFinish = async (req, res) => {
 };
 
 /**********************************
-    이메일, 닉네임, 인증코드 확인
+            이메일 확인
 **********************************/
 export const email = async (req, res) => {
   try {
@@ -144,9 +282,9 @@ export const email = async (req, res) => {
     } = req;
 
     // 학교 웹메일로 작성됐는지 확인
-    if (!email.includes("@hufs.ac.kr")) {
-      return res.json({ status: 400 });
-    }
+    // if (!email.includes("@hufs.ac.kr")) {
+    //   return res.json({ status: 400 });
+    // }
 
     // 이미 가입되어 있는지 확인
     const user = await User.exists({ email });
@@ -197,6 +335,9 @@ export const email = async (req, res) => {
   }
 };
 
+/**********************************
+            닉네임 확인
+**********************************/
 export const nickname = async (req, res) => {
   try {
     const {
@@ -216,6 +357,9 @@ export const nickname = async (req, res) => {
   }
 };
 
+/**********************************
+          인증코드 확인
+**********************************/
 let randomCode = null;
 export const code = async (req, res) => {
   try {

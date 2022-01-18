@@ -4,7 +4,9 @@ mixin post({id, title, personnel, content, created_at, like, comment, user})
         span.contents #{content.length > 140 ?  content.slice(0, 140) + "..." : content}
         .info
             .first-column
-                span.time(data-time=created_at)
+                .time(data-time=created_at)
+                    span.day
+                    span.hours
                 .user
                     img(src=user.image_url)
                     span.nickname= user.nickname

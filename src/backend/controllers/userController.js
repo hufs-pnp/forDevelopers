@@ -116,13 +116,11 @@ export const logout = (req, res) => {
 ****************************************/
 export const profile = async (req, res) => {
   const {
-    session: {
-      user: { _id },
-    },
+    params: { id },
   } = req;
 
   try {
-    const user = await User.findOne({ _id });
+    const user = await User.findById(id);
     const profileErrorMsg = req.flash("profile_error");
 
     return res.status(200).render("users/profile.pug", {
@@ -133,7 +131,7 @@ export const profile = async (req, res) => {
   } catch (error) {
     console.log(error);
     req.flash("profile_error", "에러가 발생했습니다.");
-    return res.redirect(`/users/${_id}`);
+    return res.redirect(`/users/${id}`);
   }
 };
 
