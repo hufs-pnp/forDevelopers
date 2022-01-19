@@ -1,13 +1,13 @@
-extends ../../base.pug
+extends ../base.pug
 include ../mixins/boardForm.pug
 
 block content 
-    .recruitmentBoard-body
-        .recruitmentBoard-container 
+    .board-body
+        .board-container 
             .header
-                h1.title 멤버 구하기
+                h1.title= bodyTitle
                 if authenticated
-                    a(href="/projects/recruitments/enrollment").write
+                    a(href=`/${route}/enrollment`).write
                         i.fas.fa-pencil-alt
                         span 글쓰기
             .main
@@ -15,9 +15,9 @@ block content
                     span.error-msg= errorMessage
                 each element in articleLists 
                     +post(element)          
-            .pagination(data-numberofarticles = numberOfArticles, data-articlesperpage = articlesPerPage,
-            data-currentpage = currentPage, data-shownbuttons = shownButtons, data-category = `projects/${category}`, 
-            data-findterm = findTerm)
+            .pagination(data-numberofarticles=numberOfArticles data-articlesperpage=articlesPerPage
+            data-currentpage=currentPage data-shownbuttons=shownButtons data-route=route
+            data-findterm=findTerm)
                 .prev
                     button
                         i.fas.fa-chevron-left
@@ -25,7 +25,7 @@ block content
                 .next
                     button
                         i.fas.fa-chevron-right
-            form(action="/projects/recruitments/search/1" method="POST").search
+            form(action=`/${route}/search/1` method="POST").search
                 .searchBox
                     input(type="text" name="searchTerm" placeholder="Search..." required)
                     button(type="submit").searchButton

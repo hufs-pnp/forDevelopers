@@ -1,11 +1,11 @@
-extends ../../base.pug
+extends ../base.pug
 include ../mixins/commentForm.pug
 
 block content 
-    .recruitmentArticle-body
-        .recruitmentArticle-container(data-id = post.id)
+    .article-body
+        .article-container(data-id=post.id)
             .header
-                h1 멤버 구하기
+                h1= bodyTitle
             .main
                 a(href=`/users/${user.id}`).user 
                     .first-column
@@ -16,12 +16,12 @@ block content
                             .user-like
                                 i.fas.fa-heart
                                 span= user.like
-                        .time(data-time=post.created_at)
+                        .time(data-posttimedata=post.created_at)
                             span.day
                             span.hours
-                span.title #{post.title}
-                span.contents #{post.content}
-                .icons(data-category=category data-id=post.id data-login=authenticated)
+                span.title= post.title
+                span.contents= post.content
+                .icons(data-kinds=kinds data-articleid=post.id data-login=authenticated)
                     .like(title="좋아요")
                         i.far.fa-thumbs-up
                         span= post.like
@@ -36,8 +36,8 @@ block content
                         span= post.views
                 if authenticated && (loggedInUser._id == post.user.id)
                     .post-options
-                        a(href=`/projects/recruitments/${post.id}/update`) 수정
-                        a(href=`/projects/recruitments/${post.id}/delete`) 삭제
+                        a(href=`/${route}/${post.id}/update`) 수정
+                        a(href=`/${route}/${post.id}/delete`) 삭제
             if authenticated
                 form(method="POST").comment
                     input(type="text" name="content" placeholder="댓글을 입력하세요.")

@@ -32,11 +32,11 @@ function getTime(time, day, hours) {
 const postTime = document.querySelector(".main .user .second-column .time");
 
 const {
-  dataset: { time: time1 },
+  dataset: { posttimedata: postTimeData },
 } = postTime;
 
 getTime(
-  time1,
+  postTimeData,
   postTime.querySelector(".day"),
   postTime.querySelector(".hours")
 );
@@ -48,24 +48,28 @@ const commentTime = document.querySelectorAll(
   ".comment-lists .comment-box .user .second-column .time"
 );
 
-commentTime.forEach((list) => {
+commentTime.forEach((time) => {
   const {
-    dataset: { time: time2 },
-  } = list;
+    dataset: { commenttimedata: commentTimeData },
+  } = time;
 
-  getTime(time2, list.querySelector(".day"), list.querySelector(".hours"));
+  getTime(
+    commentTimeData,
+    time.querySelector(".day"),
+    time.querySelector(".hours")
+  );
 });
 
 /*************************************
-    좋아요, 댓글, 찜, 조회수 공통
+     좋아요, 찜, 조회수, 댓글 공통
 *************************************/
 const icons = document.querySelector(".icons");
 const {
-  dataset: { category, id, login },
+  dataset: { kinds, articleid: articleId, login },
 } = icons;
 
 /*************************
-        좋아요 클릭
+      게시글 좋아요
 *************************/
 const like = icons.querySelector(".like");
 
@@ -76,7 +80,7 @@ like.addEventListener("click", async () => {
   }
 
   const response = await (
-    await fetch(`/api/${category}/${id}/like`, {
+    await fetch(`/api/${kinds}/${articleId}/like`, {
       method: "POST",
     })
   ).json();
@@ -100,7 +104,7 @@ like.addEventListener("click", async () => {
 });
 
 /*************************
-         찜 클릭
+            찜 
 *************************/
 const choice = icons.querySelector(".choice");
 
@@ -111,7 +115,7 @@ choice.addEventListener("click", async () => {
   }
 
   const response = await (
-    await fetch(`/api/${category}/${id}/choice`, {
+    await fetch(`/api/${kinds}/${articleId}/choice`, {
       method: "POST",
     })
   ).json();
@@ -138,7 +142,7 @@ const views = icons.querySelector(".views");
 
 async function addViews() {
   const response = await (
-    await fetch(`/api/${category}/${id}/views`, {
+    await fetch(`/api/${kinds}/${articleId}/views`, {
       method: "POST",
     })
   ).json();
@@ -154,7 +158,7 @@ async function addViews() {
 addViews();
 
 /*************************
-     댓글 좋아요 클릭
+        댓글 좋아요 
 *************************/
 const commentLikes = document.querySelectorAll(
   ".comment-lists .comment-box .comment-options .comment-like-btn"
@@ -162,19 +166,26 @@ const commentLikes = document.querySelectorAll(
 
 commentLikes.forEach((like) => {
   const {
-    dataset: { commentid: commentId },
+    dataset: { commentid: commentId, numberofcommentlike: numberOfCommentLike },
   } = like;
+
+  // 좋아요가 1개 이상이면
+  if (numberOfCommentLike > 0) {
+    like.previousElementSibling.classList.remove("hidden");
+  }
 
   like.addEventListener("click", async () => {
     const response = await (
-      await fetch(`/api/${category}/${id}/comment/${commentId}/like`, {
+      await fetch(`/api/${kinds}/${articleId}/comment/${commentId}/like`, {
         method: "POST",
       })
     ).json();
 
     switch (response.status) {
       case 200:
-        const count = like.previousElementSibling.children[1];
+        const likeIcon = like.previousElementSibling;
+        const count = likeIcon.children[1];
+        likeIcon.classList.remove("hidden");
         count.innerText = response.like;
         return;
       case 400:
@@ -203,15 +214,56 @@ modifyComments.forEach((element) => {
     ".comment-options .comment-modify-btn"
   );
 
+  const modifiedInput = modifyForm.querySelector("input");
   const submitBtn = modifyForm.querySelector(".modify");
   const cancelBtn = modifyForm.querySelector(".cancel");
 
-  modifyBtn.addEventListener("click", () => {
-    originalComment.classList.add("hidden");
-    modifyForm.classList.remove("hidden");
+  const {
+    dataset: { commentid: commentId },
+  } = submitBtn;
+
+  // Enter event 막기
+  modifyForm.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
   });
 
+  // 댓글 작성자와 로그인한 유저가 같은 경우
+  if (modifyBtn) {
+    modifyBtn.addEventListener("click", () => {
+      originalComment.classList.add("hidden");
+      modifyForm.classList.remove("hidden");
+      modifyForm.querySelector("input").focus();
+    });
+  }
+
   cancelBtn.addEventListener("click", () => {
+    originalComment.classList.remove("hidden");
+    modifyForm.classList.add("hidden");
+  });
+
+  submitBtn.addEventListener("click", async () => {
+    const response = await (
+      await fetch(`/categories/comment/${commentId}/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ value: modifiedInput.value }),
+      })
+    ).json();
+
+    switch (response.status) {
+      case 200:
+        originalComment.innerText = response.value;
+        break;
+      case 404:
+        alert("에러가 발생했습니다.");
+        window.location.href = "/";
+        break;
+    }
+
     originalComment.classList.remove("hidden");
     modifyForm.classList.add("hidden");
   });

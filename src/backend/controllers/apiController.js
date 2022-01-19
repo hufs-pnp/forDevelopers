@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import Recruitment from "../models/Recruitment";
 import User from "../models/User";
-import Order from "../models/Order";
 import Community from "../models/Community";
 import Comment from "../models/Comment";
 
@@ -15,13 +14,13 @@ dotenv.config();
 export const userLike = async (req, res) => {
   try {
     const {
-      params: { id },
+      params: { userId },
       session: {
         user: { _id },
       },
     } = req;
 
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
 
     let flag = true;
     for (let i = 0; i < user.like_clicked_user.length; i++) {
@@ -46,23 +45,22 @@ export const userLike = async (req, res) => {
 };
 
 /*************************
-     게시글 좋아요 수
+      게시글 좋아요
 *************************/
 export const postLike = async (req, res) => {
   try {
     const {
-      params: { category, id },
+      params: { kinds, articleId },
       session: {
         user: { _id },
       },
     } = req;
 
     let post = null;
-
-    if (category == "recruitments") {
-      post = await Recruitment.findById(id);
-    } else if (category == "communities") {
-      post = await Community.findById(id);
+    if (kinds == "recruitments") {
+      post = await Recruitment.findById(articleId);
+    } else if (kinds == "communities") {
+      post = await Community.findById(articleId);
     }
 
     // 작성자와 좋아요 누른 사람이 같은 경우
@@ -94,12 +92,78 @@ export const postLike = async (req, res) => {
 };
 
 /*************************
-     댓글 좋아요 수
+          찜 수
+*************************/
+export const choice = async (req, res) => {
+  try {
+    const {
+      params: { kinds, articleId },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    let post = null;
+    if (kinds == "recruitments") {
+      post = await Recruitment.findById(articleId);
+    } else if (kinds == "communities") {
+      post = await Community.findById(articleId);
+    }
+
+    let flag = true;
+    for (let i = 0; i < post.choice_clicked_user.length; i++) {
+      if (post.choice_clicked_user[i] == _id) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      post.choice += 1;
+      post.choice_clicked_user.push(_id);
+      await post.save();
+      return res.json({ choice: post.choice, status: 200 });
+    } else {
+      return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+         조회 수 
+*************************/
+export const views = async (req, res) => {
+  try {
+    const {
+      params: { kinds, articleId },
+    } = req;
+
+    let post = null;
+    if (kinds == "recruitments") {
+      post = await Recruitment.findById(articleId);
+    } else if (kinds == "communities") {
+      post = await Community.findById(articleId);
+    }
+
+    post.views += 1;
+    await post.save();
+    return res.json({ status: 200 });
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+        댓글 좋아요 
 *************************/
 export const commentLike = async (req, res) => {
   try {
     const {
-      params: { category, postId, commentId },
+      params: { kinds, articleId, commentId },
       session: {
         user: { _id },
       },
@@ -107,10 +171,10 @@ export const commentLike = async (req, res) => {
 
     let post = null;
 
-    if (category == "recruitments") {
-      post = await Recruitment.findById(postId).populate("comment");
-    } else if (category == "communities") {
-      post = await Community.findById(postId);
+    if (kinds == "recruitments") {
+      post = await Recruitment.findById(articleId).populate("comment");
+    } else if (kinds == "communities") {
+      post = await Community.findById(articleId);
     }
 
     const comment = await Comment.findById(commentId);
@@ -137,74 +201,6 @@ export const commentLike = async (req, res) => {
     } else {
       return res.json({ status: 400 });
     }
-  } catch (error) {
-    console.log(error);
-    return res.json({ status: 404 });
-  }
-};
-
-/*************************
-          찜 수
-*************************/
-export const choice = async (req, res) => {
-  try {
-    const {
-      params: { category, id },
-      session: {
-        user: { _id },
-      },
-    } = req;
-
-    let post = null;
-
-    if (category == "recruitments") {
-      post = await Recruitment.findById(id);
-    } else if (category == "communities") {
-      post = await Community.findById(id);
-    }
-
-    let flag = true;
-    for (let i = 0; i < post.choice_clicked_user.length; i++) {
-      if (post.choice_clicked_user[i] == _id) {
-        flag = false;
-        break;
-      }
-    }
-
-    if (flag) {
-      post.choice += 1;
-      post.choice_clicked_user.push(_id);
-      await post.save();
-      return res.json({ choice: post.choice, status: 200 });
-    } else {
-      return res.json({ status: 400 });
-    }
-  } catch (error) {
-    console.log(error);
-    return res.json({ status: 404 });
-  }
-};
-
-/*************************
-        조회 수 
-*************************/
-export const views = async (req, res) => {
-  try {
-    const {
-      params: { category, id },
-    } = req;
-
-    let post = null;
-
-    if (category == "recruitments") {
-      post = await Recruitment.findById(id);
-    } else if (category == "communities") {
-      post = await Community.findById(id);
-    }
-
-    post.views += 1;
-    await post.save();
-    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
     return res.json({ status: 404 });

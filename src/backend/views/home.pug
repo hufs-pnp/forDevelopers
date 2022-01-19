@@ -2,9 +2,9 @@ extends ./base.pug
 
 block content 
     .homeButtons
-        a(href="/projects").projectsButton
-            button projects
-        a(href="/communities/1").communitiesButton
+        a(href="/categories/recruitments/1").projectsButton
+            button recruitments
+        a(href="/categories/communities/1").communitiesButton
             button communities
         a(href="/users/join").joinButton
             button join
@@ -17,5 +17,5 @@ block content
                 button logout
             a(href=`/users/${loggedInUser._id}`).profileButton
                 button profile
-            a(href=`/users/${loggedInUser._id}/delete`).userDeleteButton
+            a(href=`/users/delete`).userDeleteButton
                 button user-delete

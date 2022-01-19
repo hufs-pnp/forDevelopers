@@ -4,16 +4,16 @@ block content
     .profile-body
         .errorMessage(data-profileerrormsg=profileErrorMsg data-userid=user.id)
         .user-text
-            a(href="#").write
+            a(href=`/users/${user.id}/board/1`).write
                 i.fas.fa-clipboard
                 span 게시글
             .division |
-            a(href="#").comments
+            a(href=`/users/${user.id}/comment/1`).comments
                 i.fas.fa-pen
                 span 댓글
             .division |
-            a(href="#").scrap
-                i.fas.fa-star
+            a(href=`/users/${user.id}/choice/1`).scrap
+                i.fas.fa-square
                 span 찜
         .profile-container
             .outer-first-column

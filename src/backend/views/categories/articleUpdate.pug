@@ -1,0 +1,18 @@
+extends ../base.pug
+
+block content 
+    .articleUpdate-body
+        .articleUpdate-container 
+            .header
+                h1.title= bodyTitle
+                a(href=`/users/${user._id}`).user 
+                    img(src=user.image_url)
+                    .info 
+                        span= user.nickname
+                        .user-like
+                            i.fas.fa-heart
+                            span= user.like
+            form(method="POST")
+                input(type="text" name="title" placeholder="제목" maxlength=30 value=post.title required) 
+                textarea(name="content" spellcheck="false" placeholder="내용을 입력하세요." required)= post.content
+                input(type="submit" value="등록")

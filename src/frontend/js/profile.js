@@ -11,7 +11,7 @@ const {
 
 if (github_url == "empty") {
   const span = document.createElement("span");
-  span.innerText = "write github";
+  span.innerText = "no github";
   wrapper.appendChild(span);
 } else {
   const a = document.createElement("a");

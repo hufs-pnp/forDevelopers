@@ -6,16 +6,16 @@ let {
     articlesperpage: articlesPerPage,
     currentpage: currentPage,
     shownbuttons: shownButtons,
-    category,
+    route,
     findterm: findTerm,
   },
 } = data;
 
 function showChangedArticles() {
   if (findTerm) {
-    window.location.href = `/${category}/search/${currentPage}`;
+    window.location.href = `/${route}/search/${currentPage}`;
   } else {
-    window.location.href = `/${category}/${currentPage}`;
+    window.location.href = `/${route}/${currentPage}`;
   }
 }
 

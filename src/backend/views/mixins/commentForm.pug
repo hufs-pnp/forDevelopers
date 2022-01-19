@@ -9,19 +9,20 @@ mixin comment(element)
                     .user-like
                         i.fas.fa-heart
                         span= element.user.like
-                .time(data-time=element.created_at)
+                .time(data-commenttimedata=element.created_at)
                     span.day
                     span.hours
         span.content= element.content
         form(method="POST").hidden
             input(type="text" name="modifyComment" value=element.content)
-            button(type="submit").modify 수정
-            button(type="button").cancel 취소
+            .btns
+                button(type="button" data-commentid=element.id).modify 수정
+                button(type="button").cancel 취소
         .comment-options
-            .comment-like 
+            .comment-like.hidden
                 i.far.fa-laugh-beam
                 span= element.like
-            span(data-commentid=element.id).comment-like-btn 좋아요
+            span(data-commentid=element.id data-numberofcommentlike=element.like).comment-like-btn 좋아요
             if element.user.id == loggedInUser._id
-                span(data-commentid=element.id).comment-modify-btn 수정
-                a(href=`/projects/${category}/${post.id}/comment/${element.id}/delete`) 삭제
+                span.comment-modify-btn 수정
+                a(href=`/${route}/${post.id}/comment/${element.id}/delete`) 삭제

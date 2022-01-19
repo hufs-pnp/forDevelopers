@@ -1,0 +1,25 @@
+extends ../base.pug
+include ../mixins/boardForm.pug
+
+block content 
+    .board-body
+        .board-container 
+            .header
+                h1.title= bodyTitle
+            .main
+                if numberOfArticles == 0
+                    span.error-msg= errorMessage
+                each element in articleLists 
+                    +post(element)          
+            .pagination(data-numberofarticles=numberOfArticles data-articlesperpage=articlesPerPage
+            data-currentpage=currentPage data-shownbuttons=shownButtons data-route=`users/${userId}/board`
+            data-findterm=findTerm)
+                .prev
+                    button
+                        i.fas.fa-chevron-left
+                .numbers
+                .next
+                    button
+                        i.fas.fa-chevron-right
+    script(src="/assets/js/pagination.js")
+    script(src="/assets/js/board.js")

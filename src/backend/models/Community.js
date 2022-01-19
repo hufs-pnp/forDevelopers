@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const communitySchema = new mongoose.Schema({
-  category: {
-    type: String,
-    required: true,
-  },
   title: {
     type: String,
     required: true,
@@ -13,6 +9,26 @@ const communitySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  like: {
+    type: Number,
+    default: 0,
+  },
+  like_clicked_user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  choice: {
+    type: Number,
+    default: 0,
+  },
+  choice_clicked_user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   views: {
     type: Number,
     default: 0,

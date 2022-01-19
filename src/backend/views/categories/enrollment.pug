@@ -1,10 +1,10 @@
-extends ../../base.pug
+extends ../base.pug
 
 block content 
-    .recruitment-enrollment-body
-        .recruitment-enrollment-container 
+    .enrollment-body
+        .enrollment-container 
             .header
-                h1.title 글쓰기
+                h1.title= bodyTitle
                 a(href=`/users/${user._id}`).user 
                     img(src=user.image_url)
                     .info 

@@ -16,32 +16,41 @@ import "../passport";
 const apiRouter = express.Router();
 
 /***********************************
-          유저 좋아요 수
+          유저 좋아요 
 ***********************************/
-apiRouter.post("/users/:id([0-9a-f]{24})/like", userLike);
+apiRouter.post("/users/:userId([0-9a-f]{24})/like", userLike);
 
 /***********************************
-          게시글 좋아요 수
-***********************************/
-apiRouter.post("/:category/:id([0-9a-f]{24})/like", postLike);
-
-/***********************************
-          댓글 좋아요 수
+          게시글 좋아요 
 ***********************************/
 apiRouter.post(
-  "/:category/:postId([0-9a-f]{24})/comment/:commentId([0-9a-f]{24})/like",
-  commentLike
+  "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/like",
+  postLike
 );
 
 /***********************************
-              찜 수
+                찜 
 ***********************************/
-apiRouter.post("/:category/:id([0-9a-f]{24})/choice", choice);
+apiRouter.post(
+  "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/choice",
+  choice
+);
 
 /***********************************
               조회 수
 ***********************************/
-apiRouter.post("/:category/:id([0-9a-f]{24})/views", views);
+apiRouter.post(
+  "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/views",
+  views
+);
+
+/***********************************
+            댓글 좋아요 
+***********************************/
+apiRouter.post(
+  "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/comment/:commentId([0-9a-f]{24})/like",
+  commentLike
+);
 
 /***********************************
             구글 로그인

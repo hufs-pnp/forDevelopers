@@ -1,3 +1,6 @@
+import Recruitment from "../models/Recruitment";
+import Community from "../models/Community";
+import Comment from "../models/Comment";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
@@ -9,7 +12,7 @@ export const getJoin = (req, res) => {
 
   return res
     .status(200)
-    .render("users/join.pug", { pageTitle: "회원 가입", joinErrorMsg });
+    .render("users/join.pug", { headTitle: "회원 가입", joinErrorMsg });
 };
 export const postJoin = async (req, res) => {
   try {
@@ -62,7 +65,7 @@ export const postJoin = async (req, res) => {
 };
 
 /****************************************
-        로컬 로그인 & sns 로그인
+           로그인 & 로그아웃
 ****************************************/
 export const getLogin = (req, res) => {
   // 학교 웹메일로 로그인 안해서 생기는 error(구글)
@@ -70,7 +73,7 @@ export const getLogin = (req, res) => {
 
   return res
     .status(200)
-    .render("users/login.pug", { pageTitle: "로그인", snsLoginError });
+    .render("users/login.pug", { headTitle: "로그인", snsLoginError });
 };
 export const postLogin = async (req, res) => {
   try {
@@ -112,6 +115,25 @@ export const logout = (req, res) => {
 };
 
 /****************************************
+                회원 탈퇴
+****************************************/
+export const userDelete = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+  } = req;
+
+  req.session.user = undefined;
+  req.session.loggedIn = undefined;
+  req.session.localLogin = undefined;
+
+  await User.findByIdAndRemove(_id);
+
+  return res.redirect("/");
+};
+
+/****************************************
               유저 프로필
 ****************************************/
 export const profile = async (req, res) => {
@@ -124,7 +146,7 @@ export const profile = async (req, res) => {
     const profileErrorMsg = req.flash("profile_error");
 
     return res.status(200).render("users/profile.pug", {
-      pageTitle: "유저 프로필",
+      headTitle: "유저 프로필",
       user,
       profileErrorMsg,
     });
@@ -135,6 +157,9 @@ export const profile = async (req, res) => {
   }
 };
 
+/****************************************
+            유저 프로필 수정
+****************************************/
 export const getProfileUpdate = async (req, res) => {
   try {
     const {
@@ -147,7 +172,7 @@ export const getProfileUpdate = async (req, res) => {
     const profileUpdateErrorMsg = req.flash("profileUpdate_error");
 
     return res.status(200).render("users/profileUpdate.pug", {
-      pageTitle: "유저 프로필",
+      headTitle: "유저 프로필",
       user,
       profileUpdateErrorMsg,
     });
@@ -226,26 +251,83 @@ export const postProfileUpdate = async (req, res) => {
 };
 
 /****************************************
-                회원 탈퇴
+            내가 쓴 게시글 보기
 ****************************************/
-export const userDelete = async (req, res) => {
-  const {
-    session: {
-      user: { _id },
-    },
-  } = req;
+export const userBoard = async (req, res) => {
+  try {
+    const {
+      params: { currentPage, id },
+    } = req;
 
-  req.session.user = undefined;
-  req.session.loggedIn = undefined;
-  req.session.localLogin = undefined;
+    let numberOfArticles = null;
+    const articlesPerPage = 2;
+    const shownButtons = 9; // 홀수만
+    let articleLists = [];
 
-  await User.findByIdAndRemove(_id);
+    const user = await User.findById(id);
 
-  return res.redirect("/");
+    numberOfArticles = user.recruitment.length + user.community.length;
+
+    const recruitmentLists = await Recruitment.find({
+      user: { $in: [user.id] },
+    }).populate("user");
+    const newRecruitmentLists = recruitmentLists.map((element) => ({
+      ...element._doc,
+      userBoardRoute: "categories/recruitments",
+    }));
+
+    const communityLists = await Community.find({
+      user: { $in: [user.id] },
+    }).populate("user");
+    const newCommunityLists = communityLists.map((element) => ({
+      ...element._doc,
+      userBoardRoute: "categories/communities",
+    }));
+
+    const totalLists = [...newRecruitmentLists, ...newCommunityLists];
+
+    // 최신순으로
+    totalLists.sort(function (a, b) {
+      return b.created_at - a.created_at;
+    });
+
+    const start = (currentPage - 1) * articlesPerPage;
+    const end = start + articlesPerPage;
+    for (let i = start; i < end; i++) {
+      if (totalLists[i] === undefined) break;
+
+      articleLists.push(totalLists[i]);
+    }
+
+    return res.status(200).render(`users/board.pug`, {
+      headTitle: "내가 쓴 게시물",
+      bodyTitle: "내 게시물",
+      userId: id,
+      articleLists,
+      numberOfArticles,
+      articlesPerPage,
+      currentPage,
+      shownButtons,
+      errorMessage: "게시글이 없습니다.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/users/${id}`);
+  }
 };
 
 /****************************************
-              비밀번호 변경
+            내가 쓴 댓글 보기
+****************************************/
+export const userComment = () => {};
+
+/****************************************
+          내가 찜한 게시글 보기
+****************************************/
+export const userChoice = () => {};
+
+/****************************************
+              비밀번호 수정
 ****************************************/
 export const getChangePassword = (req, res) => {
   const {
@@ -253,7 +335,7 @@ export const getChangePassword = (req, res) => {
   } = req;
 
   return res.status(200).render("users/changePassword.pug", {
-    pageTitle: "비밀번호 변경하기",
+    headTitle: "비밀번호 변경하기",
     user_id: id,
   });
 };

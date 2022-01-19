@@ -6,24 +6,6 @@ export const localMiddlewares = (req, res, next) => {
   next();
 };
 
-export const chooseCategory = (req, res, next) => {
-  const {
-    params: { category },
-  } = req;
-
-  if (category == "recruitments") {
-    req.body.model = "Recruitment";
-  } else if (category == "orders") {
-    req.body.model = "Order";
-  } else if (category == "communities") {
-    req.body.model = "Community";
-  } else {
-    return res.redirect("/");
-  }
-
-  return next();
-};
-
 import multer from "multer";
 
 export const upload = multer({ dest: "uploads" });

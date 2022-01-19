@@ -6,8 +6,7 @@ import passport from "passport";
 import flash from "connect-flash";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
-import projectsRouter from "./routers/projectsRouter";
-import communitiesRouter from "./routers/communitiesRouter";
+import categoryRouter from "./routers/categoryRouter";
 import apiRouter from "./routers/apiRouter";
 import { localMiddlewares } from "./middlewares";
 
@@ -42,8 +41,7 @@ app.use(passport.session());
 
 app.use("/", rootRouter);
 app.use("/users", userRouter);
-app.use("/projects", projectsRouter);
-app.use("/communities", communitiesRouter);
+app.use("/categories", categoryRouter);
 app.use("/api", apiRouter);
 
 export default app;
