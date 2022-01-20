@@ -1,9 +1,9 @@
 extends ../base.pug
-include ../mixins/boardForm.pug
+include ../mixins/userBoardForm.pug
 
 block content 
-    .board-body
-        .board-container 
+    .userBoard-body
+        .userBoard-container 
             .header
                 h1.title= bodyTitle
             .main
@@ -12,8 +12,8 @@ block content
                 each element in articleLists 
                     +post(element)          
             .pagination(data-numberofarticles=numberOfArticles data-articlesperpage=articlesPerPage
-            data-currentpage=currentPage data-shownbuttons=shownButtons data-route=`users/${userId}/board`
-            data-findterm=findTerm)
+            data-currentpage=currentPage data-shownbuttons=shownButtons 
+            data-route=`users/${userId}/${move}`)
                 .prev
                     button
                         i.fas.fa-chevron-left

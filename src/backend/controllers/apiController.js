@@ -92,7 +92,7 @@ export const postLike = async (req, res) => {
 };
 
 /*************************
-          찜 수
+            찜 
 *************************/
 export const choice = async (req, res) => {
   try {
@@ -122,10 +122,59 @@ export const choice = async (req, res) => {
       post.choice += 1;
       post.choice_clicked_user.push(_id);
       await post.save();
+
+      const user = await User.findById(_id);
+      user.choice.unshift({ id: post.id, kinds });
+      await user.save();
+
       return res.json({ choice: post.choice, status: 200 });
     } else {
       return res.json({ status: 400 });
     }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+         찜 삭제
+*************************/
+export const deleteChoice = async (req, res) => {
+  try {
+    const {
+      params: { kinds, articleId },
+      session: {
+        user: { _id },
+      },
+    } = req;
+
+    if (kinds == "recruitments") {
+      await Recruitment.findOneAndUpdate(
+        { _id: articleId },
+        {
+          $pull: { choice_clicked_user: _id },
+          $inc: { choice: -1 },
+        }
+      );
+    } else if (kinds == "communities") {
+      await Community.findOneAndUpdate(
+        { _id: articleId },
+        {
+          $pull: { choice_clicked_user: _id },
+          $inc: { choice: -1 },
+        }
+      );
+    }
+
+    await User.findOneAndUpdate(
+      { _id },
+      {
+        $pull: { choice: { id: articleId } },
+      }
+    );
+
+    return res.json({ status: 200 });
   } catch (error) {
     console.log(error);
     return res.json({ status: 404 });

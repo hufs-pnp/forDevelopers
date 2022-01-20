@@ -5,6 +5,7 @@ import {
   postLike,
   commentLike,
   choice,
+  deleteChoice,
   views,
   passportGoogleFinish,
   email,
@@ -34,6 +35,14 @@ apiRouter.post(
 apiRouter.post(
   "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/choice",
   choice
+);
+
+/***********************************
+             찜 삭제
+***********************************/
+apiRouter.post(
+  "/:kinds(recruitments|communities)/:articleId([0-9a-f]{24})/choice/delete",
+  deleteChoice
 );
 
 /***********************************

@@ -25,6 +25,11 @@
         width: fit-content;
         margin-bottom: 20px;
 
+        &.inactive {
+          pointer-events: none;
+          user-select: none;
+        }
+
         .first-column {
           margin-right: 10px;
 
@@ -175,6 +180,16 @@
         i {
           font-size: 18px;
         }
+      }
+    }
+
+    .afterLogin {
+      text-align: center;
+      transform: translateY(15px);
+
+      a {
+        color: #3057f5;
+        font-weight: 700;
       }
     }
 

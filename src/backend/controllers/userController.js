@@ -268,6 +268,7 @@ export const userBoard = async (req, res) => {
 
     numberOfArticles = user.recruitment.length + user.community.length;
 
+    // 이미 최신순으로 정렬되어 있음.
     const recruitmentLists = await Recruitment.find({
       user: { $in: [user.id] },
     }).populate("user");
@@ -286,11 +287,6 @@ export const userBoard = async (req, res) => {
 
     const totalLists = [...newRecruitmentLists, ...newCommunityLists];
 
-    // 최신순으로
-    totalLists.sort(function (a, b) {
-      return b.created_at - a.created_at;
-    });
-
     const start = (currentPage - 1) * articlesPerPage;
     const end = start + articlesPerPage;
     for (let i = start; i < end; i++) {
@@ -299,16 +295,17 @@ export const userBoard = async (req, res) => {
       articleLists.push(totalLists[i]);
     }
 
-    return res.status(200).render(`users/board.pug`, {
+    return res.status(200).render(`users/userBoard.pug`, {
       headTitle: "내가 쓴 게시물",
       bodyTitle: "내 게시물",
       userId: id,
+      move: "board",
       articleLists,
       numberOfArticles,
       articlesPerPage,
       currentPage,
       shownButtons,
-      errorMessage: "게시글이 없습니다.",
+      errorMessage: "쓴 글이 없습니다.",
     });
   } catch (error) {
     console.log(error);
@@ -319,12 +316,130 @@ export const userBoard = async (req, res) => {
 /****************************************
             내가 쓴 댓글 보기
 ****************************************/
-export const userComment = () => {};
+export const userComment = async (req, res) => {
+  try {
+    const {
+      params: { currentPage, id },
+    } = req;
+
+    let numberOfArticles = null;
+    const articlesPerPage = 2;
+    const shownButtons = 9; // 홀수만
+    let articleLists = [];
+
+    // 이미 최신순으로 정렬되어 있음.
+    const user = await User.findById(id).populate("comment");
+
+    numberOfArticles = user.comment.length;
+
+    const totalLists = await Promise.all(
+      user.comment.map(async (element) => {
+        let post = null;
+        if (element._doc.article_kinds == "recruitments") {
+          post = await Recruitment.findById(element._doc.article_id).populate(
+            "user"
+          );
+        } else if (element._doc.article_kinds == "communities") {
+          post = await Community.findById(element._doc.article_id).populate(
+            "user"
+          );
+        }
+
+        return {
+          ...post._doc,
+          userBoardRoute: `categories/${element._doc.article_kinds}`,
+        };
+      })
+    );
+
+    const start = (currentPage - 1) * articlesPerPage;
+    const end = start + articlesPerPage;
+    for (let i = start; i < end; i++) {
+      if (totalLists[i] === undefined) break;
+
+      articleLists.push(totalLists[i]);
+    }
+
+    return res.status(200).render(`users/userBoard.pug`, {
+      headTitle: "내가 쓴 댓글",
+      bodyTitle: "내 댓글",
+      userId: id,
+      move: "comment",
+      articleLists,
+      numberOfArticles,
+      articlesPerPage,
+      currentPage,
+      shownButtons,
+      errorMessage: "쓴 댓글이 없습니다.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/users/${id}`);
+  }
+};
 
 /****************************************
           내가 찜한 게시글 보기
 ****************************************/
-export const userChoice = () => {};
+export const userChoice = async (req, res) => {
+  try {
+    const {
+      params: { currentPage, id },
+    } = req;
+
+    let numberOfArticles = null;
+    const articlesPerPage = 2;
+    const shownButtons = 9; // 홀수만
+    let articleLists = [];
+
+    // 이미 최신순으로 정렬되어 있음.
+    const user = await User.findById(id).populate("choice");
+
+    numberOfArticles = user.choice.length;
+
+    const totalLists = await Promise.all(
+      user.choice.map(async (element) => {
+        let post = null;
+        if (element._doc.kinds == "recruitments") {
+          post = await Recruitment.findById(element._doc.id).populate("user");
+        } else if (element._doc.kinds == "communities") {
+          post = await Community.findById(element._doc.id).populate("user");
+        }
+
+        return {
+          ...post._doc,
+          kinds: element._doc.kinds,
+          userBoardRoute: `categories/${element._doc.kinds}`,
+        };
+      })
+    );
+
+    const start = (currentPage - 1) * articlesPerPage;
+    const end = start + articlesPerPage;
+    for (let i = start; i < end; i++) {
+      if (totalLists[i] === undefined) break;
+
+      articleLists.push(totalLists[i]);
+    }
+
+    return res.status(200).render(`users/userBoard.pug`, {
+      headTitle: "내가 찜한 글",
+      bodyTitle: "내 찜 목록",
+      userId: id,
+      move: "choice",
+      userProfileId: id,
+      articleLists,
+      numberOfArticles,
+      articlesPerPage,
+      currentPage,
+      shownButtons,
+      errorMessage: "찜한 목록이 없습니다.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/users/${id}`);
+  }
+};
 
 /****************************************
               비밀번호 수정

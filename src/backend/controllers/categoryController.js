@@ -148,7 +148,7 @@ export const postEnrollment = async (req, res) => {
         user: _id,
       });
 
-      user.recruitment.push(recruitment.id);
+      user.recruitment.unshift(recruitment.id);
       await user.save();
     } else if (kinds == "communities") {
       const community = await Community.create({
@@ -157,7 +157,7 @@ export const postEnrollment = async (req, res) => {
         user: _id,
       });
 
-      user.community.push(community.id);
+      user.community.unshift(community.id);
       await user.save();
     }
 
@@ -223,7 +223,12 @@ export const comment = async (req, res) => {
       },
     } = req;
 
-    const commentData = await Comment.create({ content, user: _id });
+    const commentData = await Comment.create({
+      content,
+      user: _id,
+      article_kinds: kinds,
+      article_id: articleId,
+    });
 
     let post = null;
     if (kinds == "recruitments") {
@@ -343,7 +348,7 @@ export const articleDelete = async (req, res) => {
 
       await User.findByIdAndUpdate(
         { _id },
-        { $pull: { recruitment: articleId } }
+        { $pull: { recruitment: articleId, choice: articleId } }
       );
     } else if (kinds == "communities") {
       post = await Community.findByIdAndRemove({ _id: articleId }).populate({
@@ -387,14 +392,14 @@ export const commentDelete = async (req, res) => {
 
     if (kinds == "recruitments") {
       await Recruitment.findOneAndUpdate(
-        { id: articleId },
+        { _id: articleId },
         {
           $pull: { comment: commentId },
         }
       );
     } else if (kinds == "communities") {
       await Community.findOneAndUpdate(
-        { id: articleId },
+        { _id: articleId },
         {
           $pull: { comment: commentId },
         }

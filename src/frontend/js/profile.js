@@ -77,12 +77,16 @@ if (interest.length == 2) {
        like 처리
 ************************/
 const like = document.querySelector(".hidden-column .second-row .like");
+const likeBtn = like.querySelector("i");
 
 const {
-  dataset: { id },
+  dataset: { id, login },
 } = like;
 
-like.addEventListener("click", async () => {
+likeBtn.addEventListener("click", async () => {
+  // 로그인 안했으면
+  if (login == undefined) return;
+
   const response = await (
     await fetch(`/api/users/${id}/like`, {
       method: "POST",

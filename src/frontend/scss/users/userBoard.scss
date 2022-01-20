@@ -1,0 +1,228 @@
+.userBoard-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .userBoard-container {
+    width: 790px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+
+      .write {
+        background-color: #12cbc4;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: #12aca7;
+        }
+
+        i {
+          margin-right: 7px;
+        }
+      }
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+
+      .error-msg {
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #e3e3e3;
+        color: #a6a6a6;
+      }
+
+      .board-form {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #e3e3e3;
+        padding: 15px;
+        margin-bottom: -1px;
+        position: relative;
+
+        &:hover {
+          background-color: #fbfbfb;
+        }
+
+        .title {
+          font-size: 17px;
+          font-weight: 700;
+          margin-bottom: 5px;
+        }
+
+        .contents {
+          font-size: 13px;
+          color: #a6a6a6;
+          margin-bottom: 5px;
+        }
+
+        .info {
+          font-size: 12px;
+          color: #a6a6a6;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .first-column {
+            display: flex;
+
+            .time {
+              margin-right: 7px;
+
+              .day {
+                margin-right: 5px;
+              }
+            }
+
+            .user {
+              display: flex;
+              align-items: center;
+
+              img {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                margin-right: 3px;
+              }
+
+              .nickname {
+                margin-right: 5px;
+              }
+
+              .user-like {
+                i {
+                  color: #ff5e57;
+                  margin-right: 2px;
+                }
+              }
+            }
+          }
+
+          .second-column {
+            display: flex;
+            font-size: 14px;
+
+            .like {
+              color: #0652dd;
+              margin-right: 8px;
+              letter-spacing: 2px;
+            }
+
+            .comment {
+              color: #b53471;
+              letter-spacing: 2px;
+            }
+          }
+        }
+
+        .delete-btn {
+          position: absolute;
+          top: 12px;
+          right: 15px;
+
+          span {
+            font-size: 13px;
+            color: #aaa;
+
+            &:hover {
+              color: black;
+            }
+          }
+        }
+      }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+
+      & > div {
+        display: flex;
+
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
+
+        button {
+          width: 35px;
+          height: 35px;
+          cursor: pointer;
+          border: none;
+          border-radius: 50%;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: 900;
+          background-color: white;
+
+          &:not(:last-child) {
+            margin-right: 20px;
+          }
+
+          &.active {
+            background-color: #1289a7;
+            color: white;
+            pointer-events: none;
+            user-select: none;
+          }
+
+          &.disabled {
+            pointer-events: none;
+            user-select: none;
+          }
+
+          &:hover {
+            &:not(.active) {
+              background-color: #e4e1e1;
+            }
+          }
+
+          i {
+            font-size: 17px;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .search {
+      display: flex;
+
+      .searchBox {
+        position: relative;
+
+        input {
+          padding: 5px 40px 5px 10px;
+          font-size: 18px;
+          border: none;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+          border-radius: 5px;
+        }
+
+        .searchButton {
+          position: absolute;
+          right: 3%;
+          top: 15%;
+          border: none;
+          background-color: transparent;
+          font-size: 20px;
+          opacity: 0.4;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

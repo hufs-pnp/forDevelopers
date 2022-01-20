@@ -268,3 +268,16 @@ modifyComments.forEach((element) => {
     modifyForm.classList.add("hidden");
   });
 });
+
+/*************************
+        탈퇴 인원
+*************************/
+const user = document.querySelector(".main .user");
+
+const {
+  dataset: { existence },
+} = user;
+
+if (!existence) {
+  user.classList.add("inactive");
+}

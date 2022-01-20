@@ -1,5 +1,5 @@
-mixin post({id, title, content, created_at, like, comment, user})
-    a(href=`/${route}/${id}`).board-form
+mixin post({_id, title, content, created_at, like, comment, kinds, user, userBoardRoute})
+    a(href=`/${userBoardRoute}/${_id}`).board-form
         span.title #{title.length > 10 ?  title.slice(0, 10) + "..." : title}
         span.contents #{content.length > 140 ?  content.slice(0, 140) + "..." : content}
         .info
@@ -21,3 +21,7 @@ mixin post({id, title, content, created_at, like, comment, user})
                 .comment
                     i.far.fa-comment
                     span= comment.length
+        if authenticated && (loggedInUser._id == userProfileId) && move == "choice"
+            .delete-btn
+                span(data-articleid=_id data-kinds=kinds) 찜 삭제
+

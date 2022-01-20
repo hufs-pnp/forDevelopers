@@ -40,16 +40,19 @@ block content
                         span(data-department=user.department) 학과: 
                         span(data-interest=user.interest) 관심 분야: 
                     .second-row
-                        .like(data-id=user.id)
+                        .like(data-id=user.id data-login=authenticated)
                             span like
-                            i.fas.fa-thumbs-up
+                            if authenticated
+                                i.fas.fa-thumbs-up
+                            else 
+                                i.fas.fa-thumbs-up.inactive
                             span #{user.like}
                         .visit
                             span visit
                             i.fas.fa-home
                             span #{user.visit}
         .options
-            if loggedInUser._id == user.id
+            if authenticated && loggedInUser._id == user.id
                 a(href=`/users/${user.id}/update`) 프로필 수정하기
                 if localLogin 
                     a(href=`/users/${user.id}/password`) 비밀번호 변경하기

@@ -7,15 +7,16 @@ block content
             .header
                 h1= bodyTitle
             .main
-                a(href=`/users/${user.id}`).user 
+                a(href=`${user ? "/users/"+user.id : ""}` data-existence=user).user 
                     .first-column
-                        img(src=user.image_url)
+                        img(src=`${user ? user.image_url : "https://graph.facebook.com/2703909133188815/picture?width=40&height=40"}`)
                     .second-column
                         .info 
-                            span= user.nickname
-                            .user-like
-                                i.fas.fa-heart
-                                span= user.like
+                            span #{user ? user.nickname : "탈퇴 인원"}
+                            if user
+                                .user-like
+                                    i.fas.fa-heart
+                                    span= user.like
                         .time(data-posttimedata=post.created_at)
                             span.day
                             span.hours
@@ -34,7 +35,7 @@ block content
                     .views(title="조회수")
                         i.far.fa-eye
                         span= post.views
-                if authenticated && (loggedInUser._id == post.user.id)
+                if authenticated && (loggedInUser._id == `${post.user ? post.user.id : null}`)
                     .post-options
                         a(href=`/${route}/${post.id}/update`) 수정
                         a(href=`/${route}/${post.id}/delete`) 삭제
@@ -45,8 +46,8 @@ block content
                         i.fas.fa-pen
             else 
                 .afterLogin
-                    |댓글은
-                    a(href="/users/login") 로그인
+                    |댓글은 
+                    a(href="/users/login") 로그인 
                     |후 이용 가능합니다.
             ul.comment-lists
                 each element in commentLists

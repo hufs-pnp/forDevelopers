@@ -19,6 +19,14 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  article_kinds: {
+    type: String,
+    required: true,
+  },
+  article_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

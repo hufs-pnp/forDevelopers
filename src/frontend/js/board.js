@@ -35,3 +35,39 @@ timeForm.forEach((element) => {
     hours.innerText = hour + ":" + minute;
   }
 });
+
+/*************************
+         찜 삭제
+*************************/
+const boardForm = document.querySelectorAll(".main .board-form");
+
+boardForm.forEach((element) => {
+  const deleteChoiceBtn = element.querySelector(".delete-btn span");
+
+  if (!deleteChoiceBtn) return;
+
+  const {
+    dataset: { articleid: articleId, kinds },
+  } = deleteChoiceBtn;
+
+  deleteChoiceBtn.addEventListener("click", async (event) => {
+    // anchor event 막기
+    event.preventDefault();
+
+    const response = await (
+      await fetch(`/api/${kinds}/${articleId}/choice/delete`, {
+        method: "POST",
+      })
+    ).json();
+
+    switch (response.status) {
+      case 200:
+        window.location.reload();
+        return;
+      case 404:
+        alert("에러가 발생했습니다.");
+        window.location.href = "/";
+        return;
+    }
+  });
+});

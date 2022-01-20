@@ -68,28 +68,14 @@ const userSchema = new mongoose.Schema({
   },
   choice: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Recruitment",
-    },
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Community",
+      id: mongoose.Schema.Types.ObjectId,
+      kinds: String,
     },
   ],
   created_at: {
     type: Date,
     default: Date.now,
   },
-  order: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
-  ],
   recruitment: [
     {
       type: mongoose.Schema.Types.ObjectId,
