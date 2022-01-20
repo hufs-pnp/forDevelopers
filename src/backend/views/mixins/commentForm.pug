@@ -1,6 +1,6 @@
 mixin comment(element)
     li.comment-box
-        a(href=`${element.user ? "/users/"+element.user._id : ""}` data-existence=user).comment-user
+        a(href=`${element.user ? "/users/"+element.user._id : ""}` data-existence=element.user).comment-user
             .first-column
                 img(src=`${element.user ? element.user.image_url : "https://graph.facebook.com/2703909133188815/picture?width=40&height=40"}`)
             .second-column
