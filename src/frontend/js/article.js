@@ -45,7 +45,7 @@ getTime(
      댓글 작성 시간
 *************************/
 const commentTime = document.querySelectorAll(
-  ".comment-lists .comment-box .user .second-column .time"
+  ".comment-lists .comment-box .comment-user .second-column .time"
 );
 
 commentTime.forEach((time) => {
@@ -166,7 +166,11 @@ const commentLikes = document.querySelectorAll(
 
 commentLikes.forEach((like) => {
   const {
-    dataset: { commentid: commentId, numberofcommentlike: numberOfCommentLike },
+    dataset: {
+      commentid: commentId,
+      numberofcommentlike: numberOfCommentLike,
+      login,
+    },
   } = like;
 
   // 좋아요가 1개 이상이면
@@ -175,6 +179,12 @@ commentLikes.forEach((like) => {
   }
 
   like.addEventListener("click", async () => {
+    // 로그인 안했으면
+    if (login == undefined) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
     const response = await (
       await fetch(`/api/${kinds}/${articleId}/comment/${commentId}/like`, {
         method: "POST",
@@ -273,11 +283,16 @@ modifyComments.forEach((element) => {
         탈퇴 인원
 *************************/
 const user = document.querySelector(".main .user");
+const commentUserLists = document.querySelectorAll(
+  ".comment-lists .comment-box .comment-user"
+);
 
-const {
-  dataset: { existence },
-} = user;
-
-if (!existence) {
+if (!user.dataset.existence) {
   user.classList.add("inactive");
 }
+
+commentUserLists.forEach((element) => {
+  if (!element.dataset.existence) {
+    element.classList.add("inactive");
+  }
+});

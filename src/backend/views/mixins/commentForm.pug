@@ -1,14 +1,15 @@
 mixin comment(element)
     li.comment-box
-        a(href=`/users/${element.user._id}`).user 
+        a(href=`${element.user ? "/users/"+element.user._id : ""}` data-existence=user).comment-user
             .first-column
-                img(src=element.user.image_url)
+                img(src=`${element.user ? element.user.image_url : "https://graph.facebook.com/2703909133188815/picture?width=40&height=40"}`)
             .second-column
                 .info 
-                    span= element.user.nickname
-                    .user-like
-                        i.fas.fa-heart
-                        span= element.user.like
+                    span #{element.user ? element.user.nickname : "탈퇴 인원"}
+                    if element.user
+                        .user-like
+                            i.fas.fa-heart
+                            span= element.user.like
                 .time(data-commenttimedata=element.created_at)
                     span.day
                     span.hours
@@ -22,7 +23,7 @@ mixin comment(element)
             .comment-like.hidden
                 i.far.fa-laugh-beam
                 span= element.like
-            span(data-commentid=element.id data-numberofcommentlike=element.like).comment-like-btn 좋아요
-            if element.user.id == loggedInUser._id
+            span(data-commentid=element.id data-numberofcommentlike=element.like data-login=authenticated).comment-like-btn 좋아요
+            if authenticated && `${element.user ? element.user.id : null}` == loggedInUser._id
                 span.comment-modify-btn 수정
                 a(href=`/${route}/${post.id}/comment/${element.id}/delete`) 삭제

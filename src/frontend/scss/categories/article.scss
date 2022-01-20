@@ -185,7 +185,7 @@
 
     .afterLogin {
       text-align: center;
-      transform: translateY(15px);
+      margin: 15px 0;
 
       a {
         color: #3057f5;
@@ -202,10 +202,15 @@
         margin-bottom: -1px;
         position: relative;
 
-        .user {
+        .comment-user {
           display: flex;
           width: fit-content;
           margin-bottom: 15px;
+
+          &.inactive {
+            pointer-events: none;
+            user-select: none;
+          }
 
           .first-column {
             display: flex;
