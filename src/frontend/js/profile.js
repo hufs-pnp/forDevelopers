@@ -116,11 +116,11 @@ const profileContainer = document.querySelector(".profile-container");
 const hiddenColumn = document.querySelector(".hidden-column");
 
 profileContainer.addEventListener("mouseenter", () => {
-  hiddenColumn.classList.add("show");
+  hiddenColumn.style = "transform: scale(1, 1);";
 });
 
 profileContainer.addEventListener("mouseleave", () => {
-  hiddenColumn.classList.remove("show");
+  hiddenColumn.removeAttribute("style");
 });
 
 /*****************************

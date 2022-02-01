@@ -12,7 +12,7 @@ block content
                         span 글쓰기
             .main
                 if numberOfArticles == 0
-                    span.error-msg= errorMessage
+                    span.empty-msg= emptyMessage
                 each element in articleLists 
                     +post(element)          
             .pagination(data-numberofarticles=numberOfArticles data-articlesperpage=articlesPerPage

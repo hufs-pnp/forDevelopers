@@ -1,0 +1,15 @@
+mixin rank(element, index)
+    a(href=`/users/${element._id}`).hidden
+        .first-column
+            img(src=`${element.image_url}`)
+        .second-column
+            .info
+                span.rank #{index + 1}
+                span.nickname #{element.nickname}
+                .etc-info
+                    .user-like
+                        i.fas.fa-heart
+                        span #{element.like}
+                    .user-visit
+                        i.fas.fa-house
+                        span.visit #{element.visit}

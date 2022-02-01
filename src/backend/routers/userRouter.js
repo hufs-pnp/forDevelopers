@@ -14,6 +14,7 @@ import {
   userChoice,
   getChangePassword,
   postChangePassword,
+  findPassword,
 } from "../controllers/userController";
 import { upload } from "../middlewares";
 
@@ -80,5 +81,10 @@ userRouter
   .route("/:id([0-9a-f]{24})/password")
   .get(getChangePassword)
   .post(postChangePassword);
+
+/******************
+   비밀번호 찾기
+******************/
+userRouter.get("/password/find", findPassword);
 
 export default userRouter;

@@ -1,26 +1,255 @@
-.homeButtons {
-  padding: 50px 0px;
+.home-body {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 
-  a {
-    margin-bottom: 30px;
+  .home-container {
+    width: 100%;
 
-    button {
-      font-size: 2em;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      background: #3498db;
-      color: white;
-      border-radius: 5px;
-      padding: 10px;
-    }
-  }
+    main {
+      padding: 200px;
 
-  .logoutButton {
-    button {
-      background: #e74c3c;
+      .board {
+        .first-row {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          column-gap: 50px;
+          margin-bottom: 100px;
+
+          .recruitment {
+            & > span {
+              font-size: 20px;
+              font-weight: 900;
+              color: #1289a7;
+              display: block;
+              margin-bottom: 10px;
+            }
+
+            .empty-msg {
+              font-size: initial;
+              font-weight: initial;
+              border: 1px solid #e3e3e3;
+              color: #a6a6a6;
+              padding: 10px;
+            }
+
+            ul {
+              a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: 1px solid #e3e3e3;
+                padding: 10px;
+                margin-bottom: -1px;
+
+                &:hover {
+                  background-color: #fbfbfb;
+                }
+
+                &.commentExist {
+                  border-left: 2px solid #ff5e57;
+                }
+
+                .first-column {
+                  .title {
+                    font-size: 17px;
+                  }
+                }
+                .second-column {
+                  font-size: 14px;
+
+                  .writer {
+                    color: #1289a7;
+                    opacity: 0.8;
+                    margin-right: 10px;
+                    font-weight: 700;
+                  }
+
+                  .time {
+                    color: #a6a6a6;
+                  }
+                }
+              }
+            }
+          }
+
+          .community {
+            & > span {
+              font-size: 20px;
+              font-weight: 900;
+              color: #1289a7;
+              display: block;
+              margin-bottom: 10px;
+            }
+
+            .empty-msg {
+              font-size: initial;
+              font-weight: initial;
+              border: 1px solid #e3e3e3;
+              color: #a6a6a6;
+              padding: 10px;
+            }
+
+            ul {
+              a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: 1px solid #e3e3e3;
+                padding: 10px;
+                margin-bottom: -1px;
+
+                &:hover {
+                  background-color: #fbfbfb;
+                }
+
+                .first-column {
+                  .title {
+                    font-size: 17px;
+                  }
+                }
+                .second-column {
+                  font-size: 14px;
+
+                  .writer {
+                    color: #1289a7;
+                    opacity: 0.8;
+                    margin-right: 10px;
+                    font-weight: 700;
+                  }
+
+                  .time {
+                    color: #a6a6a6;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .second-row {
+          .user-rank {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            & > span {
+              font-size: 20px;
+              font-weight: 900;
+              color: #1289a7;
+              display: block;
+              margin-bottom: 10px;
+            }
+
+            .empty-msg {
+              font-size: initial;
+              font-weight: initial;
+              border: 1px solid #e3e3e3;
+              color: #a6a6a6;
+              padding: 10px 30px;
+            }
+
+            .rank-list {
+              position: relative;
+
+              .left {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #e3e3e3;
+                font-size: 20px;
+                padding: 5px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                cursor: pointer;
+              }
+
+              .right {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #e3e3e3;
+                font-size: 20px;
+                padding: 5px;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                cursor: pointer;
+              }
+
+              ul {
+                border: 1px solid #e3e3e3;
+
+                a {
+                  display: flex;
+                  align-items: center;
+                  margin: 10px 50px;
+                  position: relative;
+
+                  &.hidden {
+                    display: none;
+                  }
+
+                  .first-column {
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 20px;
+
+                    img {
+                      width: 100%;
+                      border-radius: 10px;
+                    }
+                  }
+
+                  .second-column {
+                    transform: translateY(1.5px);
+
+                    .info {
+                      display: flex;
+                      align-items: center;
+                      margin-bottom: 3px;
+
+                      .rank {
+                        font-size: 40px;
+                        font-weight: 500;
+                        transform: translateY(-15px);
+                        margin-right: 10px;
+                      }
+
+                      .nickname {
+                        font-size: 16px;
+                        font-weight: 700;
+                        margin-right: 15px;
+                      }
+
+                      .etc-info {
+                        display: flex;
+                        margin: 10px;
+
+                        .user-like {
+                          margin-right: 10px;
+
+                          i {
+                            color: #ff5e57;
+                            margin-right: 3px;
+                          }
+                        }
+
+                        .user-visit {
+                          i {
+                            margin-right: 3px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

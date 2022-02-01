@@ -1,5 +1,6 @@
 .profile-body {
   height: 100vh;
+  padding-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +20,7 @@
 
     a {
       &:hover {
-        color: #e6c833;
+        color: #12cbc4;
       }
 
       & > i {
@@ -135,10 +136,6 @@
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
 
-      &.show {
-        transform: scale(1, 1);
-      }
-
       .more-information {
         display: flex;
         flex-direction: column;
@@ -221,7 +218,7 @@
       text-align: center;
 
       &:hover {
-        color: #e6c833;
+        color: #12cbc4;
       }
     }
   }

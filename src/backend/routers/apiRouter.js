@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import {
+  userImage,
   userLike,
   postLike,
   commentLike,
@@ -11,10 +12,16 @@ import {
   email,
   nickname,
   code,
+  homeBoard,
 } from "../controllers/apiController";
 import "../passport";
 
 const apiRouter = express.Router();
+
+/***********************************
+        유저 프로필 이미지
+***********************************/
+apiRouter.get("/:userId([0-9a-f]{24})/image", userImage);
 
 /***********************************
           유저 좋아요 
@@ -83,5 +90,10 @@ apiRouter.get(
 apiRouter.post("/email/auth", email);
 apiRouter.post("/nickname/auth", nickname);
 apiRouter.post("/code/auth", code);
+
+/***********************************
+             홈 게시판
+***********************************/
+apiRouter.get("/board/:kinds(recruitments|communities)", homeBoard);
 
 export default apiRouter;

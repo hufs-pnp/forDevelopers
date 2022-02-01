@@ -9,7 +9,25 @@ import Comment from "../models/Comment";
 dotenv.config();
 
 /*************************
-      유저 좋아요 수
+    유저 프로필 이미지
+*************************/
+export const userImage = async (req, res) => {
+  try {
+    const {
+      params: { userId },
+    } = req;
+
+    const user = await User.findById(userId);
+
+    return res.json({ image_url: user.image_url, status: 200 });
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/*************************
+       유저 좋아요
 *************************/
 export const userLike = async (req, res) => {
   try {
@@ -416,6 +434,39 @@ export const code = async (req, res) => {
       return res.json({ status: 200 });
     } else {
       return res.json({ status: 400 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/***********************************
+             홈 게시판
+***********************************/
+export const homeBoard = async (req, res) => {
+  try {
+    const {
+      params: { kinds },
+    } = req;
+
+    let boardList = null;
+    if (kinds == "recruitments") {
+      boardList = await Recruitment.find()
+        .populate("user")
+        .sort({ _id: -1 })
+        .limit(5);
+    } else if (kinds == "communities") {
+      boardList = await Community.find()
+        .populate("user")
+        .sort({ _id: -1 })
+        .limit(5);
+    }
+
+    if (boardList.length > 0) {
+      return res.json({ list: boardList, status: 200 });
+    } else {
+      return res.json({ status: 201 });
     }
   } catch (error) {
     console.log(error);

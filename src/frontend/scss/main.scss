@@ -6,6 +6,9 @@
 @import "categories/article.scss";
 @import "categories/articleUpdate.scss";
 
+// Common
+@import "common/header.scss";
+
 // Users
 @import "users/join.scss";
 @import "users/login.scss";
@@ -13,6 +16,7 @@
 @import "users/profileUpdate.scss";
 @import "users/changePassword.scss";
 @import "users/userBoard.scss";
+@import "users/findPassword.scss";
 
 @import "home.scss";
 
@@ -26,5 +30,9 @@
   a {
     text-decoration: none;
     color: inherit;
+  }
+
+  li {
+    list-style: none;
   }
 }

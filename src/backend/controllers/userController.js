@@ -296,8 +296,8 @@ export const userBoard = async (req, res) => {
     }
 
     return res.status(200).render(`users/userBoard.pug`, {
-      headTitle: "내가 쓴 게시물",
-      bodyTitle: "내 게시물",
+      headTitle: `${user.nickname}가 쓴 게시물`,
+      bodyTitle: `${user.nickname} 게시물`,
       userId: id,
       move: "board",
       articleLists,
@@ -361,8 +361,8 @@ export const userComment = async (req, res) => {
     }
 
     return res.status(200).render(`users/userBoard.pug`, {
-      headTitle: "내가 쓴 댓글",
-      bodyTitle: "내 댓글",
+      headTitle: `${user.nickname}가 쓴 댓글`,
+      bodyTitle: `${user.nickname} 댓글`,
       userId: id,
       move: "comment",
       articleLists,
@@ -423,8 +423,8 @@ export const userChoice = async (req, res) => {
     }
 
     return res.status(200).render(`users/userBoard.pug`, {
-      headTitle: "내가 찜한 글",
-      bodyTitle: "내 찜 목록",
+      headTitle: `${user.nickname}가 찜한 글`,
+      bodyTitle: `${user.nickname} 찜 목록`,
       userId: id,
       move: "choice",
       userProfileId: id,
@@ -476,4 +476,13 @@ export const postChangePassword = async (req, res) => {
     console.log(error);
     return res.json({ status: 404 });
   }
+};
+
+/****************************************
+              비밀번호 찾기
+****************************************/
+export const findPassword = (_, res) => {
+  return res.status(200).render("users/findPassword.pug", {
+    headTitle: "비밀번호 찾기",
+  });
 };

@@ -1,0 +1,27 @@
+.fixed-header
+    a(href="/").brand 
+        span For
+        span Dev
+        span s
+    .board-route
+        a(href="/categories/recruitments/1").recruitments-button
+            |멤버 구하기
+        a(href="/categories/communities/1").communities-button
+            |커뮤니티
+    .user-route                    
+        if !authenticated
+            a(href="/users/login" title="로그인").login-button
+                i.fas.fa-sign-in-alt
+                span 로그인
+            a(href="/users/join" title="회원가입").join-button
+                i.fas.fa-user
+                span 회원가입  
+        else
+            a(href=`/users/${loggedInUser._id}` title="프로필").profile-button
+                img(data-userid=loggedInUser._id)
+            a(href="/users/logout" title="로그아웃").logout-button
+                i.fas.fa-sign-out-alt
+                span 로그아웃
+            a(href=`/users/delete` title="회원탈퇴").userDelete-button
+                i.fas.fa-user-slash
+                span 회원 탈퇴

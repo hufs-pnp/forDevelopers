@@ -42,7 +42,7 @@ export const board = async (req, res) => {
       currentPage,
       shownButtons,
       route: `categories/${kinds}`,
-      errorMessage: "게시글이 없습니다.",
+      emptyMessage: "게시글이 없습니다.",
     });
   } catch (error) {
     console.log(error);
@@ -107,7 +107,7 @@ export const search = async (req, res) => {
       shownButtons,
       route: `categories/${kinds}`,
       findTerm,
-      errorMessage: "검색 결과가 없습니다.",
+      emptyMessage: "검색 결과가 없습니다.",
     });
   } catch (error) {
     console.log(error);
