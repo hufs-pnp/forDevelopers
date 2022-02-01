@@ -99,11 +99,11 @@ async function showRecruitmentBoard() {
       });
       return;
     case 201:
-      communityBoard.removeChild(ul);
+      recruitmentBoard.removeChild(ul);
       const span = document.createElement("span");
       span.innerText = "게시글이 없습니다.";
       span.classList.add("empty-msg");
-      communityBoard.appendChild(span);
+      recruitmentBoard.appendChild(span);
       return;
     case 404:
       alert("에러가 발생했습니다.");
