@@ -18,7 +18,7 @@
                 span 회원가입  
         else
             a(href=`/users/${loggedInUser._id}` title="프로필").profile-button
-                img(data-userid=loggedInUser._id)
+                img(src=loggedInUser.image_url data-userid=loggedInUser._id)
             a(href="/users/logout" title="로그아웃").logout-button
                 i.fas.fa-sign-out-alt
                 span 로그아웃
