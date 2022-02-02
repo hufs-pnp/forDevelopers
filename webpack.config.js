@@ -14,6 +14,7 @@ module.exports = {
     profile: BASE_URL + "profile.js",
     profileUpdate: BASE_URL + "profileUpdate.js",
     changePassword: BASE_URL + "changePassword.js",
+    findPassword: BASE_URL + "findPassword.js",
     board: BASE_URL + "board.js",
     article: BASE_URL + "article.js",
   },

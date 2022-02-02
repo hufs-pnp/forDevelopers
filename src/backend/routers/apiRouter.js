@@ -13,6 +13,7 @@ import {
   nickname,
   code,
   homeBoard,
+  passwordEmail,
 } from "../controllers/apiController";
 import "../passport";
 
@@ -95,5 +96,10 @@ apiRouter.post("/code/auth", code);
              홈 게시판
 ***********************************/
 apiRouter.get("/board/:kinds(recruitments|communities)", homeBoard);
+
+/**********************************
+     비밀번호 찾기 이메일 확인
+**********************************/
+apiRouter.post("/email/auth/password", passwordEmail);
 
 export default apiRouter;

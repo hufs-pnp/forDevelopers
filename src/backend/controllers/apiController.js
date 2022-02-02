@@ -349,7 +349,7 @@ export const email = async (req, res) => {
     //   return res.json({ status: 400 });
     // }
 
-    // 이미 가입되어 있는지 확인
+    //이미 가입되어 있는지 확인
     const user = await User.exists({ email });
     if (user) {
       return res.json({ status: 401 });
@@ -467,6 +467,33 @@ export const homeBoard = async (req, res) => {
       return res.json({ list: boardList, status: 200 });
     } else {
       return res.json({ status: 201 });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({ status: 404 });
+  }
+};
+
+/**********************************
+     비밀번호 찾기 이메일 확인
+**********************************/
+export const passwordEmail = async (req, res) => {
+  try {
+    const {
+      body: { email },
+    } = req;
+
+    // 학교 웹메일로 작성됐는지 확인
+    // if (!email.includes("@hufs.ac.kr")) {
+    //   return res.json({ status: 400 });
+    // }
+
+    // 가입되어 있는지 확인
+    const user = await User.exists({ email });
+    if (user) {
+      return res.json({ status: 200 });
+    } else {
+      return res.json({ status: 401 });
     }
   } catch (error) {
     console.log(error);

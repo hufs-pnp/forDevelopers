@@ -481,8 +481,24 @@ export const postChangePassword = async (req, res) => {
 /****************************************
               비밀번호 찾기
 ****************************************/
-export const findPassword = (_, res) => {
+export const getFindPassword = (_, res) => {
   return res.status(200).render("users/findPassword.pug", {
     headTitle: "비밀번호 찾기",
   });
+};
+
+export const postFindPassword = async (req, res) => {
+  try {
+    const {
+      body: { email, new_password },
+    } = req;
+
+    const user = await User.findOne({ email });
+    user.password = new_password;
+    await user.save();
+    return res.redirect("/users/login");
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/users/password/find");
+  }
 };
