@@ -85,3 +85,36 @@
     }
   }
 }
+
+@media (max-width: 360px) {
+  .enrollment-body {
+    .enrollment-container {
+      .header {
+        h1 {
+          font-size: 20px;
+        }
+
+        .user {
+          img {
+            width: 30px;
+            height: 30px;
+          }
+
+          .info {
+            font-size: 14px;
+          }
+        }
+      }
+
+      form {
+        input {
+          font-size: 15px;
+        }
+
+        textarea {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

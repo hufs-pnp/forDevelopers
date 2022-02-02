@@ -6,6 +6,7 @@
 
   .board-container {
     width: 790px;
+    margin: 0 100px;
 
     .header {
       display: flex;
@@ -205,6 +206,30 @@
           font-size: 20px;
           opacity: 0.4;
           cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .board-body {
+    .board-container {
+      .header {
+        h1 {
+          font-size: 20px;
+        }
+
+        .write {
+          font-size: 11px;
+        }
+      }
+
+      .main {
+        .board-form {
+          .title {
+            font-size: 16px;
+          }
         }
       }
     }

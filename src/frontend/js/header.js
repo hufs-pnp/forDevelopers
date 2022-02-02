@@ -10,9 +10,17 @@ openMenuBtn.addEventListener("click", () => {
   menuSection.style.transform = "translateX(-100%)";
   bgColor.classList.remove("hidden");
 });
+
 closeMenuBtn.addEventListener("click", () => {
   menuSection.removeAttribute("style");
   setTimeout(() => {
     bgColor.classList.add("hidden");
   }, 200);
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 970) {
+    menuSection.removeAttribute("style");
+    bgColor.classList.add("hidden");
+  }
 });
