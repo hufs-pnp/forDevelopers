@@ -83,7 +83,11 @@ async function showRecruitmentBoard() {
         const a = document.createElement("a");
         a.href = "categories/recruitments/" + element._id;
         a.innerHTML = `<div class="first-column">
-                        <span class="title">${element.title}</span>
+                        <span class="title">${
+                          element.title.length > 12
+                            ? element.title.slice(0, 12) + "..."
+                            : element.title
+                        }</span>
                        </div>
                        <div class="second-column">
                         <span class="writer">${

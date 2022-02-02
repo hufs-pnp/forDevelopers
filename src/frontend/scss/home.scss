@@ -57,6 +57,8 @@
                 }
                 .second-column {
                   font-size: 14px;
+                  white-space: nowrap;
+                  margin-left: 30px;
 
                   .writer {
                     color: #1289a7;
@@ -110,6 +112,8 @@
                 }
                 .second-column {
                   font-size: 14px;
+                  white-space: nowrap;
+                  margin-left: 30px;
 
                   .writer {
                     color: #1289a7;
@@ -221,11 +225,13 @@
                         font-size: 16px;
                         font-weight: 700;
                         margin-right: 15px;
+                        white-space: nowrap;
                       }
 
                       .etc-info {
                         display: flex;
                         margin: 10px;
+                        white-space: nowrap;
 
                         .user-like {
                           margin-right: 10px;
@@ -240,6 +246,102 @@
                           i {
                             margin-right: 3px;
                           }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 970px) {
+  .home-body {
+    .home-container {
+      main {
+        padding: 200px 120px;
+
+        .board {
+          .first-row {
+            grid-template-columns: 1fr;
+            column-gap: 0;
+            row-gap: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .home-body {
+    .home-container {
+      main {
+        padding: 200px 50px;
+
+        .board {
+          .first-row {
+            grid-template-columns: 1fr;
+            column-gap: 0;
+            row-gap: 50px;
+
+            .recruitment,
+            .community {
+              ul {
+                a {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+
+                  .second-column {
+                    width: 100%;
+                    text-align: end;
+                    margin-top: 5px;
+                    margin-left: 0;
+                  }
+                }
+              }
+            }
+          }
+
+          .second-row {
+            .user-rank {
+              .rank-list {
+                ul {
+                  height: 90px;
+                  display: flex;
+                  align-items: center;
+
+                  a {
+                    .first-column {
+                      width: 40px;
+                      height: 40px;
+                    }
+
+                    .second-column {
+                      .info {
+                        position: relative;
+
+                        .rank {
+                          font-size: 30px;
+                        }
+
+                        .nickname {
+                          font-size: 15px;
+                        }
+
+                        .etc-info {
+                          display: flex;
+                          position: absolute;
+                          margin: 0;
+                          bottom: -6px;
+                          right: 15px;
+                          font-size: 13px;
                         }
                       }
                     }

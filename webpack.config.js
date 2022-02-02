@@ -6,6 +6,7 @@ const BASE_URL = "./src/frontend/js/";
 module.exports = {
   entry: {
     main: BASE_URL + "main.js",
+    header: BASE_URL + "header.js",
     home: BASE_URL + "home.js",
     pagination: BASE_URL + "pagination.js",
     previewImage: BASE_URL + "previewImage.js",
