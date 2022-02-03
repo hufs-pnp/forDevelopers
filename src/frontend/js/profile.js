@@ -116,7 +116,8 @@ const profileContainer = document.querySelector(".profile-container");
 const hiddenColumn = document.querySelector(".hidden-column");
 
 profileContainer.addEventListener("mouseenter", () => {
-  hiddenColumn.style = "transform: scale(1, 1);";
+  hiddenColumn.style = "transform: scale(1, 1)";
+  hiddenColumn.style.transition = "transform 0.3s ease-in";
 });
 
 profileContainer.addEventListener("mouseleave", () => {

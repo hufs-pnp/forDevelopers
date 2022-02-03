@@ -26,4 +26,4 @@ mixin comment(element)
             span(data-commentid=element.id data-numberofcommentlike=element.like data-login=authenticated).comment-like-btn 좋아요
             if authenticated && `${element.user ? element.user.id : null}` == loggedInUser._id
                 span.comment-modify-btn 수정
-                a(href=`/${route}/${post.id}/comment/${element.id}/delete`) 삭제
+                a(href=`/${route}/${post.id}/comment/${element.id}/delete`).comment-delete-btn 삭제

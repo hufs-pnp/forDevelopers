@@ -215,6 +215,8 @@
 @media (max-width: 360px) {
   .board-body {
     .board-container {
+      margin: 0 20px;
+
       .header {
         h1 {
           font-size: 20px;
@@ -230,7 +232,18 @@
           .title {
             font-size: 16px;
           }
+
+          .info {
+            .second-column {
+              font-size: 12px;
+            }
+          }
         }
+      }
+
+      .search {
+        display: flex;
+        justify-content: center;
       }
     }
   }

@@ -201,7 +201,7 @@
         i {
           width: 25px;
           height: 25px;
-          font-size: 23px;
+          font-size: 20px;
           font-weight: 600;
           background: conic-gradient(
             from -40deg,
@@ -215,13 +215,68 @@
           background-clip: text;
           -webkit-background-clip: text;
           color: transparent;
-          transform: translateY(2.5px);
+          transform: translateY(3px);
         }
 
         & > span {
           margin-left: 20px;
           font-weight: 600;
           opacity: 0.6;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .login-body {
+    .login-form {
+      width: 300px;
+
+      header {
+        font-size: 30px;
+      }
+
+      .local {
+        form {
+          .field {
+            .inputBox {
+              .envelop-icon,
+              .lock-icon {
+                font-size: 17px;
+              }
+
+              input {
+                font-size: 17px;
+              }
+
+              .err-icon {
+                right: 5px;
+                font-size: 17px;
+              }
+            }
+          }
+        }
+      }
+
+      .options {
+        font-size: 14px;
+      }
+
+      .dividing-line {
+        & > span {
+          font-size: 15px;
+        }
+      }
+
+      .sns {
+        a {
+          font-size: 14px;
+
+          i {
+            font-size: 20px;
+            transform: translateY(3px);
+          }
         }
       }
     }

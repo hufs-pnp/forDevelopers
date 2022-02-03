@@ -273,3 +273,96 @@
     }
   }
 }
+
+@media (max-width: 360px) {
+  .join-body {
+    .outer-form-container {
+      width: 300px;
+
+      .outer-form {
+        header {
+          font-size: 30px;
+          margin-bottom: 20px;
+        }
+        .progress-bar {
+          margin-bottom: 20px;
+
+          .step {
+            width: 25px;
+            height: 25px;
+            margin: 0px 25px;
+
+            &:not(:last-child) {
+              &::before,
+              &::after {
+                width: 44px;
+              }
+            }
+          }
+        }
+
+        form {
+          .page {
+            font-size: 20px;
+            min-height: 400px;
+
+            .field {
+              margin: 45px 0;
+
+              & > label {
+                font-size: 14px;
+              }
+
+              .inputBox {
+                input {
+                  font-size: 15px;
+
+                  &::placeholder {
+                    font-size: 15px;
+                  }
+                }
+
+                .passwordSecure {
+                  font-size: 14px;
+                }
+              }
+
+              .text {
+                &.active {
+                  font-size: 15px;
+                }
+              }
+
+              .check {
+                font-size: 11px;
+              }
+
+              select {
+                font-size: 13px;
+              }
+
+              .indicator {
+                &.active {
+                  height: 8px;
+                }
+              }
+
+              .column-container {
+                .first-column .selection,
+                .second-column .selection {
+                  font-size: 15px;
+                }
+              }
+            }
+
+            .btn {
+              & > button {
+                font-size: 17px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

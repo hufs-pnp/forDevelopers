@@ -317,7 +317,6 @@
 
           .comment-like {
             display: block;
-            margin-right: 10px;
             color: #0652dd;
 
             &.hidden {
@@ -329,9 +328,15 @@
             }
           }
 
-          & > span {
-            margin-right: 10px;
+          .comment-like-btn,
+          .comment-modify-btn {
+            margin-left: 10px;
             cursor: pointer;
+          }
+
+          .comment-delete-btn {
+            display: inline-block;
+            margin-left: 10px;
           }
         }
       }
@@ -386,6 +391,23 @@
 
         .title {
           font-size: 20px;
+        }
+      }
+
+      .comment-lists {
+        .comment-box {
+          form {
+            width: 100%;
+          }
+
+          .comment-options {
+            .comment-like {
+              margin-right: 0;
+              position: absolute;
+              bottom: -20px;
+              right: 0;
+            }
+          }
         }
       }
     }

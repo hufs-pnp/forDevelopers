@@ -226,3 +226,31 @@
     }
   }
 }
+
+@media (max-width: 360px) {
+  .userBoard-body {
+    .userBoard-container {
+      margin: 0 20px;
+
+      .header {
+        .title {
+          font-size: 20px;
+        }
+      }
+
+      .main {
+        .board-form {
+          .title {
+            font-size: 16px;
+          }
+
+          .info {
+            .second-column {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

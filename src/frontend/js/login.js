@@ -91,7 +91,8 @@ loginBtn.addEventListener("click", async () => {
 });
 
 emailInput.addEventListener("keyup", () => {
-  if (emailInput.value.includes("@hufs.ac.kr")) {
+  // emailInput.value.includes("@hufs.ac.kr")
+  if (emailInput.value.includes("@")) {
     removeError(email);
   }
 });
