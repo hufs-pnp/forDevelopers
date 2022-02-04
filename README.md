@@ -10,7 +10,7 @@ https://for-developers.herokuapp.com
 이를 해결하기 위해 만들었습니다.
 
 ### 사용 기술
-<center>
+<div style="width: 100%, text-align=center">
   <img src="https://img.shields.io/badge/Pug-v3.0.2-A86454?style=flat&logo=pug&logoColor=A86454"/>
   <img src="https://img.shields.io/badge/SASS-v1.47.0-CC6699?style=flat&logo=sass&logoColor=CC6699" />
   <img src="https://img.shields.io/badge/Javascript-5e5c5c?style=flat&logo=javascript&logoColor=F7DF1E" />
@@ -23,6 +23,6 @@ https://for-developers.herokuapp.com
   <img src="https://img.shields.io/badge/Nodemon-v2.0.15-76D04B?style=flat&logo=nodemon&logoColor=76D04B" />
   <img src="https://img.shields.io/badge/Webpack-v5.64.0-8DD6F9?style=flat&logo=webpack&logoColor=8DD6F9" />
   <img src="https://img.shields.io/badge/Heroku-5e5c5c?style=flat&logo=heroku&logoColor=430098" />
-</center>
+</div>
 
 <center>가운데 정렬</center>
