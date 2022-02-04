@@ -12,11 +12,15 @@ https://for-developers.herokuapp.com
 ### 사용 기술
 <center>
   <img src="https://img.shields.io/badge/Pug-v3.0.2-A86454?style=flat&logo=pug&logoColor=A86454"/>
- ![](https://img.shields.io/badge/SASS-v1.47.0-CC6699?style=flat&logo=sass&logoColor=CC6699) ![](https://img.shields.io/badge/Javascript-5e5c5c?style=flat&logo=javascript&logoColor=F7DF1E)  
-![](https://img.shields.io/badge/Express-v4.17.1-000000?style=flat&logo=express&logoColor=000000) ![](https://img.shields.io/badge/Passport-v0.5.2-34E27A?style=flat&logo=passport&logoColor=34E27A)
-![](https://img.shields.io/badge/MongoDB-v5.0.3-47A248?style=flat&logo=mongodb&logoColor=47A248)  
-![](https://img.shields.io/badge/Babel-5e5c5c?style=flat&logo=babel&logoColor=F9DC3E) ![](https://img.shields.io/badge/Nodemon-v2.0.15-76D04B?style=flat&logo=nodemon&logoColor=76D04B) ![](https://img.shields.io/badge/Webpack-v5.64.0-8DD6F9?style=flat&logo=webpack&logoColor=8DD6F9)
-![](https://img.shields.io/badge/Heroku-5e5c5c?style=flat&logo=heroku&logoColor=430098)
+  <img src="https://img.shields.io/badge/SASS-v1.47.0-CC6699?style=flat&logo=sass&logoColor=CC6699" />
+  <img src="https://img.shields.io/badge/Javascript-5e5c5c?style=flat&logo=javascript&logoColor=F7DF1E" />
+  <br />
+  <img src="https://img.shields.io/badge/Express-v4.17.1-000000?style=flat&logo=express&logoColor=000000" />
+  <img src="https://img.shields.io/badge/Passport-v0.5.2-34E27A?style=flat&logo=passport&logoColor=34E27A" />
+  <img src="https://img.shields.io/badge/MongoDB-v5.0.3-47A248?style=flat&logo=mongodb&logoColor=47A248" />
+  <br />
+  <img src="https://img.shields.io/badge/Babel-5e5c5c?style=flat&logo=babel&logoColor=F9DC3E" />
+  <img src="https://img.shields.io/badge/Nodemon-v2.0.15-76D04B?style=flat&logo=nodemon&logoColor=76D04B" />
+  <img src="https://img.shields.io/badge/Webpack-v5.64.0-8DD6F9?style=flat&logo=webpack&logoColor=8DD6F9" />
+  <img src="https://img.shields.io/badge/Heroku-5e5c5c?style=flat&logo=heroku&logoColor=430098" />
 </center>
-                              
-hi
