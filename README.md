@@ -1,9 +1,12 @@
-# ForDevs v1.0.0
+# ForDevs 
 
 개발 팀원 구하는 게시판(메인) + 커뮤니티
 
 ### 배포
 https://for-developers.herokuapp.com
+
+### 버전
+v1.0.0
 
 ### 개발 이유
 비전공자들이나 아싸들은 개발 팀원을 구하는데 상당한 시간을 소요합니다.
